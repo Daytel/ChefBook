@@ -1,199 +1,394 @@
 <!doctype html>
 <html lang="ru">
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width,initial-scale=1" />
-	<title>ChefBook — Рецепты</title>
-	<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ChefBook — Рецепты</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="page">
-    <div class="site" role="main" aria-label="Сайт рецептов — прототип">
 
-      <!-- Шапка  -->
-      <header class="header" role="banner" aria-label="Шапка">
-        <div class="logo" aria-hidden="true">ЛОГО</div>
-        <button class="search-button mobile-full" aria-label="Поиск рецептов (кнопка)">ПОИСК</button>
-        <button class="profile" role="button" aria-label="Профиль / Регистрация">ПРОФИЛЬ / РЕГИСТРАЦИЯ</button>
+    <div class="site-root" role="document" aria-label="Сайт рецептов — прототип">
+
+      <!-- Шапка -->
+      <header class="site__header" role="banner" aria-label="Шапка">
+        <h1 class="site-title">
+          <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+            <path fill="currentColor" d="M12 2a3 3 0 0 0-3 3v1h6V5a3 3 0 0 0-3-3Zm5 6H7a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9a1 1 0 0 0-1-1Zm-4 9h-2v-5h2v5Z"/>
+          </svg>
+          <span>ChefBook</span>
+        </h1>
+        <button class="search-button btn mobile-full"
+                aria-label="Поиск рецептов (кнопка)">
+          ПОИСК
+        </button>
+        <button class="profile btn"
+                role="button"
+                aria-label="Профиль / Регистрация">
+          ПРОФИЛЬ / РЕГИСТРАЦИЯ
+        </button>
       </header>
 
-      <!-- Пролистываемый блок контента -->
-      <div class="content" role="region" aria-label="Контент — список рецептов">
-        <section class="recipes" aria-label="Список рецептов">
-          <!-- 12 карточек -->
-          <!-- Card 1 -->
-          <article class="card" data-id="1">
-            <img class="photo" alt="Фото блюда 1" src="" />
-            <div class="title">Куриное филе в сливочном соусе</div>
-            <div class="desc">Нежное куриное филе, запечённое в сливочном соусе с ароматными травами.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты">
-              <h4>Ингредиенты</h4><ul><li>Куриное филе — 500 г</li><li>Сливки — 200 мл</li><li>Лук — 1 шт.</li></ul>
-            </div>
-          </article>
+      <!-- Основной контент -->
+      <main class="site__main" role="main" aria-label="Контент — список рецептов">
+        <section class="recipes-section" aria-labelledby="recipes-title">
+          <h2 id="recipes-title" class="recipes-section__title">Список рецептов</h2>
+          <ul class="recipes-list" role="list" aria-label="Список рецептов">
 
-          <!-- Card 2 -->
-          <article class="card" data-id="2">
-            <img class="photo" alt="Фото блюда 2" src="" />
-            <div class="title">Паста с грибным соусом</div>
-            <div class="desc">Классическая паста с соусом из шампиньонов и пармезана.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Паста — 300 г</li><li>Грибы — 250 г</li><li>Пармезан — 50 г</li></ul></div>
-          </article>
+            <!-- Карта 1 -->
+            <li class="recipe-card" data-id="1" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 1" src="" />
+              <h3 class="recipe-title">Куриное филе в сливочном соусе</h3>
+              <p class="recipe-desc">
+                Нежное куриное филе, запечённое в сливочном соусе с ароматными травами.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Куриное филе — 500 г</li>
+                  <li>Сливки — 200 мл</li>
+                  <li>Лук — 1 шт.</li>
+                </ul>
+              </div>
+            </li>
 
-          <!-- Card 3 -->
-          <article class="card" data-id="3">
-            <img class="photo" alt="Фото блюда 3" src="" />
-            <div class="title">Салат с авокадо</div>
-            <div class="desc">Освежающий салат с авокадо, помидорами и лаймовым соусом.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Авокадо — 2 шт.</li><li>Помидоры — 200 г</li><li>Лайм — 1 шт.</li></ul></div>
-          </article>
+            <!-- Карта 2 -->
+            <li class="recipe-card" data-id="2" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 2" src="" />
+              <h3 class="recipe-title">Паста с грибным соусом</h3>
+              <p class="recipe-desc">
+                Классическая паста с соусом из шампиньонов и пармезана.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Паста — 300 г</li>
+                  <li>Грибы — 250 г</li>
+                  <li>Пармезан — 50 г</li>
+                </ul>
+              </div>
+            </li>
 
-          <!-- Card 4 -->
-          <article class="card" data-id="4">
-            <img class="photo" alt="Фото блюда 4" src="" />
-            <div class="title">Рататуй</div>
-            <div class="desc">Овощное рагу из баклажанов, кабачков и томатов.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Баклажан</li><li>Кабачок</li><li>Томат — 3 шт.</li></ul></div>
-          </article>
+            <!-- Карта 3 -->
+            <li class="recipe-card" data-id="3" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 3" src="" />
+              <h3 class="recipe-title">Салат с авокадо</h3>
+              <p class="recipe-desc">
+                Освежающий салат с авокадо, помидорами и лаймовым соусом.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Авокадо — 2 шт.</li>
+                  <li>Помидоры — 200 г</li>
+                  <li>Лайм — 1 шт.</li>
+                </ul>
+              </div>
+            </li>
 
-          <!-- Card 5 -->
-          <article class="card" data-id="5">
-            <img class="photo" alt="Фото блюда 5" src="" />
-            <div class="title">Овсяная каша с медом</div>
-            <div class="desc">Полезная каша на завтрак с ягодами и медом.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Овсянка — 100 г</li><li>Молоко — 300 мл</li><li>Мед — 1 ст.л.</li></ul></div>
-          </article>
+            <!-- Карта 4 -->
+            <li class="recipe-card" data-id="4" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 4" src="" />
+              <h3 class="recipe-title">Рататуй</h3>
+              <p class="recipe-desc">
+                Овощное рагу из баклажанов, кабачков и томатов.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Баклажан</li>
+                  <li>Кабачок</li>
+                  <li>Томат — 3 шт.</li>
+                </ul>
+              </div>
+            </li>
 
-          <!-- Card 6 -->
-          <article class="card" data-id="6">
-            <img class="photo" alt="Фото блюда 6" src="" />
-            <div class="title">Суп-пюре из тыквы</div>
-            <div class="desc">Кремовый суп из тыквы со сливками и пряностями.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Тыква — 600 г</li><li>Лук</li><li>Сливки</li></ul></div>
-          </article>
+            <!-- Карта 5 -->
+            <li class="recipe-card" data-id="5" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 5" src="" />
+              <h3 class="recipe-title">Овсяная каша с медом</h3>
+              <p class="recipe-desc">
+                Полезная каша на завтрак с ягодами и медом.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Овсянка — 100 г</li>
+                  <li>Молоко — 300 мл</li>
+                  <li>Мед — 1 ст.л.</li>
+                </ul>
+              </div>
+            </li>
 
-          <!-- Card 7 -->
-          <article class="card" data-id="7">
-            <img class="photo" alt="Фото блюда 7" src="" />
-            <div class="title">Блины с творогом</div>
-            <div class="desc">Тонкие блины с начинкой из сладкого творога.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Мука</li><li>Молоко</li><li>Творог</li></ul></div>
-          </article>
+            <!-- Карта 6 -->
+            <li class="recipe-card" data-id="6" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 6" src="" />
+              <h3 class="recipe-title">Суп-пюре из тыквы</h3>
+              <p class="recipe-desc">
+                Кремовый суп из тыквы со сливками и пряностями.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Тыква — 600 г</li>
+                  <li>Лук</li>
+                  <li>Сливки</li>
+                </ul>
+              </div>
+            </li>
 
-          <!-- Card 8 -->
-          <article class="card" data-id="8">
-            <img class="photo" alt="Фото блюда 8" src="" />
-            <div class="title">Рыба на пару</div>
-            <div class="desc">Нежная рыба, приготовленная на пару с лимоном.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Филе рыбы — 400 г</li><li>Лимон</li><li>Соль, перец</li></ul></div>
-          </article>
+            <!-- Карта 7 -->
+            <li class="recipe-card" data-id="7" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 7" src="" />
+              <h3 class="recipe-title">Блины с творогом</h3>
+              <p class="recipe-desc">
+                Тонкие блины с начинкой из сладкого творога.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Мука</li>
+                  <li>Молоко</li>
+                  <li>Творог</li>
+                </ul>
+              </div>
+            </li>
 
-          <!-- Card 9 -->
-          <article class="card" data-id="9">
-            <img class="photo" alt="Фото блюда 9" src="" />
-            <div class="title">Тёплый салат с печёными овощами</div>
-            <div class="desc">Овощи, запечённые до карамелизации, под соусом.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Перец</li><li>Баклажан</li><li>Оливковое масло</li></ul></div>
-          </article>
+            <!-- Карта 8 -->
+            <li class="recipe-card" data-id="8" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 8" src="" />
+              <h3 class="recipe-title">Рыба на пару</h3>
+              <p class="recipe-desc">
+                Нежная рыба, приготовленная на пару с лимоном.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Филе рыбы — 400 г</li>
+                  <li>Лимон</li>
+                  <li>Соль, перец</li>
+                </ul>
+              </div>
+            </li>
 
-          <!-- Card 10 -->
-          <article class="card" data-id="10">
-            <img class="photo" alt="Фото блюда 10" src="" />
-            <div class="title">Тирамису</div>
-            <div class="desc">Классический итальянский десерт с маскарпоне и кофе.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Маскарпоне</li><li>Печенье савоярди</li><li>Кофе</li></ul></div>
-          </article>
+            <!-- Карта 9 -->
+            <li class="recipe-card" data-id="9" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 9" src="" />
+              <h3 class="recipe-title">Тёплый салат с печёными овощами</h3>
+              <p class="recipe-desc">
+                Овощи, запечённые до карамелизации, под соусом.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Перец</li>
+                  <li>Баклажан</li>
+                  <li>Оливковое масло</li>
+                </ul>
+              </div>
+            </li>
 
-          <!-- Card 11 -->
-          <article class="card" data-id="11">
-            <img class="photo" alt="Фото блюда 11" src="" />
-            <div class="title">Карри с овощами</div>
-            <div class="desc">Ароматное карри с кокосовым молоком и овощами.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Кокосовое молоко</li><li>Карри паста</li><li>Овощи</li></ul></div>
-          </article>
+            <!-- Карта 10 -->
+            <li class="recipe-card" data-id="10" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 10" src="" />
+              <h3 class="recipe-title">Тирамису</h3>
+              <p class="recipe-desc">
+                Классический итальянский десерт с маскарпоне и кофе.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Маскарпоне</li>
+                  <li>Печенье савоярди</li>
+                  <li>Кофе</li>
+                </ul>
+              </div>
+            </li>
 
-          <!-- Card 12 -->
-          <article class="card" data-id="12">
-            <img class="photo" alt="Фото блюда 12" src="" />
-            <div class="title">Шоколадный кекс</div>
-            <div class="desc">Насыщенный кекс с бурым шоколадом и глазурью.</div>
-            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
-            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Шоколад</li><li>Мука</li><li>Яйца</li></ul></div>
-          </article>
+            <!-- Карта 11 -->
+            <li class="recipe-card" data-id="11" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 11" src="" />
+              <h3 class="recipe-title">Карри с овощами</h3>
+              <p class="recipe-desc">
+                Ароматное карри с кокосовым молоком и овощами.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Кокосовое молоко</li>
+                  <li>Карри паста</li>
+                  <li>Овощи</li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- Карта 12 -->
+            <li class="recipe-card" data-id="12" role="listitem">
+              <img class="recipe-photo" alt="Фото блюда 12" src="" />
+              <h3 class="recipe-title">Шоколадный кекс</h3>
+              <p class="recipe-desc">
+                Насыщенный кекс с бурым шоколадом и глазурью.
+              </p>
+              <div class="compose-row">
+                <button class="compose-btn btn"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                  Состав
+                </button>
+              </div>
+              <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+                <h4>Ингредиенты</h4>
+                <ul>
+                  <li>Шоколад</li>
+                  <li>Мука</li>
+                  <li>Яйца</li>
+                </ul>
+              </div>
+            </li>
+          </ul>
         </section>
-      </div>
+      </main>
 
       <!-- Подвал -->
-      <footer class="footer" role="contentinfo" aria-label="Нижняя навигация">
-        <div class="nav-item home">Главная</div>
-        <div class="nav-item profile">Профиль / Регистрация</div>
+      <footer class="site__footer" role="contentinfo" aria-label="Нижняя навигация">
+        <button class="nav-item btn home" type="button">Главная</button>
+        <button class="nav-item btn profile" type="button">Профиль / Регистрация</button>
         <div class="nav-item only-about">О нас</div>
       </footer>
 
     </div>
   </div>
 
-<script>
-  // Управление всплывающими окнами "Состав"
-  (function(){
-    const buttons = Array.from(document.querySelectorAll('.compose-btn'));
-    let openMenu = null;
+  <script>
+    // Управление всплывающими окнами "Состав"
+    (function () {
+      const buttons = Array.from(document.querySelectorAll('.compose-btn'));
+      let openMenu = null;
 
-    function closeOpen(){
-      if(openMenu){
-        openMenu.style.display = 'none';
-        const btn = openMenu.closest('.card').querySelector('.compose-btn');
-        if(btn) btn.setAttribute('aria-expanded','false');
-        openMenu = null;
-      }
-    }
-
-    buttons.forEach(btn=>{
-      btn.addEventListener('click', function(e){
-        e.stopPropagation();
-        const card = btn.closest('.card');
-        const menu = card.querySelector('.ingredients');
-        if(!menu) return;
-        if(openMenu && openMenu !== menu) closeOpen();
-        const isOpen = menu.style.display === 'block';
-        if(isOpen){
-          menu.style.display = 'none';
-          btn.setAttribute('aria-expanded','false');
+      function closeOpen() {
+        if (openMenu) {
+          openMenu.style.display = 'none';
+          const btn = openMenu.closest('.recipe-card').querySelector('.compose-btn');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
           openMenu = null;
-        } else {
-          menu.style.display = 'block';
-          btn.setAttribute('aria-expanded','true');
-          openMenu = menu;
         }
-      });
-    });
+      }
 
-    // закрыть по клику вне карточки или по Esc
-    document.addEventListener('click', function(e){
-      if(!e.target.closest('.card')) closeOpen();
-    });
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape') closeOpen();
-    });
-
-    // Search button - заглушка
-    const searchBtn = document.querySelector('.search-button');
-    if(searchBtn){
-      searchBtn.addEventListener('click', ()=> {
-        console.log('ПОИСК: открой модал/страницу/фильтры');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          const card = btn.closest('.recipe-card');
+          const menu = card.querySelector('.ingredients');
+          if (!menu) return;
+          if (openMenu && openMenu !== menu) closeOpen();
+          const isOpen = menu.style.display === 'block';
+          if (isOpen) {
+            menu.style.display = 'none';
+            btn.setAttribute('aria-expanded', 'false');
+            openMenu = null;
+          } else {
+            menu.style.display = 'block';
+            btn.setAttribute('aria-expanded', 'true');
+            openMenu = menu;
+          }
+        });
       });
-    }
-  })();
-</script>
+
+      // закрыть по клику вне карточки или по Esc
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.recipe-card')) closeOpen();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeOpen();
+      });
+
+      // Search button - заглушка
+      const searchBtn = document.querySelector('.search-button');
+      if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+          console.log('ПОИСК: открой модал/страницу/фильтры');
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
