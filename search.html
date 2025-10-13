@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Поиск рецептов — макет</title>
+	<link rel="stylesheet" href="search.css">
+</head>
+<body>
+<div class="page">
+  <div class="site" role="application">
+    <header class="header">
+      <div class="header-row">
+        <div class="logo">ЛОГО</div>
+        <nav class="nav">
+          <button class="btn nav-item visually-hidden">О нас</button>
+        </nav>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn nav-item visually-hidden">Главная</button>
+        <button class="btn profile">Профиль</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="content-inner">
+        <!-- Left column (filters + categories + results) -->
+        <div class="left-column">
+          <div class="title">ПОИСК</div>
+          <section class="search-area" aria-label="Поиск рецептов">
+            <div class="search-row">
+              <input id="q" class="input" placeholder="Введите название или ингредиент" />
+              <button id="searchBtn" class="search-button">Начать поиск</button>
+            </div>
+
+            <div class="filters" aria-hidden="false">
+              <div class="filter">
+				<label>Фильтры по поиску</label>
+			  </div>
+              <div class="filter">
+				<label>Ингредиенты<br/>
+				<select id="f-ing" aria-label="Ингредиенты">
+					<option>Любые</option>
+					<option>Курица</option>
+					<option>Овощи</option>
+				</select>
+				</label>
+			  </div>
+              <div class="filter">
+				<label>Время приготовления<br/>
+				<select id="f-time">
+					<option>Любое</option>
+					<option>до 15 мин</option>
+					<option>до 30 мин</option>
+				</select>
+				</label>
+			  </div>
+              <div class="filter">
+				<label>Калории<br/>
+				<select id="f-cal">
+					<option>Любые</option>
+					<option>&lt;100</option>
+					<option>&lt;200</option>
+				</select>
+				</label>
+			  </div>
+            </div>
+
+            <!-- Объединённый блок категорий — все категории в одном месте -->
+            <div class="categories">
+              <div class="panel-title">КАТЕГОРИИ</div>
+              <div class="cols">
+                <div class="category-box">
+                  <div>Завтраки</div>
+                  <div>Супы</div>
+                  <div>Салаты</div>
+                  <div>Выпечка</div>
+				  <div>Десерты</div>
+                  <div>Вегетарианские</div>
+                  <div>Мясные</div>
+                  <div>Напитки</div>
+                </div>
+                <div class="category-box">
+                  <div>Паста</div>
+                  <div>Рыба</div>
+                  <div>Постные</div>
+                  <div>Быстро</div>
+				  <div>Детское</div>
+                  <div>На мангале</div>
+                  <div>Сезонные</div>
+                  <div>Праздничные</div>
+                </div>
+              </div>
+            </div>
+
+          </section>
+
+        </div>
+
+
+		<div class="right-column">
+			<section class="results" aria-label="Результаты поиска">
+			  <div class="panel-title">НАЙДЕННЫЕ РЕЦЕПТЫ</div>
+			  <div id="resultsGrid" class="grid"></div>
+			</section>
+
+			<div class="history">
+			  <div class="panel-title">ИСТОРИЯ ПОИСКА</div>
+			  <div id="historyBox" class="box">
+				<div id="historyList">Пусто</div>
+			  </div>
+			</div>
+		</div>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <button class="btn home">Главная</button>
+      <button class="btn profile">Профиль</button>
+      <button class="btn only-about">О нас</button>
+    </footer>
+  </div>
+</div>
+
+<script>
+const sample = [
+  {title:'Простой салат с курицей', desc:'Вкусный салат за 15 минут'},
+  {title:'Шоколадный кекс', desc:'Нежный десерт для всей семьи'},
+  {title:'Суп-пюре из тыквы', desc:'Легкий и согревающий'},
+  {title:'Паста с лососем', desc:'Быстро и сытно'},
+  {title:'Запечённый картофель', desc:'Идеально для гарнира'},
+  {title:'Овсянка с ягодами', desc:'Полезный завтрак'}
+];
+
+function renderResults(list){
+  const grid = document.getElementById('resultsGrid');
+  grid.innerHTML='';
+  list.forEach((r,i)=>{
+    const card = document.createElement('div'); card.className='card';
+    card.innerHTML = `
+      <div class="photo"></div>
+      <div class="title">${r.title}</div>
+      <div class="desc">${r.desc}</div>
+      <div class="compose-row"><button class="btn compose-btn" data-i="${i}">Открыть</button></div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function addToHistory(title){
+  const hList = document.getElementById('historyList');
+  const item = document.createElement('div');
+  item.textContent = title;
+  // prepend
+  if(hList.textContent === 'Пусто') hList.textContent = '';
+  hList.prepend(item);
+}
+
+document.getElementById('searchBtn').addEventListener('click', ()=>{
+  // простая фильтрация по тексту
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const filtered = sample.filter(s=>s.title.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q));
+  renderResults(filtered.length?filtered:sample);
+});
+
+// делегирование: клик на Открыть
+document.getElementById('resultsGrid').addEventListener('click', (e)=>{
+  if(e.target.matches('.compose-btn')){
+    const title = e.target.closest('.card').querySelector('.title').textContent;
+    addToHistory(title);
+    alert('Открыт рецепт: '+title);
+  }
+});
+
+// initial
+renderResults(sample);
+</script>
+</body>
+</html>

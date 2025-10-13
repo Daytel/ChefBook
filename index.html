@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>ChefBook — Рецепты</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <div class="site" role="main" aria-label="Сайт рецептов — прототип">
+
+      <!-- Шапка  -->
+      <header class="header" role="banner" aria-label="Шапка">
+        <div class="logo" aria-hidden="true">ЛОГО</div>
+        <button class="search-button mobile-full" aria-label="Поиск рецептов (кнопка)">ПОИСК</button>
+        <button class="profile" role="button" aria-label="Профиль / Регистрация">ПРОФИЛЬ / РЕГИСТРАЦИЯ</button>
+      </header>
+
+      <!-- Пролистываемый блок контента -->
+      <div class="content" role="region" aria-label="Контент — список рецептов">
+        <section class="recipes" aria-label="Список рецептов">
+          <!-- 12 карточек -->
+          <!-- Card 1 -->
+          <article class="card" data-id="1">
+            <img class="photo" alt="Фото блюда 1" src="" />
+            <div class="title">Куриное филе в сливочном соусе</div>
+            <div class="desc">Нежное куриное филе, запечённое в сливочном соусе с ароматными травами.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты">
+              <h4>Ингредиенты</h4><ul><li>Куриное филе — 500 г</li><li>Сливки — 200 мл</li><li>Лук — 1 шт.</li></ul>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="card" data-id="2">
+            <img class="photo" alt="Фото блюда 2" src="" />
+            <div class="title">Паста с грибным соусом</div>
+            <div class="desc">Классическая паста с соусом из шампиньонов и пармезана.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Паста — 300 г</li><li>Грибы — 250 г</li><li>Пармезан — 50 г</li></ul></div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="card" data-id="3">
+            <img class="photo" alt="Фото блюда 3" src="" />
+            <div class="title">Салат с авокадо</div>
+            <div class="desc">Освежающий салат с авокадо, помидорами и лаймовым соусом.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Авокадо — 2 шт.</li><li>Помидоры — 200 г</li><li>Лайм — 1 шт.</li></ul></div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="card" data-id="4">
+            <img class="photo" alt="Фото блюда 4" src="" />
+            <div class="title">Рататуй</div>
+            <div class="desc">Овощное рагу из баклажанов, кабачков и томатов.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Баклажан</li><li>Кабачок</li><li>Томат — 3 шт.</li></ul></div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="card" data-id="5">
+            <img class="photo" alt="Фото блюда 5" src="" />
+            <div class="title">Овсяная каша с медом</div>
+            <div class="desc">Полезная каша на завтрак с ягодами и медом.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Овсянка — 100 г</li><li>Молоко — 300 мл</li><li>Мед — 1 ст.л.</li></ul></div>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="card" data-id="6">
+            <img class="photo" alt="Фото блюда 6" src="" />
+            <div class="title">Суп-пюре из тыквы</div>
+            <div class="desc">Кремовый суп из тыквы со сливками и пряностями.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Тыква — 600 г</li><li>Лук</li><li>Сливки</li></ul></div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="card" data-id="7">
+            <img class="photo" alt="Фото блюда 7" src="" />
+            <div class="title">Блины с творогом</div>
+            <div class="desc">Тонкие блины с начинкой из сладкого творога.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Мука</li><li>Молоко</li><li>Творог</li></ul></div>
+          </article>
+
+          <!-- Card 8 -->
+          <article class="card" data-id="8">
+            <img class="photo" alt="Фото блюда 8" src="" />
+            <div class="title">Рыба на пару</div>
+            <div class="desc">Нежная рыба, приготовленная на пару с лимоном.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Филе рыбы — 400 г</li><li>Лимон</li><li>Соль, перец</li></ul></div>
+          </article>
+
+          <!-- Card 9 -->
+          <article class="card" data-id="9">
+            <img class="photo" alt="Фото блюда 9" src="" />
+            <div class="title">Тёплый салат с печёными овощами</div>
+            <div class="desc">Овощи, запечённые до карамелизации, под соусом.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Перец</li><li>Баклажан</li><li>Оливковое масло</li></ul></div>
+          </article>
+
+          <!-- Card 10 -->
+          <article class="card" data-id="10">
+            <img class="photo" alt="Фото блюда 10" src="" />
+            <div class="title">Тирамису</div>
+            <div class="desc">Классический итальянский десерт с маскарпоне и кофе.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Маскарпоне</li><li>Печенье савоярди</li><li>Кофе</li></ul></div>
+          </article>
+
+          <!-- Card 11 -->
+          <article class="card" data-id="11">
+            <img class="photo" alt="Фото блюда 11" src="" />
+            <div class="title">Карри с овощами</div>
+            <div class="desc">Ароматное карри с кокосовым молоком и овощами.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Кокосовое молоко</li><li>Карри паста</li><li>Овощи</li></ul></div>
+          </article>
+
+          <!-- Card 12 -->
+          <article class="card" data-id="12">
+            <img class="photo" alt="Фото блюда 12" src="" />
+            <div class="title">Шоколадный кекс</div>
+            <div class="desc">Насыщенный кекс с бурым шоколадом и глазурью.</div>
+            <div class="compose-row"><button class="compose-btn" aria-haspopup="true" aria-expanded="false">Состав</button></div>
+            <div class="ingredients" role="dialog" aria-label="Ингредиенты"><h4>Ингредиенты</h4><ul><li>Шоколад</li><li>Мука</li><li>Яйца</li></ul></div>
+          </article>
+        </section>
+      </div>
+
+      <!-- Подвал -->
+      <footer class="footer" role="contentinfo" aria-label="Нижняя навигация">
+        <div class="nav-item home">Главная</div>
+        <div class="nav-item profile">Профиль / Регистрация</div>
+        <div class="nav-item only-about">О нас</div>
+      </footer>
+
+    </div>
+  </div>
+
+<script>
+  // Управление всплывающими окнами "Состав"
+  (function(){
+    const buttons = Array.from(document.querySelectorAll('.compose-btn'));
+    let openMenu = null;
+
+    function closeOpen(){
+      if(openMenu){
+        openMenu.style.display = 'none';
+        const btn = openMenu.closest('.card').querySelector('.compose-btn');
+        if(btn) btn.setAttribute('aria-expanded','false');
+        openMenu = null;
+      }
+    }
+
+    buttons.forEach(btn=>{
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        const card = btn.closest('.card');
+        const menu = card.querySelector('.ingredients');
+        if(!menu) return;
+        if(openMenu && openMenu !== menu) closeOpen();
+        const isOpen = menu.style.display === 'block';
+        if(isOpen){
+          menu.style.display = 'none';
+          btn.setAttribute('aria-expanded','false');
+          openMenu = null;
+        } else {
+          menu.style.display = 'block';
+          btn.setAttribute('aria-expanded','true');
+          openMenu = menu;
+        }
+      });
+    });
+
+    // закрыть по клику вне карточки или по Esc
+    document.addEventListener('click', function(e){
+      if(!e.target.closest('.card')) closeOpen();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeOpen();
+    });
+
+    // Search button - заглушка
+    const searchBtn = document.querySelector('.search-button');
+    if(searchBtn){
+      searchBtn.addEventListener('click', ()=> {
+        console.log('ПОИСК: открой модал/страницу/фильтры');
+      });
+    }
+  })();
+</script>
+</body>
+</html>

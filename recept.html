@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рецепт</title>
+    <style>
+        /* Вставь сюда все твои стили из переменных :root и остальных */
+        :root {
+            --bg: #bfeaf4;
+            --panel: #fff;
+            --muted: #f2f2f2;
+            --accent: #fafafa;
+            --border: #e4e4e4;
+            --radius: 10px;
+            --gap: 12px;
+            --container-width: 1100px;
+            --break: 1000px;
+            --header-height: 64px;
+            --footer-height: 56px;
+        }
+        /* Здесь идет весь твой CSS, который ты уже привел */
+        /* ... */
+    </style>
+</head>
+<body>
+
+<div class="page">
+    <div class="site">
+        <!-- Шапка -->
+        <header class="header">
+            <div class="logo">Logo</div>
+            <nav class="nav">
+                <button class="btn">О нас</button>
+                <button class="btn">Поиск</button>
+                <button class="btn">Профиль</button>
+            </nav>
+        </header>
+
+        <!-- Контент -->
+        <div class="content">
+            <!-- Название рецепта -->
+            <h1 class="title">Название блюда</h1>
+
+            <!-- Описание рецепта -->
+            <p class="desc">Описание рецепта. В этом разделе будет краткое описание о блюде.</p>
+
+            <!-- Карусель изображений/видео -->
+            <div class="carousel">
+                <div class="carousel-items">
+                    <img src="image1.jpg" alt="Слайд 1">
+                    <img src="image2.jpg" alt="Слайд 2">
+                    <img src="image3.jpg" alt="Слайд 3">
+                </div>
+                <div class="carousel-thumbnails">
+                    <img src="thumb1.jpg" alt="Миниатюра 1">
+                    <img src="thumb2.jpg" alt="Миниатюра 2">
+                    <img src="thumb3.jpg" alt="Миниатюра 3">
+                </div>
+            </div>
+
+            <!-- Ингредиенты -->
+            <div class="ingredients">
+                <h4>Ингредиенты</h4>
+                <ul>
+                    <li>Ингредиент 1</li>
+                    <li>Ингредиент 2</li>
+                    <li>Ингредиент 3</li>
+                </ul>
+            </div>
+
+            <!-- Шаги приготовления -->
+            <div class="steps">
+                <div class="step">
+                    <img src="step1.jpg" alt="Шаг 1">
+                    <p>Текст шага 1: Описание шага приготовления.</p>
+                </div>
+                <div class="step">
+                    <img src="step2.jpg" alt="Шаг 2">
+                    <p>Текст шага 2: Описание шага приготовления.</p>
+                </div>
+                <div class="step">
+                    <img src="step3.jpg" alt="Шаг 3">
+                    <p>Текст шага 3: Описание шага приготовления.</p>
+                </div>
+            </div>
+
+            <!-- Поделиться рецептом -->
+            <div class="share">
+                <p>Ссылки, чтобы поделиться рецептом:</p>
+                <a href="#">Поделиться в соц. сетях</a>
+            </div>
+
+            <!-- Комментарии -->
+            <div class="comments">
+                <h4>Комментарии</h4>
+                <textarea placeholder="Напишите комментарий..."></textarea>
+                <button class="btn">Оставить комментарий</button>
+                <div class="comment-list">
+                    <p>Комментарий 1</p>
+                    <p>Комментарий 2</p>
+                    <p>Комментарий 3</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Подвал -->
+        <footer class="footer">
+            <button class="btn">Главная</button>
+            <button class="btn">Профиль</button>
+            <button class="btn">О нас</button>
+        </footer>
+    </div>
+</div>
+
+</body>
+</html>
