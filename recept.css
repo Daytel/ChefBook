@@ -1,0 +1,379 @@
+:root {
+    --bg: #bfeaf4;
+    --panel: #fff;
+    --muted: #f2f2f2;
+    --accent: #fafafa;
+    --border: #e4e4e4;
+    --radius: 10px;
+    --gap: 12px;
+    --container-width: 1100px;
+    --header-height: 64px;
+    --footer-height: 56px;
+    --transition: 260ms ease;
+}
+
+* {
+    box-sizing:border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: var(--bg);
+    color: #222;
+}
+
+.page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 28px 18px;
+}
+
+.site-root {
+    width: 360px;
+    height: calc(100vh - 56px);
+    background: var(--panel);
+    border-radius: 10px;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.site__header{
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg,var(--panel),#fbfbfb);
+    flex-shrink: 0;
+}
+
+.site-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.logo-icon {
+    width: 22px;
+    height: 22px;
+}
+
+.site__nav{
+    margin-left: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.site__actions{
+    margin-left: auto;
+    display: flex;
+    gap: 8px
+}
+
+.btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    cursor: pointer;font-weight:600;
+}
+
+.search-button{
+    background: var(--muted);
+}
+
+.visually-hidden {
+    position: absolute;
+    left: -9999px;
+}
+
+.site__main {
+    flex: 1 1 auto;
+    overflow: auto;
+    padding: 14px
+}
+
+.content-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.recipe-title {
+    margin: 0;
+    font-size: 20px;
+}
+
+.recipe-desc {
+    margin: 6px 0 0 0;
+    color:#444;
+}
+
+.media-and-ingredients {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.carousel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.carousel-viewport {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: linear-gradient(180deg,#e8e8e8,#ddd);
+}
+
+.carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform var(--transition);
+    will-change: transform;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+}
+.carousel-slide img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.carousel-controls {
+    position: absolute;
+    inset: 0;
+    pointer-events: none
+}
+
+.carousel-controls button{
+    pointer-events: auto
+}
+
+.btn-prev, .btn-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.9);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    padding: 6px 8px;
+    font-weight: 700;
+}
+
+.btn-prev {
+    left:8px;
+}
+
+.btn-next {
+    right: 8px;
+}
+
+.thumbs-viewport {
+    width: 100%;
+    overflow: auto;
+}
+
+.thumbs-track {
+    display: flex;
+    gap: 8px;
+    padding-bottom: 6px;
+}
+
+.thumb {
+    width: 84px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    overflow: hidden;
+    background: #ddd;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.thumb[aria-current="true"] {
+    border-color:var(--border);
+}
+
+.ingredients-panel {
+    background:var(--accent);
+    padding:12px;
+    border-radius:10px;
+    border:1px solid var(--border);
+}
+
+.ingredients-panel h3{
+    margin: 0 0 8px 0;
+}
+
+.ingredients-panel ul{
+    margin: 0;
+    padding-left: 18px;
+    color: #444;
+}
+
+.steps{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--accent);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.step img {
+    width: 100px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.share {
+    background: var(--muted);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.comments textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    resize: vertical;
+}
+
+.comment-list {
+    background: var(--muted);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.site__footer {
+    height: var(--footer-height);
+    min-height: var(--footer-height);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 12px;
+    padding: 8px 12px;
+    background: linear-gradient(0deg,var(--panel),#fbfbfb);
+    flex-shrink: 0;
+}
+
+@media (min-width:1000px){
+    .page {
+        padding: 36px;
+    }
+
+    .site-root {
+        width: var(--container-width);
+        height: calc(100vh - 72px);
+        border-radius: 8px;
+    }
+
+    .site__header {
+        justify-content: space-between;
+    }
+
+    .site__main{padding:20px}
+
+    .media-and-ingredients {
+        display:grid;
+        grid-template-columns: 1fr 320px;
+        gap:18px;
+        align-items:start;
+    }
+
+    .steps {
+        display:grid;
+        grid-template-columns: repeat(2,1fr);
+        gap:12px;
+    }
+
+    .carousel-viewport {
+        height:420px;
+    }
+
+    .site__footer {
+        justify-content: center;
+    }
+
+    .site__footer .home, .site__footer .profile {
+        display: none;
+    }
+
+    .site__footer .only-about {
+        display: inline-flex;
+        min-width: 160px;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media (max-width:360px) {
+    .site-root {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .carousel-viewport {
+        height: 220px;
+    }
+
+    .thumb {
+        width: 64px;
+        height: 48px;
+    }
+}
