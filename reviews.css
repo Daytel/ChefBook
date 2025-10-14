@@ -1,0 +1,112 @@
+:root {
+  --bg: #bfeaf4;
+  --panel: #fff;
+  --muted: #f2f2f2;
+  --accent: #fafafa;
+  --border: #e4e4e4;
+  --radius: 10px;
+  --gap: 12px;
+  --container-width: 1100px;
+  --header-height: 64px;
+  --footer-height: 56px;
+}
+
+/* base */
+* { box-sizing: border-box; }
+html, body { height:100%; margin:0; }
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:#222;
+  background: var(--bg);
+  -webkit-font-smoothing:antialiased;
+}
+
+.page { min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding:28px 18px; }
+
+/* container */
+.site-root {
+  width:360px;
+  height:calc(100vh - 56px);
+  max-height:calc(100vh - 56px);
+  background:var(--panel);
+  border-radius:10px;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.03);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+
+/* header */
+.site__header {
+  height:var(--header-height);
+  min-height:var(--header-height);
+  display:flex; align-items:center; gap:12px; padding:8px 14px;
+  border-bottom:1px solid var(--border);
+  background: linear-gradient(180deg,var(--panel),#fbfbfb);
+  flex-shrink:0;
+}
+.site-title { display:flex; align-items:center; gap:8px; margin:0; font-weight:700; }
+.logo-icon { width:22px; height:22px; color:#333; }
+.site__nav { margin-left:8px; display:flex; gap:8px; align-items:center; }
+.site__actions { margin-left:auto; display:flex; gap:8px; align-items:center; }
+
+.btn { padding:8px 12px; border-radius:8px; border:1px solid var(--border); cursor:pointer; background:var(--panel); font-weight:600; font-size:13px; }
+
+/* main */
+.site__main { flex:1 1 auto; overflow:auto; padding:14px; }
+.search-title { margin:0 0 12px 0; font-size:20px; text-align:left; }
+
+/* layout */
+.content-inner { display:flex; flex-direction:column; gap:12px; }
+.reviews-inner { display:grid; grid-template-columns: 1fr; gap:12px; }
+.left-column, .right-column { display:flex; flex-direction:column; gap:12px; }
+
+/* author card */
+.author-card { display:flex; flex-direction:column; gap:10px; }
+.author-row { display:flex; gap:12px; align-items:center; }
+.author-avatar {
+  width:84px; height:84px; border-radius:10px; background:linear-gradient(180deg,#f6f6f6,#eee);
+  display:flex; align-items:center; justify-content:center; font-size:40px; border:1px dashed var(--border);
+}
+.author-info h3 { margin:0; font-size:18px; }
+.author-meta { margin-top:6px; color:#666; font-size:13px; display:flex; gap:12px; }
+.author-actions { display:flex; gap:8px; }
+
+/* comments */
+.comments-box { display:flex; flex-direction:column; gap:8px; }
+.comment-form .input { margin-bottom:8px; }
+.comments-list { display:flex; flex-direction:column; gap:12px; }
+.comment {
+  background:var(--accent); padding:10px; border-radius:10px; border:1px solid var(--border);
+  display:flex; flex-direction:column; gap:8px;
+}
+.comment-head { display:flex; gap:8px; align-items:center; justify-content:space-between; }
+.comment-author { font-weight:700; }
+.comment-date { font-size:12px; color:#666; }
+.comment-body { color:#222; white-space:pre-wrap; }
+.comment-actions { display:flex; gap:8px; justify-content:flex-end; }
+
+/* right column boxes */
+.box { background:var(--muted); padding:12px; border-radius:10px; border:1px solid var(--border); }
+
+/* footer */
+.footer {
+  height:var(--footer-height); min-height:var(--footer-height);
+  border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-around;
+  gap:12px; padding:8px 12px; background: linear-gradient(0deg,var(--panel),#fbfbfb); flex-shrink:0;
+}
+
+/* responsive desktop */
+@media (min-width:1000px) {
+  .page { padding:36px; }
+  .site-root { width:var(--container-width); height:calc(100vh - 72px); max-height:calc(100vh - 72px); border-radius:8px; }
+  .reviews-inner { grid-template-columns: 1fr 340px; gap:18px; align-items:start; }
+  /* navigation behaviour consistent with other pages: header shows nav, footer only about */
+  .site__nav { display:flex; }
+  .footer .home, .footer .profile { display:none; }
+  .footer .only-about { min-width:160px; }
+}
+
+/* small tweaks */
+@media (max-width:420px) {
+  .page { padding:18px 12px; }
+  .author-avatar { width:72px; height:72px; font-size:34px; }
+}
