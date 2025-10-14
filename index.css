@@ -89,8 +89,6 @@ body {
 
 .search-button.mobile-full { flex: 1; }
 
-.profile { }
-
 .site__header .profile {
   display: none; /* hidden on mobile */
   background: var(--muted);
