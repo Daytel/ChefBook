@@ -1,0 +1,189 @@
+:root {
+  --bg: #bfeaf4;
+  --panel: #fff;
+  --muted: #f2f2f2;
+  --accent: #fafafa;
+  --border: #e4e4e4;
+  --radius: 10px;
+  --gap: 12px;
+  --container-width: 1100px;
+  --header-height: 64px;
+  --footer-height: 56px;
+}
+
+/* Base */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #222;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 28px 18px;
+}
+
+/* Site container */
+.site-root {
+  width: 360px;
+  height: calc(100vh - 56px);
+  max-height: calc(100vh - 56px);
+  background: var(--panel);
+  border-radius: 10px;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header */
+.site__header {
+  height: var(--header-height);
+  min-height: var(--header-height);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg,var(--panel),#fbfbfb);
+  flex-shrink: 0;
+}
+
+.site-title { display:flex; align-items:center; gap:8px; margin:0; font-size:18px; font-weight:700; }
+.logo-icon { width:22px; height:22px; color:#333; }
+
+/* nav & actions */
+.site__nav { margin-left: 8px; display:flex; gap:8px; align-items:center; }
+.site__actions { margin-left:auto; display:flex; gap:8px; align-items:center; }
+
+/* Buttons */
+.btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background: var(--panel);
+  font-size: 13px;
+}
+.nav-item { min-width: 80px; text-align:center; }
+
+/* Main */
+.site__main { flex: 1 1 auto; overflow: auto; padding: 14px; }
+.search-title { margin: 0 0 12px 0; font-size: 20px; text-align: left; }
+
+/* layout columns */
+.content-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* left column */
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel-title {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.box {
+  background: var(--muted);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.category-box {
+  background: var(--muted);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+/* right column */
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* team grid */
+.grid-team {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 10px;
+}
+
+.team-card {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  background: var(--accent);
+  border:1px solid var(--border);
+  padding:8px;
+  border-radius:8px;
+}
+
+.avatar {
+  width:56px;
+  height:56px;
+  border-radius:10px;
+  background:linear-gradient(180deg,#ddd,#e8e8e8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:#333;
+  font-size:20px;
+}
+
+.team-info .team-name { font-weight:700; }
+.team-info .team-role { font-size:13px; color:#666; }
+
+/* muted text */
+.muted { color:#777; font-size:13px; }
+
+/* footer */
+.footer {
+  height: var(--footer-height);
+  min-height: var(--footer-height);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 12px;
+  padding: 8px 12px;
+  background: linear-gradient(0deg, var(--panel), #fbfbfb);
+  flex-shrink: 0;
+}
+
+/* responsive: show two-column layout on wide screens */
+@media (min-width:1000px) {
+  .page { padding: 36px; }
+  .site-root { width: var(--container-width); height: calc(100vh - 72px); border-radius: 8px; }
+  .content-inner {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  .grid-team { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width:420px) {
+  .site-root { width:100%; height:100vh; border-radius:0; }
+}

@@ -11,7 +11,7 @@
   --footer-height: 56px;
 }
 
-/* Base */
+
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body {
