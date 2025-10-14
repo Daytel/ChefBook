@@ -21,12 +21,9 @@
 
         <nav class="site__nav" role="navigation" aria-label="Навигация">
           <button class="btn nav-item home" type="button" aria-label="Перейти на главную">Главная</button>
+          <button class="search-button btn" aria-label="Поиск">ПОИСК</button>
           <button class="btn nav-item profile" type="button" aria-label="Профиль / Регистрация">Профиль / Регистрация</button>
         </nav>
-
-        <div class="site__actions" role="group" aria-label="Действия">
-          <button class="search-button btn" aria-label="Поиск">ПОИСК</button>
-        </div>
       </header>
 
       <!-- Содержимое страницы -->
@@ -87,6 +84,31 @@
           </div>
 
           <aside class="recipe-grid" aria-label="Боковая панель рецепта">
+
+            <!-- Карточка автора -->
+            <div class="author-card" role="region" aria-labelledby="author-title" data-author-id="alexey">
+              <h3 id="author-title" class="author-title">Автор рецепта</h3>
+
+              <div class="author-row">
+                <img class="avatar-img" src="images/author_alexey.jpg" alt="Алексей Иванов"
+                  onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;64&quot; height=&quot;64&quot;><rect width=&quot;100%25&quot; height=&quot;100%25&quot; fill=&quot;%23ddd&quot; rx=&quot;10&quot;/><text x=&quot;50%25&quot; y=&quot;55%25&quot; font-size=&quot;18&quot; font-family=&quot;Arial, Helvetica, sans-serif&quot; fill=&quot;%23333&quot; text-anchor=&quot;middle&quot; alignment-baseline=&quot;middle&quot;>АИ</text></svg>';">
+
+                <div class="author-info">
+                  <div class="author-name">Алексей Иванов</div>
+                  <div class="author-role">Фуд-блогер · Frontend-разработчик</div>
+                  <div class="author-bio">Любит простые и быстрые рецепты для будних дней. Делится лайфхаками по хранению продуктов.</div>
+
+                  <div style="margin-top:8px; display:flex; gap:8px;">
+                    <!-- Подписаться / Отписаться -->
+                    <button id="authorFollowBtn" class="btn small" type="button" aria-pressed="false" aria-label="Подписаться на автора">Подписаться</button>
+
+                    <!-- Оставляем кнопку "Отзывы" как раньше -->
+                    <button id="authorReviewsBtn" class="btn small" type="button" aria-label="Отзывы автора">Отзывы</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="ingredients-panel" aria-labelledby="ing-title">
               <h3 id="ing-title">Ингредиенты</h3>
               <ul>
@@ -125,7 +147,7 @@
   </div>
 
   <script>
-    // Navigation buttons
+    // Навигация
     document.querySelectorAll('.home').forEach(b => {
       b.addEventListener('click', () => { window.location.href = 'index.html'; });
     });
@@ -133,7 +155,7 @@
       b.addEventListener('click', () => { window.location.href = 'profile.html'; });
     });
 
-    // Simple thumbnail -> main image interaction
+    // Карусель
     (function(){
       const main = document.getElementById('carouselImage');
       const thumbs = Array.from(document.querySelectorAll('.carousel-thumbs img'));
@@ -154,7 +176,7 @@
       });
     })();
 
-    // Post comment (simple demo only)
+    // Отправка комментария
     document.getElementById('postCommentBtn').addEventListener('click', () => {
       const box = document.getElementById('commentBox');
       const list = document.getElementById('commentList');
@@ -164,6 +186,16 @@
       p.innerHTML = '<strong>Вы:</strong> ' + escapeHtml(v);
       list.prepend(p);
       box.value = '';
+    });
+
+    // Кнопки карточки автора
+    document.getElementById('authorReviewsBtn').addEventListener('click', () => {
+      // переход на страницу отзывов
+      window.location.href = 'reviews.html';
+    });
+    document.getElementById('authorProfileBtn').addEventListener('click', () => {
+      // Ведем на профиль автора
+      window.location.href = 'profile.html';
     });
 
     function escapeHtml(s){

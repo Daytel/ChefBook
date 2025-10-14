@@ -212,6 +212,60 @@ body {
     font-size:14px;
 }
 
+.author-card {
+  background: var(--accent);
+  border: 1px solid var(--border);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.author-title {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+}
+
+.author-row {
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+}
+
+.avatar-img {
+  width:64px;
+  height:64px;
+  border-radius:10px;
+  object-fit:cover;
+  flex-shrink:0;
+  background: linear-gradient(180deg,#ddd,#e8e8e8);
+}
+
+.author-info {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.author-name {
+  font-weight:700;
+}
+
+.author-role {
+  font-size:13px;
+  color:#666;
+}
+
+.author-bio {
+  font-size:13px;
+  color:#444;
+  margin-top:4px;
+}
+
+/* small buttons in author card */
+.author-card .btn.small {
+  padding:6px 8px;
+  font-size:12px;
+}
+
 /* Steps */
 .steps {
     display:flex;
