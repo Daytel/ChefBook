@@ -10,7 +10,7 @@
   <div class="page">
     <div class="site-root" role="document" aria-label="Добавить рецепт — прототип">
 
-      <!-- Header -->
+      <!-- Шапка -->
       <header class="site__header" role="banner" aria-label="Шапка">
         <h1 class="site-title" aria-hidden="true">
           <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
@@ -23,39 +23,36 @@
         <nav class="site__nav" role="navigation" aria-label="Главная навигация шапки">
           <button class="btn nav-item home" type="button" aria-label="Перейти на главную">Главная</button>
           <button class="btn nav-item search" type="button" aria-label="Поиск">Поиск</button>
-        </nav>
-
-        <div class="site__actions">
           <button class="btn nav-item profile" type="button" aria-label="Профиль">Профиль</button>
-        </div>
+        </nav>
       </header>
 
-      <!-- Main content -->
+      <!-- Содержание -->
       <main class="site__main" role="main" aria-label="Форма добавления рецепта">
         <section class="add-recipe-section" aria-labelledby="add-title">
           <h2 id="add-title" class="search-title">Добавить рецепт</h2>
 
           <div class="content-inner add-inner">
 
-            <!-- Left column: form -->
+            <!-- Левая колонка форма -->
             <form id="recipeForm" class="left-column add-column" novalidate>
 
-              <!-- Recipe title -->
+              <!-- Название рецепта -->
               <div class="field">
                 <label for="title" class="field-label">Название рецепта</label>
                 <input id="title" class="input" name="title" placeholder="Введите название рецепта" required />
               </div>
 
-              <!-- Short description -->
+              <!-- Краткое описание -->
               <div class="field">
                 <label for="shortDesc" class="field-label">Краткое описание</label>
                 <textarea id="shortDesc" class="input" rows="3" placeholder="Короткое описание рецепта"></textarea>
               </div>
 
-              <!-- Ingredients list -->
+              <!-- Список ингредиентов -->
               <div class="panel-title">ИНГРЕДИЕНТЫ</div>
               <div id="ingredientsList" class="box ingredients-box" aria-live="polite">
-                <!-- ingredient rows will be inserted here -->
+                <!-- Добавление через JS -->
               </div>
 
               <div style="display:flex; gap:8px; margin-top:8px;">
@@ -65,29 +62,29 @@
                 </label>
               </div>
 
-              <!-- Categories -->
+              <!-- Категории -->
               <div class="panel-title" style="margin-top:12px;">КАТЕГОРИИ</div>
               <div id="categoriesBox" class="box" role="group" aria-label="Категории рецепта">
-                <!-- categories checkboxes rendered by JS -->
+                <!-- Добавление через JS -->
               </div>
 
-              <!-- Steps -->
+              <!-- Шаги приготовления -->
               <div class="panel-title" style="margin-top:12px;">ШАГИ ПРИГОТОВЛЕНИЯ</div>
               <div id="stepsBox" class="box steps-box" aria-live="polite">
-                <!-- steps rendered here -->
+                <!-- Добавление через JS -->
               </div>
               <div style="margin-top:8px;">
                 <button id="addStepBtn" class="btn" type="button">Добавить шаг</button>
               </div>
 
-              <!-- Save / reset -->
+              <!-- Сохранение / Сброс -->
               <div class="form-actions" style="margin-top:18px;">
                 <button id="saveRecipe" class="btn" type="button">Сохранить рецепт</button>
                 <button id="clearRecipe" class="btn" type="button">Очистить</button>
               </div>
             </form>
 
-            <!-- Right column: images & preview -->
+            <!-- Правая колонка - предпросмотр -->
             <aside class="right-column add-column" aria-label="Медиа и предпросмотр">
               <div class="panel-title">ФОТО БЛЮДА</div>
               <div class="box photo-box">
@@ -118,7 +115,7 @@
         </section>
       </main>
 
-      <!-- Footer -->
+      <!-- Подвал -->
       <footer class="footer" role="contentinfo" aria-label="Нижняя навигация">
         <button class="btn home" type="button" aria-label="Перейти на главную">Главная</button>
         <button class="btn profile" type="button" aria-label="Профиль">Профиль</button>
