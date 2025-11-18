@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>ChefBook - Сохранённые рецепты</title>
     <link rel="stylesheet" href="search.css" />
+    <link rel="stylesheet" href="common.css" />
+    <script src="saved.js" defer></script>
   </head>
   <body>
     <div class="page">
@@ -16,19 +18,7 @@
         <!-- Шапка -->
         <header class="site__header" role="banner" aria-label="Шапка">
           <div class="site-title">
-            <svg
-              class="logo-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="22"
-              height="22"
-              aria-hidden="true"
-            >
-              <path
-                fill="currentColor"
-                d="M12 2a3 3 0 0 0-3 3v1h6V5a3 3 0 0 0-3-3Zm5 6H7a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9a1 1 0 0 0-1-1Zm-4 9h-2v-5h2v5Z"
-              />
-            </svg>
+            <img src="/icons/logo.svg" alt="" aria-hidden="true" />
             <span>ChefBook</span>
           </div>
 
@@ -37,9 +27,51 @@
             role="navigation"
             aria-label="Главная навигация шапки"
           >
-            <button class="btn nav-item home" type="button">Главная</button>
-            <button class="btn nav-item search" type="button">Поиск</button>
-            <button class="btn nav-item profile" type="button">Профиль</button>
+            <button
+              class="home-button btn"
+              aria-label="Главная страница (кнопка)"
+              data-href="index.html"
+              type="button"
+            >
+              <img
+                src="/icons/home.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ГЛАВНАЯ</span>
+            </button>
+
+            <button
+              class="search-button btn"
+              aria-label="Страница поиска (кнопка)"
+              data-href="search.html"
+              type="button"
+            >
+              <img
+                src="/icons/search.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ПОИСК</span>
+            </button>
+
+            <button
+              class="profile-button btn"
+              role="button"
+              aria-label="Профиль / Регистрация"
+              data-href="profile.html"
+              type="button"
+            >
+              <img
+                src="/icons/profile.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ПРОФИЛЬ / РЕГИСТРАЦИЯ</span>
+            </button>
           </nav>
         </header>
 
@@ -51,8 +83,6 @@
             <div class="content-inner">
               <div class="right-column">
                 <div class="results">
-                  <h2 class="panel-title">ВАШИ Сохранённые РЕЦЕПТЫ</h2>
-
                   <div
                     id="savedGrid"
                     class="grid"
@@ -66,108 +96,69 @@
         </main>
 
         <!-- Подвал -->
-        <footer class="footer" role="contentinfo" aria-label="Нижняя навигация">
-          <button class="btn home" type="button">Главная</button>
-          <button class="btn profile" type="button">
-            Профиль / Регистрация
+        <footer
+          class="site__footer"
+          role="contentinfo"
+          aria-label="Нижняя навигация"
+        >
+          <button
+            class="nav-item btn home"
+            type="button"
+            data-href="index.html"
+          >
+            <img
+              src="/icons/home.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Главная</span>
           </button>
-          <button class="btn only-about" type="button">О нас</button>
+
+          <button
+            class="nav-item btn search"
+            type="button"
+            data-href="search.html"
+          >
+            <img
+              src="/icons/search.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Поиск</span>
+          </button>
+
+          <button
+            class="nav-item btn profile"
+            type="button"
+            data-href="profile.html"
+          >
+            <img
+              src="/icons/profile.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Профиль / Регистрация</span>
+          </button>
+
+          <button
+            class="nav-item btn only-about"
+            type="button"
+            data-href="about.html"
+            aria-label="О нас"
+          >
+            <img
+              src="/icons/info.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">О нас</span>
+          </button>
         </footer>
       </div>
     </div>
-
-    <script>
-      // Пример сохранённых рецептов (для отображения карточек)
-      const savedRecipes = [
-        {
-          title: "Паста с лососем",
-          desc: "Быстрое и сытное блюдо за 20 минут",
-          img: "https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_6697446f54b1da77a375bb2d_669744c1b57ddf67fc835c34/scale_1200",
-        },
-        {
-          title: "Суп-пюре из тыквы",
-          desc: "Ароматный и согревающий суп для холодных вечеров",
-          img: "https://povarito.ru/assets/images/recipes/tykvennyy-krem-sup.jpg",
-        },
-        {
-          title: "Шоколадный кекс",
-          desc: "Нежный десерт с насыщенным вкусом какао",
-          img: "https://i.pinimg.com/originals/db/62/13/db62137dc5e55422c0cbd77cfc953595.jpg",
-        },
-        {
-          title: "Овсянка с ягодами",
-          desc: "Полезный и вкусный завтрак",
-          img: "https://avatars.mds.yandex.net/get-shedevrum/12157372/29f40f92cc7511eea38bb2131e9e91d7/orig",
-        },
-      ];
-
-      function escapeHtml(s) {
-        return String(s)
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;")
-          .replaceAll("'", "&#39;");
-      }
-
-      function renderSaved(list) {
-        const grid = document.getElementById("savedGrid");
-        grid.innerHTML = "";
-
-        list.forEach((r, i) => {
-          const item = document.createElement("article");
-          item.className = "card";
-          item.setAttribute("role", "listitem");
-          item.tabIndex = 0;
-          item.innerHTML = `
-        <div class="photo" aria-hidden="true">
-          <img src="${r.img}" alt="${escapeHtml(r.title)}">
-        </div>
-        <h4 class="title">${escapeHtml(r.title)}</h4>
-        <p class="desc">${escapeHtml(r.desc)}</p>
-        <div class="compose-row">
-          <button class="btn compose-btn" data-i="${i}" aria-label="Открыть рецепт ${escapeHtml(
-            r.title
-          )}">
-            Открыть
-          </button>
-        </div>
-      `;
-          grid.appendChild(item);
-        });
-      }
-
-      // Переходы по кнопкам
-      document.querySelectorAll(".home").forEach((btn) =>
-        btn.addEventListener("click", () => {
-          window.location.href = "index.html";
-        })
-      );
-
-      document.querySelectorAll(".profile").forEach((btn) =>
-        btn.addEventListener("click", () => {
-          window.location.href = "profile.html";
-        })
-      );
-
-      document.querySelectorAll(".search").forEach((btn) =>
-        btn.addEventListener("click", () => {
-          window.location.href = "search.html";
-        })
-      );
-
-      // Обработка нажатия "Открыть"
-      document.addEventListener("click", (e) => {
-        if (e.target.matches(".compose-btn")) {
-          const title = e.target
-            .closest(".card")
-            .querySelector(".title").textContent;
-          alert("Открыт рецепт: " + title);
-        }
-      });
-
-      // Инициализация
-      renderSaved(savedRecipes);
-    </script>
   </body>
 </html>

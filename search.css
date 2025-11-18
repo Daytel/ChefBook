@@ -240,7 +240,9 @@
 }
 
 @media (max-width: 1000px) {
-  .home-button {
+  .home-button,
+  .search-button,
+  .profile-button {
     display: none;
   }
 }
