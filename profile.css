@@ -1,92 +1,4 @@
-:root {
-  --bg: #bfeaf4;
-  --panel: #fff;
-  --muted: #f2f2f2;
-  --accent: #fafafa;
-  --border: #e4e4e4;
-  --radius: 10px;
-  --gap: 12px;
-  --container-width: 1100px;
-  --header-height: 64px;
-  --footer-height: 56px;
-}
-
-/* ====== Base (vertical-first, for widths <1000px) ====== */
-* {
-  box-sizing: border-box;
-}
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial;
-  color: #222;
-  background: var(--bg);
-  -webkit-font-smoothing: antialiased;
-}
-
-.page {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 28px 18px;
-}
-
-/* Site container — vertical layout default */
-.site-root {
-  width: 100%;
-  height: 100vh;
-  background: var(--panel);
-  border-radius: 0;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.03);
-  display: flex;
-  flex-direction: column;
-  overflow: auto; /* не обрезаем содержимое */
-}
-
-/* Header */
-.site__header {
-  height: var(--header-height);
-  min-height: var(--header-height);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 14px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, var(--panel), #fbfbfb);
-  flex-shrink: 0;
-}
-
-.site-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.logo-icon {
-  width: 22px;
-  height: 22px;
-  color: #333;
-}
-
-/* На мобильных: шапка компактна — прячем дублирующие кнопки */
-.site__nav {
-  margin-left: 8px;
-  display: none; /* <- Скрываем всё в шапке для вертикального режима (<1000px) */
-  gap: 8px;
-  align-items: center;
-}
-.site__header .profile {
-  display: none;
-} /* профиль в шапке прячем в вертикальном режиме */
+@import "common.css";
 
 .site__actions {
   margin-left: auto;
@@ -195,6 +107,21 @@ body {
   background: var(--muted);
 }
 
+/* Поле "Роль" и "О себе" — readonly как обычные input */
+.input[readonly] {
+  background: #f8f8f8;
+  color: #444;
+  cursor: default;
+}
+
+/* Avatar image */
+.avatar-preview img.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
 .chips-controls {
   display: flex;
   flex-direction: column;
@@ -244,65 +171,38 @@ body {
   border-bottom: none;
 }
 
-/* preview (right column) */
-.preview-box {
-  padding: 12px;
+/* Мои рецепты */
+.recipes-list {
+  padding: 8px;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--muted);
-}
-.preview-row {
   display: flex;
-  gap: 12px;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 36px;
 }
 
-.preview-avatar {
-  width: 64px;
-  height: 64px;
+.recipe-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, #f6f6f6, #eee);
-  font-size: 28px;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+.recipe-title {
+  font-weight: 600;
+  font-size: 14px;
   overflow: hidden;
-  background-size: cover;
-  background-position: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 60%;
 }
-.preview-avatar.has-image {
-  border: 1px solid var(--border);
-}
-
-.preview-name {
-  font-weight: 700;
-  font-size: 16px;
-}
-.preview-sub {
-  font-size: 13px;
-  color: #444;
-  margin-top: 4px;
-}
-
-/* footer (vertical: show full nav) */
-.footer {
-  height: var(--footer-height);
-  min-height: var(--footer-height);
-  border-top: 1px solid var(--border);
+.recipe-actions {
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 12px;
-  padding: 8px 12px;
-  background: linear-gradient(0deg, var(--panel), #fbfbfb);
-  flex-shrink: 0;
-}
-
-.footer .nav-home,
-.footer .nav-search,
-.footer .nav-profile,
-.footer .nav-about {
-  display: inline-flex;
+  gap: 8px;
 }
 
 /* switch */
@@ -422,54 +322,24 @@ body {
   border-radius: 6px;
 }
 
+@media (max-width: 1000px) {
+  .home-button,
+  .search-button,
+  .profile-button {
+    display: none;
+  }
+}
+
 /* ====== Horizontal layout (for widths >= 1000px) — ONLY other format ====== */
 @media (min-width: 1000px) {
-  .page {
-    padding: 36px;
-  }
-
-  /* container becomes centered fixed-width block */
-  .site-root {
-    width: var(--container-width);
-    height: calc(100vh - 72px);
-    max-height: calc(100vh - 72px);
-    border-radius: 8px;
-  }
-
   /* profile columns: left narrow, right flexible */
   .profile-inner {
     grid-template-columns: 380px 1fr;
     gap: 18px;
     align-items: start;
   }
-
-  /* NAVIGATION: show all main nav in header */
-  .site__header {
-    justify-content: space-between;
-  }
-  .site__header .profile {
-    display: block;
-    margin-left: auto;
-  }
-  .site__nav {
-    display: flex; /* <- навигация в шапке видима только в горизонтальном режиме */
-  }
-
-  /* footer on desktop shows only "О нас" (other buttons hidden) */
-  .footer {
-    justify-content: center;
-  }
-  /* Скрываем всё, кроме "О нас" в футере */
-  .footer .nav-home,
-  .footer .nav-search,
-  .footer .nav-profile {
-    display: none !important;
-  }
-  .footer .nav-about {
-    display: inline-flex !important;
-    min-width: 160px;
-    justify-content: center;
-    align-items: center;
+  .content-inner {
+    display: block; /* или flex-direction: row, если нужно */
   }
 }
 
@@ -478,9 +348,6 @@ body {
   .avatar-preview {
     width: 80px;
     height: 80px;
-  }
-  .page {
-    padding: 18px 12px;
   }
   .profile-inner {
     gap: 10px;

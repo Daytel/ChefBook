@@ -320,6 +320,10 @@
   .carousel-main {
     height: 420px;
   }
+
+  .content-inner {
+    display: block; /* или flex-direction: row, если нужно */
+  }
 }
 
 /* mobile tweaks */
