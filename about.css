@@ -1,111 +1,3 @@
-:root {
-  --bg: #bfeaf4;
-  --panel: #fff;
-  --muted: #f2f2f2;
-  --accent: #fafafa;
-  --border: #e4e4e4;
-  --radius: 10px;
-  --gap: 12px;
-  --container-width: 1100px;
-  --header-height: 64px;
-  --footer-height: 56px;
-}
-
-/* Base */
-* {
-  box-sizing: border-box;
-}
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial;
-  color: #222;
-  background: var(--bg);
-  -webkit-font-smoothing: antialiased;
-}
-
-.page {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 28px 18px;
-}
-
-/* Site container */
-.site-root {
-  width: 360px;
-  height: calc(100vh - 56px);
-  max-height: calc(100vh - 56px);
-  background: var(--panel);
-  border-radius: 10px;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.03);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* Header */
-.site__header {
-  height: var(--header-height);
-  min-height: var(--header-height);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 14px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, var(--panel), #fbfbfb);
-  flex-shrink: 0;
-}
-
-.site-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-}
-.logo-icon {
-  width: 22px;
-  height: 22px;
-  color: #333;
-}
-
-/* nav & actions */
-.site__nav {
-  margin-left: 8px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.site__actions {
-  margin-left: auto;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-/* Buttons */
-.btn {
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  background: var(--panel);
-  font-size: 13px;
-}
-.nav-item {
-  min-width: 80px;
-  text-align: center;
-}
-
 /* Main */
 .site__main {
   flex: 1 1 auto;
@@ -204,18 +96,12 @@ body {
   font-size: 13px;
 }
 
-/* footer */
-.footer {
-  height: var(--footer-height);
-  min-height: var(--footer-height);
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 12px;
-  padding: 8px 12px;
-  background: linear-gradient(0deg, var(--panel), #fbfbfb);
-  flex-shrink: 0;
+@media (max-width: 1000px) {
+  .home-button,
+  .search-button,
+  .profile-button {
+    display: none;
+  }
 }
 
 /* responsive: show two-column layout on wide screens */
