@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>ChefBook - Авторизация</title>
     <link rel="stylesheet" href="auth.css" />
+    <link rel="stylesheet" href="common.css" />
+    <script src="search.js" defer></script>
   </head>
   <body>
     <div class="page">
@@ -16,19 +18,7 @@
         <!-- Шапка -->
         <header class="site__header" role="banner" aria-label="Шапка">
           <div class="site-title">
-            <svg
-              class="logo-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="22"
-              height="22"
-              aria-hidden="true"
-            >
-              <path
-                fill="currentColor"
-                d="M12 2a3 3 0 0 0-3 3v1h6V5a3 3 0 0 0-3-3Zm5 6H7a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9a1 1 0 0 0-1-1Zm-4 9h-2v-5h2v5Z"
-              />
-            </svg>
+            <img src="/icons/logo.svg" alt="" aria-hidden="true" />
             <span>ChefBook</span>
           </div>
 
@@ -38,18 +28,34 @@
             aria-label="Главная навигация шапки"
           >
             <button
-              class="btn nav-item home"
+              class="home-button btn"
+              aria-label="Главная страница (кнопка)"
+              data-href="index.html"
               type="button"
-              aria-label="Перейти на главную"
             >
-              Главная
+              <img
+                src="/icons/home.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ГЛАВНАЯ</span>
             </button>
+
             <button
-              class="btn nav-item profile"
-              type="button"
+              class="profile btn"
+              role="button"
               aria-label="Профиль / Регистрация"
+              data-href="profile.html"
+              type="button"
             >
-              Профиль / Регистрация
+              <img
+                src="/icons/profile.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ПРОФИЛЬ / РЕГИСТРАЦИЯ</span>
             </button>
           </nav>
         </header>
@@ -129,102 +135,59 @@
         </main>
 
         <!-- Подвал -->
-        <footer class="footer" role="contentinfo" aria-label="Нижняя навигация">
+        <footer
+          class="site__footer"
+          role="contentinfo"
+          aria-label="Нижняя навигация"
+        >
           <button
-            class="btn home"
+            class="nav-item btn home"
             type="button"
-            aria-label="Перейти на главную"
+            data-href="index.html"
           >
-            Главная
+            <img
+              src="/icons/home.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Главная</span>
           </button>
+
           <button
-            class="btn profile"
+            class="nav-item btn profile"
             type="button"
-            aria-label="Профиль / Регистрация"
+            data-href="profile.html"
           >
-            Профиль / Регистрация
+            <img
+              src="/icons/profile.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Профиль / Регистрация</span>
           </button>
-          <button class="btn only-about" type="button" aria-label="О нас">
-            О нас
+
+          <button
+            class="nav-item btn only-about"
+            type="button"
+            data-href="about.html"
+            aria-label="О нас"
+          >
+            <img
+              src="/icons/info.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">О нас</span>
           </button>
         </footer>
       </div>
     </div>
 
     <script>
-      // простая логика авторизации (демо)
-      const form = document.getElementById("authForm");
-      const msg = document.getElementById("authMsg");
-      const toggle = document.querySelector(".toggle-pass");
-      const passInput = document.getElementById("password");
 
-      // show/hide password
-      toggle.addEventListener("click", () => {
-        if (passInput.type === "password") {
-          passInput.type = "text";
-          toggle.textContent = "С";
-          toggle.setAttribute("aria-label", "Скрыть пароль");
-        } else {
-          passInput.type = "password";
-          toggle.textContent = "П";
-          toggle.setAttribute("aria-label", "Показать пароль");
-        }
-        passInput.focus();
-      });
-
-      // submit
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        msg.textContent = "";
-        const login = form.login.value.trim();
-        const password = form.password.value;
-
-        if (!login || !password) {
-          msg.textContent = "Пожалуйста, заполните все поля";
-          return;
-        }
-
-        // demo: accept any non-empty credentials
-        try {
-          const remember = form.remember.checked;
-          const authObj = { user: login, ts: Date.now() };
-          if (remember)
-            localStorage.setItem("chefbook.auth", JSON.stringify(authObj));
-          else sessionStorage.setItem("chefbook.auth", JSON.stringify(authObj));
-
-          msg.textContent = "Успешный вход. Перенаправление...";
-          setTimeout(() => {
-            // переход на страницу профиля (подкорректируй по роутингу)
-            window.location.href = "profile.html";
-          }, 700);
-        } catch (err) {
-          msg.textContent = "Ошибка при сохранении данных";
-          console.error(err);
-        }
-      });
-
-      // cancel -> go back to home
-      document.getElementById("cancelBtn").addEventListener("click", () => {
-        window.location.href = "index.html";
-      });
-
-      // header/home buttons
-      document
-        .querySelectorAll(".home")
-        .forEach((b) =>
-          b.addEventListener(
-            "click",
-            () => (window.location.href = "index.html")
-          )
-        );
-      document
-        .querySelectorAll(".profile")
-        .forEach((b) =>
-          b.addEventListener(
-            "click",
-            () => (window.location.href = "profile.html")
-          )
-        );
     </script>
   </body>
 </html>
