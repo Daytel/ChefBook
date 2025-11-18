@@ -5,30 +5,20 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>ChefBook - Добавить рецепт</title>
     <link rel="stylesheet" href="add-recipe.css" />
+    <link rel="stylesheet" href="common.css" />
+    <script src="add-recipe.js" defer></script>
   </head>
   <body>
     <div class="page">
       <div
         class="site-root"
         role="document"
-        aria-label="Добавить рецепт — прототип"
+        aria-label="Страница Добавить рецепт — ChefBook"
       >
         <!-- Шапка -->
         <header class="site__header" role="banner" aria-label="Шапка">
-          <div class="site-title" aria-hidden="true">
-            <svg
-              class="logo-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="22"
-              height="22"
-              aria-hidden="true"
-            >
-              <path
-                fill="currentColor"
-                d="M12 2a3 3 0 0 0-3 3v1h6V5a3 3 0 0 0-3-3Zm5 6H7a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9a1 1 0 0 0-1-1Zm-4 9h-2v-5h2v5Z"
-              />
-            </svg>
+          <div class="site-title">
+            <img src="/icons/logo.svg" alt="" aria-hidden="true" />
             <span>ChefBook</span>
           </div>
 
@@ -38,25 +28,49 @@
             aria-label="Главная навигация шапки"
           >
             <button
-              class="btn nav-item home"
+              class="home-button btn"
+              aria-label="Главная страница (кнопка)"
+              data-href="index.html"
               type="button"
-              aria-label="Перейти на главную"
             >
-              Главная
+              <img
+                src="/icons/home.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ГЛАВНАЯ</span>
             </button>
+
             <button
-              class="btn nav-item search"
+              class="search-button btn"
+              aria-label="Страница поиска (кнопка)"
+              data-href="search.html"
               type="button"
-              aria-label="Поиск"
             >
-              Поиск
+              <img
+                src="/icons/search.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ПОИСК</span>
             </button>
+
             <button
-              class="btn nav-item profile"
+              class="profile-button btn"
+              role="button"
+              aria-label="Профиль / Регистрация"
+              data-href="profile.html"
               type="button"
-              aria-label="Профиль"
             >
-              Профиль
+              <img
+                src="/icons/profile.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ПРОФИЛЬ / РЕГИСТРАЦИЯ</span>
             </button>
           </nav>
         </header>
@@ -71,115 +85,40 @@
             <h1 id="add-title" class="search-title">Добавить рецепт</h1>
 
             <div class="content-inner add-inner">
-              <!-- Левая колонка форма -->
+              <!-- Форма -->
               <form id="recipeForm" class="left-column add-column" novalidate>
                 <!-- Название рецепта -->
+                <h2 class="panel-title">НАЗВАНИЕ РЕЦЕПТА</h2>
                 <div class="field">
-                  <label for="title" class="field-label"
-                    >Название рецепта</label
-                  >
                   <input
                     id="title"
                     class="input"
                     name="title"
                     placeholder="Введите название рецепта"
+                    maxlength="30"
                     required
                   />
+                  <div class="field-error" data-for="title"></div>
                 </div>
 
                 <!-- Краткое описание -->
+                <h2 class="panel-title">КРАТКОЕ ОПИСАНИЕ</h2>
                 <div class="field">
-                  <label for="shortDesc" class="field-label"
-                    >Краткое описание</label
-                  >
                   <textarea
                     id="shortDesc"
                     class="input"
                     rows="3"
                     placeholder="Короткое описание рецепта"
+                    maxlength="300"
                   ></textarea>
+                  <div class="field-error" data-for="shortDesc"></div>
                 </div>
 
-                <!-- Список ингредиентов -->
-                <h2 class="panel-title">ИНГРЕДИЕНТЫ</h2>
-                <div
-                  id="ingredientsList"
-                  class="box ingredients-box"
-                  aria-live="polite"
-                >
-                  <!-- Добавление через JS -->
-                </div>
-
-                <div style="display: flex; gap: 8px; margin-top: 8px">
-                  <button id="addIngredientBtn" class="btn" type="button">
-                    Добавить ингредиент
-                  </button>
-                  <label
-                    class="field-label"
-                    style="
-                      align-self: center;
-                      margin-left: auto;
-                      font-size: 13px;
-                    "
-                    >Число порций
-                    <input
-                      id="servings"
-                      class="input"
-                      type="number"
-                      min="1"
-                      value="1"
-                      style="width: 90px; margin-left: 8px"
-                      aria-label="Число порций"
-                    />
-                  </label>
-                </div>
-
-                <!-- Категории -->
-                <h2 class="panel-title" style="margin-top: 12px">КАТЕГОРИИ</h2>
-                <div
-                  id="categoriesBox"
-                  class="box"
-                  role="group"
-                  aria-label="Категории рецепта"
-                >
-                  <!-- Добавление через JS -->
-                </div>
-
-                <!-- Шаги приготовления -->
-                <h2 class="panel-title" style="margin-top: 12px">
-                  ШАГИ ПРИГОТОВЛЕНИЯ
-                </h2>
-                <div id="stepsBox" class="box steps-box" aria-live="polite">
-                  <!-- Добавление через JS -->
-                </div>
-                <div style="margin-top: 8px">
-                  <button id="addStepBtn" class="btn" type="button">
-                    Добавить шаг
-                  </button>
-                </div>
-
-                <!-- Сохранение / Сброс -->
-                <div class="form-actions" style="margin-top: 18px">
-                  <button id="saveRecipe" class="btn" type="button">
-                    Сохранить рецепт
-                  </button>
-                  <button id="clearRecipe" class="btn" type="button">
-                    Очистить
-                  </button>
-                </div>
-              </form>
-
-              <!-- Правая колонка - предпросмотр -->
-              <div
-                class="right-column add-column"
-                aria-label="Медиа и предпросмотр"
-              >
                 <h2 class="panel-title">ФОТО БЛЮДА</h2>
                 <div class="box photo-box">
                   <label
                     for="dishPhotos"
                     class="btn"
-                    style="display: inline-block"
                     >Загрузить фото</label
                   >
                   <input
@@ -194,501 +133,146 @@
                     class="photos-preview"
                     aria-live="polite"
                   ></div>
-                  <p style="margin-top: 8px; font-size: 13px; color: #555">
+                  <p>
                     Карусель: установите главное фото щелчком по миниатюре.
                   </p>
+                  <div class="field-error" data-for="photos"></div>
                 </div>
 
-                <h2 class="panel-title" style="margin-top: 12px">
-                  ПРЕДПРОСМОТР
-                </h2>
+                <!-- Список ингредиентов -->
+                <h2 class="panel-title">ИНГРЕДИЕНТЫ</h2>
                 <div
-                  class="box preview-box"
-                  id="recipePreview"
+                  id="ingredientsList"
+                  class="box ingredients-box"
                   aria-live="polite"
                 >
-                  <div class="preview-row small">
-                    <div id="pvTitle" class="preview-name">—</div>
-                    <div id="pvDesc" class="preview-sub">—</div>
-                  </div>
-                  <div style="margin-top: 8px">
-                    <strong
-                      >Ингредиенты (на
-                      <span id="pvServings">1</span> порций):</strong
-                    >
-                    <ul id="pvIngredients"></ul>
-                  </div>
-                  <div style="margin-top: 8px">
-                    <strong>Шаги:</strong>
-                    <ol id="pvSteps"></ol>
-                  </div>
+                  <!-- Добавление через JS -->
                 </div>
-              </div>
+                <div class="field-error" data-for="ingredients"></div>
+
+                <div class="ingredient-add">
+                  <button id="addIngredientBtn" class="btn" type="button">
+                    Добавить ингредиент
+                  </button>
+                  <label
+                    class="ingredient-label"
+                    >Число порций
+                    <input
+                      id="servings"
+                      class="servings-count"
+                      type="number"
+                      min="1"
+                      value="1"
+                      aria-label="Число порций"
+                    />
+                  </label>
+                </div>
+
+                <!-- Категории -->
+                <h2 class="panel-title">КАТЕГОРИИ</h2>
+                <div
+                  id="categoriesBox"
+                  class="box"
+                  role="group"
+                  aria-label="Категории рецепта"
+                >
+                  <!-- Добавление через JS -->
+                </div>
+                <div class="field-error" data-for="categories"></div>
+
+                <!-- Шаги приготовления -->
+                <h2 class="panel-title">
+                  ШАГИ ПРИГОТОВЛЕНИЯ
+                </h2>
+                <div id="stepsBox" class="box steps-box" aria-live="polite">
+                  <!-- Добавление через JS -->
+                </div>
+                
+                <div class="step-add">
+                  <button id="addStepBtn" class="btn" type="button">
+                    Добавить шаг
+                  </button>
+                </div>
+                <div class="field-error" data-for="steps"></div>
+
+                <!-- Сохранение / Сброс -->
+                <div class="form-actions">
+                  <button id="saveRecipe" class="btn" type="button" disabled>
+                    Сохранить рецепт
+                  </button>
+                  <button id="clearRecipe" class="btn" type="button">
+                    Очистить
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </main>
 
         <!-- Подвал -->
-        <footer class="footer" role="contentinfo" aria-label="Нижняя навигация">
+        <footer
+          class="site__footer"
+          role="contentinfo"
+          aria-label="Нижняя навигация"
+        >
           <button
-            class="btn home"
+            class="nav-item btn home"
             type="button"
-            aria-label="Перейти на главную"
+            data-href="index.html"
           >
-            Главная
+            <img
+              src="/icons/home.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Главная</span>
           </button>
-          <button class="btn profile" type="button" aria-label="Профиль">
-            Профиль
+
+          <button
+            class="nav-item btn search"
+            type="button"
+            data-href="search.html"
+          >
+            <img
+              src="/icons/search.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Поиск</span>
           </button>
-          <button class="btn only-about" type="button" aria-label="О нас">
-            О нас
+
+          <button
+            class="nav-item btn profile"
+            type="button"
+            data-href="profile.html"
+          >
+            <img
+              src="/icons/profile.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Профиль / Регистрация</span>
+          </button>
+
+          <button
+            class="nav-item btn only-about"
+            type="button"
+            data-href="about.html"
+            aria-label="О нас"
+          >
+            <img
+              src="/icons/info.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">О нас</span>
           </button>
         </footer>
       </div>
     </div>
-
-    <script>
-      /******************************
-     Add-recipe page script
-    ******************************/
-      const STORAGE_KEY_RECIPE = "chefbook_new_recipe_v1";
-
-      // elements
-      const ingredientsList = document.getElementById("ingredientsList");
-      const addIngredientBtn = document.getElementById("addIngredientBtn");
-      const servingsInput = document.getElementById("servings");
-      const categoriesBox = document.getElementById("categoriesBox");
-      const stepsBox = document.getElementById("stepsBox");
-      const addStepBtn = document.getElementById("addStepBtn");
-      const dishPhotos = document.getElementById("dishPhotos");
-      const photosPreview = document.getElementById("photosPreview");
-
-      const saveRecipe = document.getElementById("saveRecipe");
-      const clearRecipe = document.getElementById("clearRecipe");
-
-      const pvTitle = document.getElementById("pvTitle");
-      const pvDesc = document.getElementById("pvDesc");
-      const pvServings = document.getElementById("pvServings");
-      const pvIngredients = document.getElementById("pvIngredients");
-      const pvSteps = document.getElementById("pvSteps");
-
-      // categories from search.html
-      const categories = [
-        "Завтраки",
-        "Супы",
-        "Салаты",
-        "Выпечка",
-        "Десерты",
-        "Вегетарианские",
-        "Мясные",
-        "Напитки",
-        "Паста",
-        "Рыба",
-        "Постные",
-        "Быстро",
-        "Детское",
-        "На мангале",
-        "Сезонные",
-        "Праздничные",
-      ];
-
-      // state
-      let photos = []; // {id, dataUrl, isMain}
-      let ingredientIdCounter = 0;
-      let stepIdCounter = 0;
-
-      // helpers
-      function el(tag, props = {}, ...children) {
-        const e = document.createElement(tag);
-        Object.entries(props).forEach(([k, v]) => {
-          if (k === "class") e.className = v;
-          else if (k === "html") e.innerHTML = v;
-          else e.setAttribute(k, v);
-        });
-        children.forEach((c) => {
-          if (typeof c === "string") e.appendChild(document.createTextNode(c));
-          else if (c) e.appendChild(c);
-        });
-        return e;
-      }
-
-      // render categories
-      function renderCategories(selected = []) {
-        categoriesBox.innerHTML = "";
-        categories.forEach((c, i) => {
-          const id = "cat_" + i;
-          const label = el("label", {
-            style: "display:flex; align-items:center; gap:8px; padding:4px 0;",
-          });
-          const cb = el("input", { type: "checkbox", value: c, id });
-          if (selected.includes(c)) cb.checked = true;
-          cb.addEventListener("change", updatePreview);
-          label.appendChild(cb);
-          label.appendChild(document.createTextNode(c));
-          categoriesBox.appendChild(label);
-        });
-      }
-
-      // add ingredient row
-      function addIngredientRow(name = "", qty = "", unit = "") {
-        ingredientIdCounter++;
-        const id = "ing_" + ingredientIdCounter;
-        const row = el("div", { class: "ingredient-row", id });
-        const nameInput = el("input", {
-          class: "input ing-name",
-          placeholder: "Ингредиент",
-          value: name,
-          "aria-label": "Ингредиент",
-        });
-        const qtyInput = el("input", {
-          class: "input ing-qty",
-          placeholder: "Кол-во (на 1 порцию)",
-          value: qty,
-          type: "text",
-          "aria-label": "Количество ингредиента",
-        });
-        const unitInput = el("input", {
-          class: "input ing-unit",
-          placeholder: "Ед. изм. (optional)",
-          value: unit,
-          type: "text",
-          "aria-label": "Единицы измерения",
-        });
-        const remBtn = el(
-          "button",
-          {
-            class: "btn small remove-ing",
-            type: "button",
-            title: "Удалить ингредиент",
-          },
-          "Удалить"
-        );
-
-        remBtn.addEventListener("click", () => {
-          row.remove();
-          updatePreview();
-        });
-
-        // update preview on change
-        [nameInput, qtyInput, unitInput].forEach((inp) =>
-          inp.addEventListener("input", updatePreview)
-        );
-
-        row.appendChild(nameInput);
-        row.appendChild(qtyInput);
-        row.appendChild(unitInput);
-        row.appendChild(remBtn);
-        ingredientsList.appendChild(row);
-        return row;
-      }
-
-      // add step
-      function addStep(text = "", imgData = null) {
-        stepIdCounter++;
-        const id = "step_" + stepIdCounter;
-        const row = el("div", { class: "step-row", id });
-        const txt = el(
-          "textarea",
-          { class: "input step-text", rows: 3, placeholder: "Описание шага" },
-          text
-        );
-        const imgLabel = el(
-          "label",
-          { class: "btn", style: "margin-top:6px; display:inline-block;" },
-          "Загрузить фото шага"
-        );
-        const imgInput = el("input", {
-          type: "file",
-          accept: "image/*",
-          class: "visually-hidden step-photo",
-        });
-        const remBtn = el(
-          "button",
-          {
-            class: "btn small remove-step",
-            type: "button",
-            title: "Удалить шаг",
-          },
-          "Удалить"
-        );
-
-        imgLabel.addEventListener("click", () => imgInput.click());
-        imgInput.addEventListener("change", (e) => {
-          const f = e.target.files && e.target.files[0];
-          if (!f) return;
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            const url = ev.target.result;
-            // attach preview img in this step
-            let preview = row.querySelector(".step-photo-preview");
-            if (!preview) {
-              preview = el("div", { class: "step-photo-preview" });
-              row.insertBefore(preview, remBtn);
-            }
-            preview.style.backgroundImage = `url(${url})`;
-            preview.dataset.url = url;
-            updatePreview();
-          };
-          reader.readAsDataURL(f);
-        });
-
-        remBtn.addEventListener("click", () => {
-          row.remove();
-          updatePreview();
-        });
-
-        txt.addEventListener("input", updatePreview);
-
-        row.appendChild(txt);
-        row.appendChild(imgLabel);
-        row.appendChild(imgInput);
-        row.appendChild(remBtn);
-        stepsBox.appendChild(row);
-
-        // if initial image provided
-        if (imgData) {
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            let preview = row.querySelector(".step-photo-preview");
-            if (!preview) {
-              preview = el("div", { class: "step-photo-preview" });
-              row.insertBefore(preview, remBtn);
-            }
-            preview.style.backgroundImage = `url(${imgData})`;
-            preview.dataset.url = imgData;
-            updatePreview();
-          };
-          // if imgData is already dataURL just set
-          if (typeof imgData === "string") {
-            let preview = row.querySelector(".step-photo-preview");
-            if (!preview) {
-              preview = el("div", { class: "step-photo-preview" });
-              row.insertBefore(preview, remBtn);
-            }
-            preview.style.backgroundImage = `url(${imgData})`;
-            preview.dataset.url = imgData;
-          }
-        }
-
-        return row;
-      }
-
-      // photos handling
-      function renderPhotos() {
-        photosPreview.innerHTML = "";
-        photos.forEach((p, idx) => {
-          const thumb = el("div", {
-            class: "photo-thumb",
-            role: "button",
-            tabindex: 0,
-          });
-          thumb.style.backgroundImage = `url(${p.dataUrl})`;
-          if (p.isMain) thumb.classList.add("main");
-          const rm = el(
-            "button",
-            {
-              class: "btn small remove-photo",
-              title: "Удалить фото",
-              type: "button",
-            },
-            "✕"
-          );
-          rm.addEventListener("click", (e) => {
-            e.stopPropagation();
-            photos.splice(idx, 1);
-            renderPhotos();
-          });
-          thumb.addEventListener("click", () => {
-            photos.forEach((x) => (x.isMain = false));
-            p.isMain = true;
-            renderPhotos();
-          });
-          thumb.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              thumb.click();
-            }
-          });
-          thumb.appendChild(rm);
-          photosPreview.appendChild(thumb);
-        });
-      }
-
-      dishPhotos.addEventListener("change", (e) => {
-        const files = Array.from(e.target.files || []);
-        files.forEach((f) => {
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            photos.push({
-              id: Date.now() + Math.random(),
-              dataUrl: ev.target.result,
-              isMain: photos.length === 0,
-            });
-            renderPhotos();
-          };
-          reader.readAsDataURL(f);
-        });
-        // reset
-        dishPhotos.value = "";
-      });
-
-      // preview rendering
-      function updatePreview() {
-        const title = document.getElementById("title").value.trim();
-        const desc = document.getElementById("shortDesc").value.trim();
-        pvTitle.textContent = title || "—";
-        pvDesc.textContent = desc || "—";
-        const servings = parseFloat(servingsInput.value) || 1;
-        pvServings.textContent = servings;
-
-        // ingredients
-        pvIngredients.innerHTML = "";
-        Array.from(document.querySelectorAll(".ingredient-row")).forEach(
-          (row) => {
-            const name = row.querySelector(".ing-name").value.trim();
-            const qtyRaw = row.querySelector(".ing-qty").value.trim();
-            const unit = row.querySelector(".ing-unit").value.trim();
-            // try parse number multiplication if numeric
-            let scaled = qtyRaw;
-            const n = parseFloat(qtyRaw.replace(",", "."));
-            if (!isNaN(n)) scaled = (n * servings).toString().replace(".", ",");
-            const li = document.createElement("li");
-            li.textContent =
-              (name ? name + " — " : "") +
-              (scaled ? scaled + (unit ? " " + unit : "") : "");
-            pvIngredients.appendChild(li);
-          }
-        );
-
-        // steps
-        pvSteps.innerHTML = "";
-        Array.from(document.querySelectorAll(".step-row")).forEach(
-          (row, idx) => {
-            const t = row.querySelector(".step-text").value.trim();
-            const li = document.createElement("li");
-            li.textContent = t || "(описание шага)";
-            pvSteps.appendChild(li);
-          }
-        );
-      }
-
-      // Save form to localStorage (example)
-      function collectRecipe() {
-        const title = document.getElementById("title").value.trim();
-        const desc = document.getElementById("shortDesc").value.trim();
-        const servings = parseFloat(servingsInput.value) || 1;
-        const ingredients = Array.from(
-          document.querySelectorAll(".ingredient-row")
-        )
-          .map((row) => {
-            return {
-              name: row.querySelector(".ing-name").value.trim(),
-              qty: row.querySelector(".ing-qty").value.trim(),
-              unit: row.querySelector(".ing-unit").value.trim(),
-            };
-          })
-          .filter((i) => i.name);
-        const categoriesSelected = Array.from(
-          categoriesBox.querySelectorAll('input[type="checkbox"]:checked')
-        ).map((cb) => cb.value);
-        const steps = Array.from(document.querySelectorAll(".step-row"))
-          .map((row) => {
-            return {
-              text: row.querySelector(".step-text").value.trim(),
-              img:
-                (row.querySelector(".step-photo-preview") &&
-                  row.querySelector(".step-photo-preview").dataset.url) ||
-                null,
-            };
-          })
-          .filter((s) => s.text || s.img);
-        const photosList = photos.map((p) => ({
-          dataUrl: p.dataUrl,
-          isMain: p.isMain,
-        }));
-
-        return {
-          title,
-          desc,
-          servings,
-          ingredients,
-          categoriesSelected,
-          steps,
-          photosList,
-          createdAt: new Date().toISOString(),
-        };
-      }
-
-      saveRecipe.addEventListener("click", () => {
-        const recipe = collectRecipe();
-        if (!recipe.title) {
-          alert("Укажите название рецепта");
-          return;
-        }
-        // simple save: push into array in localStorage
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY_RECIPE);
-          const arr = raw ? JSON.parse(raw) : [];
-          arr.push(recipe);
-          localStorage.setItem(STORAGE_KEY_RECIPE, JSON.stringify(arr));
-          alert("Рецепт сохранён (локально).");
-          // after save, you may redirect or clear form
-        } catch (err) {
-          console.error(err);
-          alert("Ошибка при сохранении: " + err.message);
-        }
-      });
-
-      clearRecipe.addEventListener("click", () => {
-        if (!confirm("Очистить форму?")) return;
-        document.getElementById("recipeForm").reset();
-        ingredientsList.innerHTML = "";
-        stepsBox.innerHTML = "";
-        photos = [];
-        renderPhotos();
-        renderCategories([]);
-        renderInitial();
-        updatePreview();
-      });
-
-      // initial render helpers
-      function renderInitial() {
-        // one empty ingredient and one empty step by default
-        addIngredientRow();
-        addStep();
-      }
-
-      // events
-      addIngredientBtn.addEventListener("click", () => addIngredientRow());
-      addStepBtn.addEventListener("click", () => addStep());
-      servingsInput.addEventListener("input", updatePreview);
-      document.getElementById("title").addEventListener("input", updatePreview);
-      document
-        .getElementById("shortDesc")
-        .addEventListener("input", updatePreview);
-
-      // nav buttons behavior (basic)
-      Array.from(document.querySelectorAll(".home")).forEach((b) =>
-        b.addEventListener("click", () => (window.location.href = "index.html"))
-      );
-      Array.from(document.querySelectorAll(".profile")).forEach((b) =>
-        b.addEventListener(
-          "click",
-          () => (window.location.href = "profile.html")
-        )
-      );
-      Array.from(document.querySelectorAll(".search")).forEach((b) =>
-        b.addEventListener(
-          "click",
-          () => (window.location.href = "search.html")
-        )
-      );
-
-      // boot
-      renderCategories([]);
-      renderInitial();
-      renderPhotos();
-      updatePreview();
-    </script>
   </body>
 </html>

@@ -1,91 +1,9 @@
-:root {
-  --bg: #bfeaf4;
-  --panel: #fff;
-  --muted: #f2f2f2;
-  --accent: #fafafa;
-  --border: #e4e4e4;
-  --radius: 10px;
-  --gap: 12px;
-  --container-width: 1100px;
-  --header-height: 64px;
-  --footer-height: 56px;
-}
+@import "common.css";
 
-/* ======= Base (vertical-first: width <1000px) ======= */
-* {
-  box-sizing: border-box;
-}
-html,
-body {
-  height: 100%;
-  margin: 0;
-}
-body {
-  min-height: 100vh;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial;
-  color: #222;
-  background: var(--bg);
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Page wrapper: padding kept small to avoid double-scroll on small screens */
-.page {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 18px;
-}
-
-/* Site container — vertical default:
-   - height:auto so container grows with content (no inner scrollbar)
-   - overflow: visible so scrolling is performed by the page/body
-*/
-.site-root {
-  width: 100%;
-  height: auto;
-  min-height: calc(100vh - var(--footer-height));
-  background: var(--panel);
-  border-radius: 0;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.03);
-  display: flex;
-  flex-direction: column;
-  overflow: visible; /* allow page scroll, avoid inner scrollbars */
-}
-
-/* Header */
-.site__header {
-  height: var(--header-height);
-  min-height: var(--header-height);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 14px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, var(--panel), #fbfbfb);
-  flex-shrink: 0;
-}
-
-.site-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  font-weight: 700;
-}
-.logo-icon {
-  width: 22px;
-  height: 22px;
-  color: #333;
-}
-
-/* NAV: by default (vertical) header nav is hidden */
-.site__nav {
-  margin-left: 8px;
-  display: none !important; /* <- hidden for vertical mode */
-  gap: 8px;
-  align-items: center;
+.site__main {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 14px;
 }
 
 .site__actions {
@@ -93,11 +11,6 @@ body {
   display: flex;
   gap: 8px;
   align-items: center;
-}
-
-.site__header .profile,
-.site__actions .profile {
-  display: none !important;
 }
 
 /* Buttons */
@@ -114,7 +27,6 @@ body {
 /* Main content area — allow it to expand naturally */
 .site__main {
   flex: 1 1 auto;
-  overflow: visible;
   padding: 14px;
 }
 
@@ -157,8 +69,17 @@ body {
   font-size: 14px;
 }
 
+/* Текст ошибки */
+.field-error {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #c33;
+  min-height: 18px;
+}
+
 /* panels */
 .panel-title {
+  margin-top: 12px;
   font-size: 13px;
   color: #333;
   margin-bottom: 8px;
@@ -173,6 +94,23 @@ body {
 }
 
 /* Ingredients */
+.ingredient-add {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ingredient-label {
+  align-self: center;
+  margin-left: auto;
+  font-size: 13px;
+}
+
+.servings-count {
+  width: 90px;
+  margin-left: 8px;
+}
+
 .ingredients-box .ingredient-row {
   display: flex;
   gap: 8px;
@@ -199,6 +137,10 @@ body {
 }
 
 /* steps */
+.step-add {
+  margin-top: 8px;
+}
+
 .steps-box .step-row {
   display: flex;
   flex-direction: column;
@@ -215,12 +157,18 @@ body {
   border: 1px solid var(--border);
 }
 
+.photo-box {
+  display: inline-block;
+}
+
 /* photos preview */
 .photos-preview {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 10px;
+  font-size: 13px;
+  color: #555;
 }
 .photo-thumb {
   width: 72px;
@@ -243,95 +191,31 @@ body {
   font-size: 11px;
 }
 
-/* preview box */
-.preview-box .preview-row.small {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.form-actions {
+  margin-top: 18px
 }
 
-/* footer: vertical default shows ALL nav buttons */
-.footer {
-  height: var(--footer-height);
-  min-height: var(--footer-height);
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 12px;
-  padding: 8px 12px;
-  background: linear-gradient(0deg, var(--panel), #fbfbfb);
-  flex-shrink: 0;
+/* Неактивная кнопка сохранения */
+.btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-/* make sure footer nav buttons (home/search/profile/other) are visible by default (vertical) */
-.footer .home,
-.footer .profile,
-.footer .search,
-.footer .only-about,
-.footer .nav-home,
-.footer .nav-search,
-.footer .nav-profile,
-.footer .nav-about,
-.footer .nav-reviews,
-.footer .nav-saved,
-.footer .nav-planner,
-.footer .nav-add {
-  display: inline-flex !important;
+@media (max-width: 1000px) {
+  .home-button,
+  .search-button,
+  .profile-button {
+    display: none;
+  }
 }
 
-/* ======= Horizontal layout (>=1000px): ONLY other format ======= */
+/* Горизонтальный формат */
 @media (min-width: 1000px) {
-  .page {
-    padding: 36px;
-  }
-
-  /* container becomes fixed-width box with internal scrolling if needed */
-  .site-root {
-    width: var(--container-width);
-    height: calc(100vh - 72px);
-    max-height: calc(100vh - 72px);
-    border-radius: 8px;
-    overflow: auto; /* internal scroll allowed in desktop mode */
-  }
-
   /* two-column layout */
   .add-inner {
     grid-template-columns: 1fr 360px;
     gap: 18px;
     align-items: start;
-  }
-
-  /* show header navigation in horizontal mode */
-  .site__nav {
-    display: flex !important;
-  }
-
-  /* Footer: hide all but 'О нас' in horizontal mode */
-  .footer .home,
-  .footer .profile,
-  .footer .search,
-  .footer .nav-home,
-  .footer .nav-search,
-  .footer .nav-profile,
-  .footer .nav-reviews,
-  .footer .nav-saved,
-  .footer .nav-planner,
-  .footer .nav-add {
-    display: none !important;
-  }
-
-  .footer .only-about,
-  .footer .nav-about {
-    display: inline-flex !important;
-    min-width: 160px;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .site__header .profile,
-  .site__actions .profile {
-    display: inline-flex !important;
   }
 }
 
