@@ -13,34 +13,31 @@
 
       <!-- Шапка -->
       <header class="site__header" role="banner" aria-label="Шапка">
-        <h1 class="site-title">
+        <div class="site-title">
           <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
             <path fill="currentColor"
                   d="M12 2a3 3 0 0 0-3 3v1h6V5a3 3 0 0 0-3-3Zm5 6H7a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9a1 1 0 0 0-1-1Zm-4 9h-2v-5h2v5Z"/>
           </svg>
           <span>ChefBook</span>
-        </h1>
+        </div>
 
         <nav class="site__nav" role="navigation" aria-label="Главная навигация шапки">
           <button class="btn nav-item home" type="button" aria-label="Перейти на главную">Главная</button>
           <button class="btn nav-item search" type="button" aria-label="Поиск">Поиск</button>
-        </nav>
-
-        <div class="site__actions">
           <button class="btn nav-item profile" type="button" aria-label="Профиль / Регистрация">Профиль / Регистрация</button>
-        </div>
+        </nav>
       </header>
 
       <!-- main -->
       <main class="site__main" role="main" aria-label="Контент — о нас">
-        <section class="about-section" aria-labelledby="about-title">
-          <h2 id="about-title" class="search-title">О нас</h2>
+        <div class="about-div" aria-labelledby="about-title">
+          <h1 id="about-title" class="search-title">О нас</h1>
 
           <div class="content-inner">
 
             <!-- левая колонка: описание, миссия, ценности -->
-            <aside class="left-column" aria-label="О проекте">
-              <div class="panel-title">ЧТО ТАКОЕ CHEFBOOK</div>
+            <div class="left-column" aria-label="О проекте">
+              <h2 class="panel-title">ЧТО ТАКОЕ CHEFBOOK</h2>
               <div class="box">
                 <p>ChefBook — это простой и удобный прототип сервиса для хранения, поиска и планирования рецептов. Мы делаем кухню спокойнее: храните любимые блюда, планируйте меню на неделю и готовьте с минимальными хлопотами.</p>
               </div>
@@ -52,23 +49,23 @@
 
               <div class="panel-title" style="margin-top:12px;">ЦЕННОСТИ</div>
               <div class="category-box" style="margin-top:8px;">
-                <div>- Простота и понятность</div>
-                <div>- Доступность рецептов</div>
-                <div>- Экономия времени и продуктов</div>
+                <p>- Простота и понятность</p>
+                <p>- Доступность рецептов</p>
+                <p>- Экономия времени и продуктов</p>
               </div>
-            </aside>
+            </div>
 
             <!-- правая колонка: команда, контакты -->
-            <section class="right-column" aria-label="Команда и контакты">
-              <div class="panel-title">НАША КОМАНДА</div>
+            <div class="right-column" aria-label="Команда и контакты">
+              <h2 class="panel-title">НАША КОМАНДА</h2>
 
               <div class="grid-team" role="list" aria-label="Участники команды">
                 <div class="team-card" role="listitem">
                     <img class="avatar-img" src="images/alexey.jpg" alt="Самохвалов Николай"
                         onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;56&quot; height=&quot;56&quot;><rect width=&quot;100%25&quot; height=&quot;100%25&quot; fill=&quot;%23ddd&quot; rx=&quot;10&quot;/><text x=&quot;50%25&quot; y=&quot;55%25&quot; font-size=&quot;20&quot; font-family=&quot;Arial, Helvetica, sans-serif&quot; fill=&quot;%23333&quot; text-anchor=&quot;middle&quot; alignment-baseline=&quot;middle&quot;>СН</text></svg>';">
                     <div class="team-info">
-                    <div class="team-name">Самохвалов Николай</div>
-                    <div class="team-role">Frontend-разработчик</div>
+                    <h3 class="team-name">Самохвалов Николай</h3>
+                    <h3 class="team-role">Frontend-разработчик</h3>
                     </div>
                 </div>
 
@@ -76,8 +73,8 @@
                     <img class="avatar-img" src="images/ekaterina.jpg" alt="Самохвалов Николай"
                         onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;56&quot; height=&quot;56&quot;><rect width=&quot;100%25&quot; height=&quot;100%25&quot; fill=&quot;%23ddd&quot; rx=&quot;10&quot;/><text x=&quot;50%25&quot; y=&quot;55%25&quot; font-size=&quot;20&quot; font-family=&quot;Arial, Helvetica, sans-serif&quot; fill=&quot;%23333&quot; text-anchor=&quot;middle&quot; alignment-baseline=&quot;middle&quot;>СН</text></svg>';">
                     <div class="team-info">
-                    <div class="team-name">Самохвалов Николай</div>
-                    <div class="team-role">UX / Дизайн</div>
+                    <h3 class="team-name">Самохвалов Николай</h3>
+                    <h3 class="team-role">UX / Дизайн</h3>
                     </div>
                 </div>
 
@@ -85,15 +82,15 @@
                     <img class="avatar-img" src="images/mihail.jpg" alt="Самохвалов Николай"
                         onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;56&quot; height=&quot;56&quot;><rect width=&quot;100%25&quot; height=&quot;100%25&quot; fill=&quot;%23ddd&quot; rx=&quot;10&quot;/><text x=&quot;50%25&quot; y=&quot;55%25&quot; font-size=&quot;20&quot; font-family=&quot;Arial, Helvetica, sans-serif&quot; fill=&quot;%23333&quot; text-anchor=&quot;middle&quot; alignment-baseline=&quot;middle&quot;>СН</text></svg>';">
                     <div class="team-info">
-                    <div class="team-name">Самохвалов Николай</div>
-                    <div class="team-role">Backend / Инфраструктура</div>
+                    <h3 class="team-name">Самохвалов Николай</h3>
+                    <h3 class="team-role">Backend / Инфраструктура</h3>
                     </div>
                 </div>
             </div>
-            </section>
+        </div>
 
           </div>
-        </section>
+        </div>
       </main>
 
       <!-- Подвал -->

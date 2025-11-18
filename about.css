@@ -12,12 +12,18 @@
 }
 
 /* Base */
-* { box-sizing: border-box; }
-html, body { height: 100%; }
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
   color: #222;
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
@@ -38,7 +44,7 @@ body {
   max-height: calc(100vh - 56px);
   background: var(--panel);
   border-radius: 10px;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.03);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -53,16 +59,37 @@ body {
   gap: 12px;
   padding: 8px 14px;
   border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg,var(--panel),#fbfbfb);
+  background: linear-gradient(180deg, var(--panel), #fbfbfb);
   flex-shrink: 0;
 }
 
-.site-title { display:flex; align-items:center; gap:8px; margin:0; font-size:18px; font-weight:700; }
-.logo-icon { width:22px; height:22px; color:#333; }
+.site-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+.logo-icon {
+  width: 22px;
+  height: 22px;
+  color: #333;
+}
 
 /* nav & actions */
-.site__nav { margin-left: 8px; display:flex; gap:8px; align-items:center; }
-.site__actions { margin-left:auto; display:flex; gap:8px; align-items:center; }
+.site__nav {
+  margin-left: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.site__actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
 
 /* Buttons */
 .btn {
@@ -74,11 +101,22 @@ body {
   background: var(--panel);
   font-size: 13px;
 }
-.nav-item { min-width: 80px; text-align:center; }
+.nav-item {
+  min-width: 80px;
+  text-align: center;
+}
 
 /* Main */
-.site__main { flex: 1 1 auto; overflow: auto; padding: 14px; }
-.search-title { margin: 0 0 12px 0; font-size: 20px; text-align: left; }
+.site__main {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 14px;
+}
+.search-title {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  text-align: left;
+}
 
 /* layout columns */
 .content-inner {
@@ -130,33 +168,41 @@ body {
 }
 
 .team-card {
-  display:flex;
-  gap:10px;
-  align-items:center;
+  display: flex;
+  gap: 10px;
+  align-items: center;
   background: var(--accent);
-  border:1px solid var(--border);
-  padding:8px;
-  border-radius:8px;
+  border: 1px solid var(--border);
+  padding: 8px;
+  border-radius: 8px;
 }
 
 .avatar {
-  width:56px;
-  height:56px;
-  border-radius:10px;
-  background:linear-gradient(180deg,#ddd,#e8e8e8);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-  color:#333;
-  font-size:20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #ddd, #e8e8e8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #333;
+  font-size: 20px;
 }
 
-.team-info .team-name { font-weight:700; }
-.team-info .team-role { font-size:13px; color:#666; }
+.team-info .team-name {
+  font-weight: 700;
+}
+.team-info .team-role {
+  font-size: 13px;
+  color: #666;
+}
 
 /* muted text */
-.muted { color:#777; font-size:13px; }
+.muted {
+  color: #777;
+  font-size: 13px;
+}
 
 /* footer */
 .footer {
@@ -173,17 +219,29 @@ body {
 }
 
 /* responsive: show two-column layout on wide screens */
-@media (min-width:1000px) {
-  .page { padding: 36px; }
-  .site-root { width: var(--container-width); height: calc(100vh - 72px); border-radius: 8px; }
+@media (min-width: 1000px) {
+  .page {
+    padding: 36px;
+  }
+  .site-root {
+    width: var(--container-width);
+    height: calc(100vh - 72px);
+    border-radius: 8px;
+  }
   .content-inner {
     display: grid;
     grid-template-columns: 360px 1fr;
     gap: 18px;
     align-items: start;
   }
-  .grid-team { grid-template-columns: repeat(2, 1fr); }
+  .grid-team {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
-@media (max-width:420px) {
-  .site-root { width:100%; height:100vh; border-radius:0; }
+@media (max-width: 420px) {
+  .site-root {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+  }
 }

@@ -1,0 +1,204 @@
+/* Общие переменные (цвета, размеры) */
+:root {
+  --bg: #bfeaf4;
+  --panel: #fff;
+  --muted: #f2f2f2;
+  --accent: #fafafa;
+  --border: #e4e4e4;
+  --radius: 10px;
+  --gap: 12px;
+  --container-width: 1100px;
+  --header-height: 64px;
+  --footer-height: 56px;
+}
+
+/* Сброс и базовые правила */
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  color: #222;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Обертка страницы */
+.page {
+  min-height: 100vh;
+  display: block;
+  padding: 0;
+}
+
+/* Контейнер сайта (шапка, main, подвал) — по умолчанию занимает весь экран
+   и растягивается по ширине и высоте. На больших экранах возвращается к фиксированной ширине. */
+.site-root {
+  width: 100%;
+  height: 100vh; /* растягиваемся на всю высоту экрана */
+  background: var(--panel);
+  border-radius: 0; /* на мобильных/малых экранах делаем без скругления */
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Шапка сайта */
+.site__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--panel), #fbfbfb);
+  flex-shrink: 0;
+  height: var(--header-height);
+}
+
+.site__nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.site-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  gap: 6px;
+}
+
+.logo-icon {
+  width: 22px;
+  height: 22px;
+  color: #333;
+}
+
+/* Базовые стили для кнопок */
+.btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background: var(--panel);
+  font-size: 13px;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Иконка внутри кнопки */
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  display: inline-block;
+}
+
+/* Текст внутри кнопки */
+.btn-label {
+  line-height: 1;
+}
+
+/* Утилита: скрыть иконки */
+.site-root.hide-icons .btn-icon {
+  display: none !important;
+}
+
+/* Подвал */
+.site__footer {
+  height: var(--footer-height);
+  min-height: var(--footer-height);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 12px;
+  padding: 8px 12px;
+  background: linear-gradient(0deg, var(--panel), #fbfbfb);
+  flex-shrink: 0;
+}
+
+.footer {
+  height: var(--footer-height);
+  min-height: var(--footer-height);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 12px;
+  padding: 8px 12px;
+  background: linear-gradient(0deg, var(--panel), #fbfbfb);
+  flex-shrink: 0;
+}
+
+/* Визуально скрытый текст для доступности */
+.visually-hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+/* На больших экранах вернём контейнер в фиксированную ширину —
+   если хотите всегда полноэкранный режим — удалите этот медиа-блок. */
+@media (min-width: 1000px) {
+  .page {
+    padding: 36px;
+  }
+  .site-root {
+    width: var(--container-width);
+    height: calc(100vh - 72px);
+    border-radius: 8px;
+    margin: 0 auto; /* центрирование на больших экранах */
+  }
+
+  .site__header {
+    justify-content: space-between;
+  }
+
+  .site__nav .search-button {
+    min-width: 80px;
+  }
+
+  .logo {
+    display: block;
+    background: var(--muted);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    margin-right: 12px;
+  }
+
+  .site__header .search-button.mobile-full {
+    flex: 0;
+    min-width: 160px;
+  }
+
+  .site__header .profile {
+    display: block;
+    margin-left: auto;
+  }
+
+  .site__footer {
+    justify-content: center;
+  }
+
+  .site__footer .home,
+  .site__footer .profile,
+  .site__footer .search {
+    display: none;
+  }
+
+  .site__footer .only-about {
+    min-width: 80px;
+  }
+}

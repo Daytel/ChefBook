@@ -1,27 +1,4 @@
-:root {
-  --bg: #bfeaf4;
-  --panel: #fff;
-  --muted: #f2f2f2;
-  --accent: #fafafa;
-  --border: #e4e4e4;
-  --radius: 10px;
-  --gap: 12px;
-  --container-width: 1100px;
-  --header-height: 64px;
-  --footer-height: 56px;
-}
-
-/* Base */
-* { box-sizing: border-box; }
-html, body { height: 100%; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  color: #222;
-  background: var(--bg);
-  -webkit-font-smoothing: antialiased;
-}
+@import "common.css";
 
 .page {
   min-height: 100vh;
@@ -31,67 +8,21 @@ body {
   padding: 28px 18px;
 }
 
-/* Site container (header, main, footer are siblings) */
-.site-root {
-  width: 360px;
-  height: calc(100vh - 56px);
-  max-height: calc(100vh - 56px);
-  background: var(--panel);
-  border-radius: 10px;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.03);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* Header */
-.site__header {
-  height: var(--header-height);
-  min-height: var(--header-height);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg,var(--panel),#fbfbfb);
-  flex-shrink: 0;
-}
-
-.site-title {
-  display: flex;
-  align-items: center;
-  font-size: 1.4rem;
-  font-weight: 700;
-  gap: 6px;
-}
-
-.logo-icon {
-  width: 22px;
-  height: 22px;
-  color: #333;
-}
-
 /* Buttons */
-.btn {
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  background: var(--panel);
-  font-size: 13px;
+.site__nav .profile {
+  margin-left: auto;
 }
 
-.search-button {
-  background: var(--muted);
-  padding: 10px 14px;
+.site__header .profile {
+  display: none;
 }
 
-.search-button.mobile-full { flex: 1; }
+.search-button.mobile-full {
+  flex: 1;
+}
 
 .site__header .profile {
   display: none; /* hidden on mobile */
-  background: var(--muted);
 }
 
 .site__footer .profile {
@@ -112,7 +43,7 @@ body {
   padding: 14px;
 }
 
-.recipes-section__title {
+.recipes-div__title {
   margin: 0 0 12px 0;
   font-size: 16px;
 }
@@ -140,7 +71,7 @@ body {
 .recipe-photo {
   width: 100%;
   height: 120px;
-  background: linear-gradient(180deg,#e8e8e8,#ddd);
+  background: linear-gradient(180deg, #e8e8e8, #ddd);
   border-radius: 8px;
   object-fit: cover;
   display: block;
@@ -178,7 +109,7 @@ body {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   padding: 10px;
   z-index: 40;
   display: none;
@@ -196,71 +127,10 @@ body {
   color: #444;
 }
 
-/* Footer */
-.site__footer {
-  height: var(--footer-height);
-  min-height: var(--footer-height);
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 12px;
-  padding: 8px 12px;
-  background: linear-gradient(0deg,var(--panel),#fbfbfb);
-  flex-shrink: 0;
-}
-
 /* Desktop layout */
 @media (min-width: 1000px) {
-  .page { padding: 36px; }
-
-  .site-root {
-    width: var(--container-width);
-    height: calc(100vh - 72px);
-    border-radius: 8px;
-  }
-
-  .site__header { justify-content: space-between; }
-
-  .logo {
-    display: block;
-    background: var(--muted);
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-weight: 700;
-    margin-right: 12px;
-  }
-
-  .site__header .search-button.mobile-full {
-    flex: 0;
-    min-width: 160px;
-  }
-
-  .site__header .profile {
-    display: block;
-    margin-left: auto;
-  }
-
   .recipes-list {
     grid-template-columns: repeat(4, 1fr);
     gap: 18px;
   }
-
-  .site__footer {
-    justify-content: center;
-  }
-
-  .site__footer .home,
-  .site__footer .profile {
-    display: none;
-  }
-
-  .site__footer .only-about {
-    min-width: 160px;
-  }
-}
-
-.visually-hidden {
-  position: absolute;
-  left: -9999px;
 }

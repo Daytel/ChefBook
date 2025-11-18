@@ -12,11 +12,18 @@
 }
 
 /* ======= Base (vertical-first: width <1000px) ======= */
-* { box-sizing: border-box; }
-html, body { height: 100%; margin: 0; }
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
 body {
   min-height: 100vh;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
   color: #222;
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
@@ -41,7 +48,7 @@ body {
   min-height: calc(100vh - var(--footer-height));
   background: var(--panel);
   border-radius: 0;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.03);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
   overflow: visible; /* allow page scroll, avoid inner scrollbars */
@@ -56,12 +63,22 @@ body {
   gap: 12px;
   padding: 8px 14px;
   border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg,var(--panel),#fbfbfb);
+  background: linear-gradient(180deg, var(--panel), #fbfbfb);
   flex-shrink: 0;
 }
 
-.site-title { display:flex; align-items:center; gap:8px; margin:0; font-weight:700; }
-.logo-icon { width:22px; height:22px; color:#333; }
+.site-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-weight: 700;
+}
+.logo-icon {
+  width: 22px;
+  height: 22px;
+  color: #333;
+}
 
 /* NAV: by default (vertical) header nav is hidden */
 .site__nav {
@@ -71,13 +88,17 @@ body {
   align-items: center;
 }
 
-.site__actions { margin-left: auto; display:flex; gap:8px; align-items:center; }
+.site__actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
 
 .site__header .profile,
 .site__actions .profile {
   display: none !important;
 }
-
 
 /* Buttons */
 .btn {
@@ -91,45 +112,100 @@ body {
 }
 
 /* Main content area — allow it to expand naturally */
-.site__main { flex: 1 1 auto; overflow: visible; padding: 14px; }
+.site__main {
+  flex: 1 1 auto;
+  overflow: visible;
+  padding: 14px;
+}
 
 /* layout */
-.content-inner { display:flex; flex-direction:column; gap:12px; }
-.add-inner { display:grid; grid-template-columns: 1fr; gap:12px; }
+.content-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.add-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
 
 /* columns */
-.left-column, .right-column { display:flex; flex-direction:column; gap:12px; }
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
 /* form fields */
-.field { display:flex; flex-direction:column; gap:6px; }
-.field-label { font-size:13px; font-weight:600; color:#333; }
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
 .input {
   padding: 10px;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--muted);
-  font-size:14px;
+  font-size: 14px;
 }
 
 /* panels */
-.panel-title { font-size:13px; color:#333; margin-bottom:8px; text-align:left; font-weight:700; }
-.box { background: var(--muted); padding: 12px; border-radius: 10px; border: 1px solid var(--border); }
+.panel-title {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 8px;
+  text-align: left;
+  font-weight: 700;
+}
+.box {
+  background: var(--muted);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
 
 /* Ingredients */
 .ingredients-box .ingredient-row {
-  display:flex;
-  gap:8px;
-  align-items:center;
-  margin-bottom:8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
 }
-.ingredient-row .input { flex: 1; min-width: 0; }
-.ingredient-row .ing-name { flex: 2; }
-.ingredient-row .ing-qty { width:140px; }
-.ingredient-row .ing-unit { width:110px; }
-.btn.small { padding:6px 8px; font-size:12px; border-radius:8px; }
+.ingredient-row .input {
+  flex: 1;
+  min-width: 0;
+}
+.ingredient-row .ing-name {
+  flex: 2;
+}
+.ingredient-row .ing-qty {
+  width: 140px;
+}
+.ingredient-row .ing-unit {
+  width: 110px;
+}
+.btn.small {
+  padding: 6px 8px;
+  font-size: 12px;
+  border-radius: 8px;
+}
 
 /* steps */
-.steps-box .step-row { display:flex; flex-direction:column; gap:8px; margin-bottom:10px; position:relative; }
+.steps-box .step-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+  position: relative;
+}
 .step-photo-preview {
   width: 100%;
   height: 140px;
@@ -141,26 +217,38 @@ body {
 
 /* photos preview */
 .photos-preview {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 .photo-thumb {
-  width:72px;
-  height:72px;
-  border-radius:8px;
-  background-size:cover;
-  background-position:center;
-  position:relative;
-  border:1px solid var(--border);
-  cursor:pointer;
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border: 1px solid var(--border);
+  cursor: pointer;
 }
-.photo-thumb.main { box-shadow: 0 0 0 3px rgba(102,194,215,0.25); }
-.photo-thumb .remove-photo { position:absolute; top:4px; right:4px; padding:2px 6px; font-size:11px; }
+.photo-thumb.main {
+  box-shadow: 0 0 0 3px rgba(102, 194, 215, 0.25);
+}
+.photo-thumb .remove-photo {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+}
 
 /* preview box */
-.preview-box .preview-row.small { display:flex; flex-direction:column; gap:6px; }
+.preview-box .preview-row.small {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
 /* footer: vertical default shows ALL nav buttons */
 .footer {
@@ -194,7 +282,9 @@ body {
 
 /* ======= Horizontal layout (>=1000px): ONLY other format ======= */
 @media (min-width: 1000px) {
-  .page { padding: 36px; }
+  .page {
+    padding: 36px;
+  }
 
   /* container becomes fixed-width box with internal scrolling if needed */
   .site-root {
@@ -206,10 +296,16 @@ body {
   }
 
   /* two-column layout */
-  .add-inner { grid-template-columns: 1fr 360px; gap:18px; align-items:start; }
+  .add-inner {
+    grid-template-columns: 1fr 360px;
+    gap: 18px;
+    align-items: start;
+  }
 
   /* show header navigation in horizontal mode */
-  .site__nav { display: flex !important; }
+  .site__nav {
+    display: flex !important;
+  }
 
   /* Footer: hide all but 'О нас' in horizontal mode */
   .footer .home,
@@ -241,7 +337,14 @@ body {
 
 /* small screen tweaks */
 @media (max-width: 420px) {
-  .ingredient-row .ing-qty { width:90px; }
-  .ingredient-row .ing-unit { width:80px; }
-  .photo-thumb { width:56px; height:56px; }
+  .ingredient-row .ing-qty {
+    width: 90px;
+  }
+  .ingredient-row .ing-unit {
+    width: 80px;
+  }
+  .photo-thumb {
+    width: 56px;
+    height: 56px;
+  }
 }

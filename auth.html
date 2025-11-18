@@ -1,140 +1,230 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ChefBook - Авторизация</title>
-  <link rel="stylesheet" href="auth.css">
-</head>
-<body>
-  <div class="page">
-    <div class="site-root" role="document" aria-label="Авторизация — прототип">
-
-      <!-- Шапка -->
-      <header class="site__header" role="banner" aria-label="Шапка">
-        <h1 class="site-title">
-          <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-            <path fill="currentColor"
-                  d="M12 2a3 3 0 0 0-3 3v1h6V5a3 3 0 0 0-3-3Zm5 6H7a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9a1 1 0 0 0-1-1Zm-4 9h-2v-5h2v5Z"/>
-          </svg>
-          <span>ChefBook</span>
-        </h1>
-
-        <nav class="site__nav" role="navigation" aria-label="Главная навигация шапки">
-          <button class="btn nav-item home" type="button" aria-label="Перейти на главную">Главная</button>
-        </nav>
-
-        <div class="site__actions">
-          <button class="btn nav-item profile" type="button" aria-label="Профиль / Регистрация">Профиль / Регистрация</button>
-        </div>
-      </header>
-
-      <!-- main: форма авторизации -->
-      <main class="site__main" role="main" aria-label="Форма авторизации">
-        <section class="auth-section" aria-labelledby="auth-title">
-          <h2 id="auth-title" class="search-title">Вход в аккаунт</h2>
-
-          <div class="content-inner auth-inner">
-
-            <form id="authForm" class="auth-form" aria-label="Форма входа" autocomplete="on">
-              <label for="login" class="label">Логин</label>
-              <input id="login" name="login" class="input" type="text" inputmode="text" autocomplete="username" required aria-required="true" placeholder="Введите логин">
-
-              <label for="password" class="label">Пароль</label>
-              <div class="password-row">
-                <input id="password" name="password" class="input" type="password" autocomplete="current-password" required aria-required="true" placeholder="Введите пароль">
-                <button type="button" class="btn small toggle-pass" aria-label="Показать пароль">П</button>
-              </div>
-
-              <div class="row-space">
-                <label class="checkbox">
-                  <input id="remember" type="checkbox" name="remember">
-                  <span>Запомнить меня</span>
-                </label>
-
-                <a href="help.html" class="link">Забыли пароль?</a>
-              </div>
-
-              <div style="margin-top:12px; display:flex; gap:8px;">
-                <button id="loginBtn" class="btn" type="submit">Войти</button>
-                <button id="cancelBtn" class="btn" type="button">Отмена</button>
-              </div>
-
-              <div id="authMsg" class="muted" role="status" aria-live="polite" style="margin-top:10px;"></div>
-            </form>
-
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ChefBook - Авторизация</title>
+    <link rel="stylesheet" href="auth.css" />
+  </head>
+  <body>
+    <div class="page">
+      <div
+        class="site-root"
+        role="document"
+        aria-label="Авторизация — прототип"
+      >
+        <!-- Шапка -->
+        <header class="site__header" role="banner" aria-label="Шапка">
+          <div class="site-title">
+            <svg
+              class="logo-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              aria-hidden="true"
+            >
+              <path
+                fill="currentColor"
+                d="M12 2a3 3 0 0 0-3 3v1h6V5a3 3 0 0 0-3-3Zm5 6H7a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9a1 1 0 0 0-1-1Zm-4 9h-2v-5h2v5Z"
+              />
+            </svg>
+            <span>ChefBook</span>
           </div>
-        </section>
-      </main>
 
-      <!-- Подвал -->
-      <footer class="footer" role="contentinfo" aria-label="Нижняя навигация">
-        <button class="btn home" type="button" aria-label="Перейти на главную">Главная</button>
-        <button class="btn profile" type="button" aria-label="Профиль / Регистрация">Профиль / Регистрация</button>
-        <button class="btn only-about" type="button" aria-label="О нас">О нас</button>
-      </footer>
+          <nav
+            class="site__nav"
+            role="navigation"
+            aria-label="Главная навигация шапки"
+          >
+            <button
+              class="btn nav-item home"
+              type="button"
+              aria-label="Перейти на главную"
+            >
+              Главная
+            </button>
+            <button
+              class="btn nav-item profile"
+              type="button"
+              aria-label="Профиль / Регистрация"
+            >
+              Профиль / Регистрация
+            </button>
+          </nav>
+        </header>
+
+        <!-- main: форма авторизации -->
+        <main class="site__main" role="main" aria-label="Форма авторизации">
+          <div class="auth-div" aria-labelledby="auth-title">
+            <h1 id="auth-title" class="search-title">Вход в аккаунт</h1>
+
+            <div class="content-inner auth-inner">
+              <form
+                id="authForm"
+                class="auth-form"
+                aria-label="Форма входа"
+                autocomplete="on"
+              >
+                <label for="login" class="label">Логин</label>
+                <input
+                  id="login"
+                  name="login"
+                  class="input"
+                  type="text"
+                  inputmode="text"
+                  autocomplete="username"
+                  required
+                  aria-required="true"
+                  placeholder="Введите логин"
+                />
+
+                <label for="password" class="label">Пароль</label>
+                <div class="password-row">
+                  <input
+                    id="password"
+                    name="password"
+                    class="input"
+                    type="password"
+                    autocomplete="current-password"
+                    required
+                    aria-required="true"
+                    placeholder="Введите пароль"
+                  />
+                  <button
+                    type="button"
+                    class="btn small toggle-pass"
+                    aria-label="Показать пароль"
+                  >
+                    П
+                  </button>
+                </div>
+
+                <div class="row-space">
+                  <label class="checkbox">
+                    <input id="remember" type="checkbox" name="remember" />
+                    <span>Запомнить меня</span>
+                  </label>
+
+                  <a href="help.html" class="link">Забыли пароль?</a>
+                </div>
+
+                <div style="margin-top: 12px; display: flex; gap: 8px">
+                  <button id="loginBtn" class="btn" type="submit">Войти</button>
+                  <button id="cancelBtn" class="btn" type="button">
+                    Отмена
+                  </button>
+                </div>
+
+                <div
+                  id="authMsg"
+                  class="muted"
+                  role="status"
+                  aria-live="polite"
+                  style="margin-top: 10px"
+                ></div>
+              </form>
+            </div>
+          </div>
+        </main>
+
+        <!-- Подвал -->
+        <footer class="footer" role="contentinfo" aria-label="Нижняя навигация">
+          <button
+            class="btn home"
+            type="button"
+            aria-label="Перейти на главную"
+          >
+            Главная
+          </button>
+          <button
+            class="btn profile"
+            type="button"
+            aria-label="Профиль / Регистрация"
+          >
+            Профиль / Регистрация
+          </button>
+          <button class="btn only-about" type="button" aria-label="О нас">
+            О нас
+          </button>
+        </footer>
+      </div>
     </div>
-  </div>
 
-  <script>
-    // простая логика авторизации (демо)
-    const form = document.getElementById('authForm');
-    const msg = document.getElementById('authMsg');
-    const toggle = document.querySelector('.toggle-pass');
-    const passInput = document.getElementById('password');
+    <script>
+      // простая логика авторизации (демо)
+      const form = document.getElementById("authForm");
+      const msg = document.getElementById("authMsg");
+      const toggle = document.querySelector(".toggle-pass");
+      const passInput = document.getElementById("password");
 
-    // show/hide password
-    toggle.addEventListener('click', () => {
-      if (passInput.type === 'password') {
-        passInput.type = 'text';
-        toggle.textContent = 'С';
-        toggle.setAttribute('aria-label', 'Скрыть пароль');
-      } else {
-        passInput.type = 'password';
-        toggle.textContent = 'П';
-        toggle.setAttribute('aria-label', 'Показать пароль');
-      }
-      passInput.focus();
-    });
+      // show/hide password
+      toggle.addEventListener("click", () => {
+        if (passInput.type === "password") {
+          passInput.type = "text";
+          toggle.textContent = "С";
+          toggle.setAttribute("aria-label", "Скрыть пароль");
+        } else {
+          passInput.type = "password";
+          toggle.textContent = "П";
+          toggle.setAttribute("aria-label", "Показать пароль");
+        }
+        passInput.focus();
+      });
 
-    // submit
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      msg.textContent = '';
-      const login = form.login.value.trim();
-      const password = form.password.value;
+      // submit
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        msg.textContent = "";
+        const login = form.login.value.trim();
+        const password = form.password.value;
 
-      if (!login || !password) {
-        msg.textContent = 'Пожалуйста, заполните все поля';
-        return;
-      }
+        if (!login || !password) {
+          msg.textContent = "Пожалуйста, заполните все поля";
+          return;
+        }
 
-      // demo: accept any non-empty credentials
-      try {
-        const remember = form.remember.checked;
-        const authObj = { user: login, ts: Date.now() };
-        if (remember) localStorage.setItem('chefbook.auth', JSON.stringify(authObj));
-        else sessionStorage.setItem('chefbook.auth', JSON.stringify(authObj));
+        // demo: accept any non-empty credentials
+        try {
+          const remember = form.remember.checked;
+          const authObj = { user: login, ts: Date.now() };
+          if (remember)
+            localStorage.setItem("chefbook.auth", JSON.stringify(authObj));
+          else sessionStorage.setItem("chefbook.auth", JSON.stringify(authObj));
 
-        msg.textContent = 'Успешный вход. Перенаправление...';
-        setTimeout(() => {
-          // переход на страницу профиля (подкорректируй по роутингу)
-          window.location.href = 'profile.html';
-        }, 700);
-      } catch (err) {
-        msg.textContent = 'Ошибка при сохранении данных';
-        console.error(err);
-      }
-    });
+          msg.textContent = "Успешный вход. Перенаправление...";
+          setTimeout(() => {
+            // переход на страницу профиля (подкорректируй по роутингу)
+            window.location.href = "profile.html";
+          }, 700);
+        } catch (err) {
+          msg.textContent = "Ошибка при сохранении данных";
+          console.error(err);
+        }
+      });
 
-    // cancel -> go back to home
-    document.getElementById('cancelBtn').addEventListener('click', () => {
-      window.location.href = 'index.html';
-    });
+      // cancel -> go back to home
+      document.getElementById("cancelBtn").addEventListener("click", () => {
+        window.location.href = "index.html";
+      });
 
-    // header/home buttons
-    document.querySelectorAll('.home').forEach(b => b.addEventListener('click', () => window.location.href = 'index.html'));
-    document.querySelectorAll('.profile').forEach(b => b.addEventListener('click', () => window.location.href = 'profile.html'));
-  </script>
-</body>
+      // header/home buttons
+      document
+        .querySelectorAll(".home")
+        .forEach((b) =>
+          b.addEventListener(
+            "click",
+            () => (window.location.href = "index.html")
+          )
+        );
+      document
+        .querySelectorAll(".profile")
+        .forEach((b) =>
+          b.addEventListener(
+            "click",
+            () => (window.location.href = "profile.html")
+          )
+        );
+    </script>
+  </body>
 </html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChefBook — Тортилья в аэрогриле</title>
+    <link rel="stylesheet" href="recipe.css" />
+    <link rel="stylesheet" href="common.css" />
+    <script src="recipe.js" defer></script>
+  </head>
+  <body>
+    <div class="page">
+      <div
+        class="site-root"
+        role="document"
+        aria-label="Страница рецепта — ChefBook"
+      >
+        <!-- Шапка -->
+        <header class="site__header" role="banner" aria-label="Шапка">
+          <div class="site-title">
+            <img src="/icons/logo.svg" alt="" aria-hidden="true" />
+            <span>ChefBook</span>
+          </div>
+
+          <nav
+            class="site__nav"
+            role="navigation"
+            aria-label="Главная навигация шапки"
+          >
+            <button
+              class="home-button btn"
+              aria-label="Главная страница (кнопка)"
+              data-href="index.html"
+              type="button"
+            >
+              <img
+                src="/icons/home.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ГЛАВНАЯ</span>
+            </button>
+
+            <button
+              class="profile btn"
+              role="button"
+              aria-label="Профиль / Регистрация"
+              data-href="profile.html"
+              type="button"
+            >
+              <img
+                src="/icons/profile.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ПРОФИЛЬ / РЕГИСТРАЦИЯ</span>
+            </button>
+          </nav>
+        </header>
+
+        <!-- Контент -->
+        <main class="site__main" role="main" aria-label="Контент — рецепт">
+          <div class="recipe-container">
+            <div>
+              <h1 class="recipe-title">Тортилья в аэрогриле</h1>
+
+              <h2>Описание</h2>
+              <div class="recipe-meta" aria-hidden="true">
+                <time datetime="PT25M">Время: 20 мин</time>
+                <span>•</span>
+                <span>Порции: 4</span>
+              </div>
+
+              <p class="recipe-desc">
+                Прекрасная альтернатива бутербродам - заряд бодрости с утра!
+                Тортилья в аэрогриле - это возможность разнообразить ваш
+                привычный рацион. Лёгкий способ порадовать близких и удивить
+                гостей новыми сочетаниями! Испанские лепешки - отличная основа
+                для любой начинки и ваших кулинарных экспериментов!
+              </p>
+
+              <!-- Карусель -->
+              <div
+                class="carousel"
+                aria-label="Карусель изображений рецепта"
+                id="recipeCarousel"
+              >
+                <div
+                  class="carousel-main"
+                  id="carouselMainWrapper"
+                  role="group"
+                  aria-label="Просмотр изображений рецепта"
+                >
+                  <button
+                    class="carousel-arrow prev"
+                    id="carouselPrev"
+                    type="button"
+                    aria-label="Предыдущее изображение"
+                  >
+                    ‹
+                  </button>
+
+                  <img
+                    src="https://static.1000.menu/res/640/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760427398_2_gdzayje_max.jpg"
+                    data-src="https://static.1000.menu/res/640/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760427398_2_gdzayje_max.jpg"
+                    alt="Паста с лососем — главный вид"
+                    id="carouselImage"
+                    tabindex="0"
+                    role="img"
+                    aria-label="Главное изображение блюда"
+                  />
+
+                  <button
+                    class="carousel-arrow next"
+                    id="carouselNext"
+                    type="button"
+                    aria-label="Следующее изображение"
+                  >
+                    ›
+                  </button>
+                </div>
+
+                <div class="carousel-thumbs" role="list" aria-label="Миниатюры">
+                  <img
+                    src="https://static.1000.menu/res/640/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760427398_2_gdzayje_max.jpg"
+                    data-src="https://static.1000.menu/res/640/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760427398_2_gdzayje_max.jpg"
+                    alt="Паста крупным планом"
+                    data-src="https://images.unsplash.com/photo-1601315576607-8e8f6b77c9f0?w=1600"
+                    aria-current="true"
+                    role="listitem"
+                  />
+                  <img
+                    src="https://static.1000.menu/res/380/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760427393_0_jjnp88c_max.jpg"
+                    data-src="https://static.1000.menu/res/380/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760427393_0_jjnp88c_max.jpg"
+                    alt="Ингредиенты на столе"
+                    data-src="https://images.unsplash.com/photo-1617196038013-5bcbbe2368f2?w=1600"
+                    role="listitem"
+                  />
+                  <img
+                    src="https://static.1000.menu/res/380/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760427411_3_t3kwui8_max.jpg"
+                    data-src="https://static.1000.menu/res/380/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760427411_3_t3kwui8_max.jpg"
+                    alt="Подача пасты с зеленью"
+                    data-src="https://images.unsplash.com/photo-1617195737227-8e38b1a8126d?w=1600"
+                    role="listitem"
+                  />
+                </div>
+              </div>
+
+              <!-- Шаги -->
+              <div class="steps" aria-labelledby="steps-title">
+                <h2 id="steps-title">Шаги приготовления</h2>
+
+                <div class="step">
+                  <img
+                    src="https://static.1000.menu/res/380/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760349755_0_ud0qfj6_max.jpg"
+                    alt="Подготовка ингредиентов"
+                  />
+                  <p>
+                    <strong
+                      >Шаг 1. Как сделать тортилью с начинкой в
+                      аэрогриле?</strong
+                    >
+                    Очень просто и быстро. Для начала подготовьте все
+                    необходимые ингредиенты по списку. Копченую колбасу можете
+                    заменить на вареную, а также на ветчину, сырокопченое или
+                    варенокопченое мясо. Можете заменить или дополнить начинку
+                    по своему вкусу. Тортилью можно использовать как покупную,
+                    так и домашнюю. Рецепт домашней тортильи можно найти после
+                    описания всех шагов.
+                  </p>
+                </div>
+
+                <div class="step">
+                  <img
+                    src="https://static.1000.menu/res/380/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760349973_1_1dhlroz_max.jpg"
+                    alt="Подготовка начинки"
+                  />
+                  <p>
+                    <strong
+                      >Шаг 2. Как подготовить ингредиенты для начинки?</strong
+                    >
+                    Колбасу очистите и нарежьте мелкими кубиками. Болгарский
+                    перец очистите от семян и плодоножки и также нарежьте
+                    мелкими кубиками. Моцареллу натрите на крупной терке. Сорт
+                    сыра можете подбирать по своему вкусу. Важно, чтобы он был
+                    без заменителей молочных жиров, был вкусным и хорошо
+                    плавился. Как заменять разные виды сыров читайте по ссылке
+                    ниже. Петрушку мелко порубите. В миске соедините колбасу,
+                    болгарский перец и зелень и перемешайте.
+                  </p>
+                </div>
+
+                <div class="step">
+                  <img
+                    src="https://static.1000.menu/res/380/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760349977_2_bwdzons_max.jpg"
+                    alt="Готовка чесночного масла"
+                  />
+                  <p>
+                    <strong
+                      >Шаг 3. Как приготовить чесночное масло для смазывания
+                      лепешек?</strong
+                    >
+                    Сливочное масло растопите и охладите. Как правильно
+                    растопить масло читайте в конце рецепта. Чеснок пропустите
+                    через пресс и смешайте со сливочным маслом.
+                  </p>
+                </div>
+
+                <div class="step">
+                  <img
+                    src="https://static.1000.menu/res/380/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760349993_3_ocpcmgd_max.jpg"
+                    alt="Подготовка к формовке"
+                  />
+                  <p>
+                    <strong
+                      >Шаг 4. Что нужно сделать перед формовкой
+                      тортильи?</strong
+                    >
+                    Прежде чем приступать к формовке тортильи, посмотрите,
+                    подходит ли размер лепешек под ваш аэрогриль и при
+                    необходимости подрежьте края до нужного размера. Тортилью с
+                    помощью кисточки смажьте сливочным маслом с чесноком. Сверху
+                    равномерно посыпьте частью тертого сыра.
+                  </p>
+                </div>
+
+                <div class="step">
+                  <img
+                    src="https://static.1000.menu/res/380/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760350012_5_hp3oxcm_max.jpg"
+                    alt="Формовка тортильи"
+                  />
+                  <p>
+                    <strong>Шаг 5. Как сформировать тортилью?</strong> Посыпьте
+                    лепешку смесью из колбасы, болгарского перца и зелени.
+                    Накройте второй лепешкой и также распределите по ней
+                    начинку. Так же поступите с оставшимися лепешками.
+                    Переложите тортилью в чашу аэрогриля на решетку.
+                  </p>
+                </div>
+
+                <div class="step">
+                  <img
+                    src="https://static.1000.menu/res/380/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760350016_7_oxdkmp5_max.jpg"
+                    alt="Готовка тортильи"
+                  />
+                  <p>
+                    <strong
+                      >Шаг 6. Сколько времени готовить тортилью в
+                      аэрогриле?</strong
+                    >
+                    Выпекайте около 5 минут при 180℃ до расплавления сыра.
+                    Точное время зависит от мощности аэрогриля. Более подробная
+                    информация об особенностях запекания в аэрогриле есть в
+                    конце рецепта под шагами
+                  </p>
+                </div>
+
+                <div class="step">
+                  <img
+                    src="https://static.1000.menu/res/380/img/content-v2/ab/5d/104654/tortilya-v-aerogrile_1760369158_0_l1a2a7r_max.jpg"
+                    alt="Приготовленная тортилья"
+                  />
+                  <p>
+                    <strong
+                      >Шаг 7. Как подать завтрак с тортильей в аэрогриле к
+                      столу?</strong
+                    >
+                    Тортилью в аэрогриле переложите на блюдо, нарежьте на
+                    кусочки и подайте к столу. Приятного аппетита!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="recipe-grid" aria-label="Боковая панель рецепта">
+              <!-- Автор -->
+              <div
+                class="author-card"
+                role="region"
+                aria-labelledby="author-title"
+                data-author-id="alexsandra-ivanova"
+              >
+                <h2 id="author-title" class="author-title">Автор рецепта</h2>
+
+                <div class="author-row">
+                  <img
+                    class="avatar-img"
+                    src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=200"
+                    alt="Алексей Иванов"
+                  />
+
+                  <div class="author-info">
+                    <span class="author-name">Александра Иванова</span>
+                    <span class="author-role"> Фуд-блогер </span>
+                    <span class="author-bio">
+                      Любит простые и быстрые рецепты для будних дней. Делится
+                      лайфхаками по хранению продуктов.
+                    </span>
+
+                    <div class="author-buttons">
+                      <button
+                        id="authorFollowBtn"
+                        class="btn small"
+                        type="button"
+                        aria-pressed="false"
+                        aria-label="Подписаться на автора"
+                      >
+                        Подписаться
+                      </button>
+                      <button
+                        id="authorReviewsBtn"
+                        class="btn small"
+                        type="button"
+                        aria-label="Отзывы автора"
+                      >
+                        Отзывы
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ингредиенты -->
+              <div class="ingredients-panel" aria-labelledby="ing-title">
+                <h2 id="ing-title">Ингредиенты</h2>
+                <ul>
+                  <li>Моцарелла — 200 г</li>
+                  <li>Копченая колбаса — 200 г</li>
+                  <li>Сливочное масло — 30 г</li>
+                  <li>Сыр пармезан — 30 г</li>
+                  <li>Болгарский перец — 1 шт.</li>
+                  <li>Чеснок — 2 зубчика</li>
+                  <li>Петрушка — 30 г</li>
+                </ul>
+              </div>
+
+              <!-- Поделиться -->
+              <div class="share" aria-label="Поделиться рецептом">
+                <p>Поделиться:</p>
+                <a href="#" aria-label="Поделиться в социальной сети"
+                  >Поделиться в соцсетях</a
+                >
+              </div>
+
+              <!-- Комментарии -->
+              <div class="comments" aria-labelledby="comments-title">
+                <h2 id="comments-title">Комментарии</h2>
+
+                <label for="commentBox" class="visually-hidden"
+                  >Оставить комментарий</label
+                >
+                <textarea
+                  id="commentBox"
+                  placeholder="Напишите комментарий..."
+                ></textarea>
+                <div style="display: flex; gap: 8px; justify-content: flex-end">
+                  <button class="btn" id="postCommentBtn" type="button">
+                    Оставить комментарий
+                  </button>
+                </div>
+
+                <div class="comment-list" aria-live="polite" id="commentList">
+                  <p>
+                    <strong>Иван:</strong> Отличный рецепт, получилось очень
+                    вкусно!
+                  </p>
+                  <p>
+                    <strong>Мария:</strong> Делала вчера, всем понравилось!
+                    Спасибо!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- Подвал -->
+        <footer
+          class="site__footer"
+          role="contentinfo"
+          aria-label="Нижняя навигация"
+        >
+          <button
+            class="nav-item btn home"
+            type="button"
+            data-href="index.html"
+          >
+            <img
+              src="/icons/home.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Главная</span>
+          </button>
+
+          <button
+            class="nav-item btn search"
+            type="button"
+            data-href="search.html"
+          >
+            <img
+              src="/icons/search.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Поиск</span>
+          </button>
+
+          <button
+            class="nav-item btn profile"
+            type="button"
+            data-href="profile.html"
+          >
+            <img
+              src="/icons/profile.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Профиль / Регистрация</span>
+          </button>
+
+          <button
+            class="nav-item btn only-about"
+            type="button"
+            data-href="about.html"
+            aria-label="О нас"
+          >
+            <img
+              src="/icons/info.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">О нас</span>
+          </button>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>

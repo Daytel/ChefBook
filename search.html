@@ -1,240 +1,378 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ChefBook - Поиск рецептов</title>
-  <link rel="stylesheet" href="search.css">
-</head>
-<body>
-  <div class="page">
-
-    <div class="site-root" role="document" aria-label="Поиск рецептов — прототип">
-
-      <!-- Шапка -->
-      <header class="site__header" role="banner" aria-label="Шапка">
-        <h1 class="site-title">
-          <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-            <path fill="currentColor"
-                  d="M12 2a3 3 0 0 0-3 3v1h6V5a3 3 0 0 0-3-3Zm5 6H7a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9a1 1 0 0 0-1-1Zm-4 9h-2v-5h2v5Z"/>
-          </svg>
-          <span>ChefBook</span>
-        </h1>
-
-        <nav class="site__nav" role="navigation" aria-label="Главная навигация шапки">
-          <button class="btn nav-item home" type="button" aria-label="Перейти на главную">
-            Главная
-          </button>
-
-          
-        </nav>
-
-        <div class="site__actions">
-          <button class="btn nav-item profile" type="button" aria-label="Профиль / Регистрация">
-            Профиль / Регистрация
-          </button>
-        </div>
-      </header>
-
-      <!-- main: область поиска и результатов -->
-      <main class="site__main" role="main" aria-label="Контент — поиск рецептов">
-        <section class="search-section" aria-labelledby="search-title">
-          <h2 id="search-title" class="search-title">Поиск</h2>
-
-          <div class="content-inner">
-
-            <!-- левая колонка: фильтры, категории -->
-            <aside class="left-column" aria-label="Фильтры и категории">
-              <form class="search-area" role="search" aria-label="Форма поиска">
-                <div class="search-row">
-                  <label for="q" class="visually-hidden">Поиск по названию или ингредиенту</label>
-                  <input id="q" class="input" name="q" placeholder="Введите название или ингредиент" />
-
-                  <button id="searchBtn" class="search-button btn" type="button" aria-label="Начать поиск">
-                    Начать поиск
-                  </button>
-                </div>
-
-                <div class="filters" aria-hidden="false">
-                  <div class="filter">
-                    <label>Фильтры по поиску</label>
-                  </div>
-
-                  <div class="filter">
-                    <label for="f-ing">Ингредиенты</label>
-                    <select id="f-ing" aria-label="Ингредиенты">
-                      <option>Любые</option>
-                      <option>Курица</option>
-                      <option>Овощи</option>
-                    </select>
-                  </div>
-
-                  <div class="filter">
-                    <label for="f-time">Время приготовления</label>
-                    <select id="f-time" aria-label="Время приготовления">
-                      <option>Любое</option>
-                      <option>до 15 мин</option>
-                      <option>до 30 мин</option>
-                    </select>
-                  </div>
-
-                  <div class="filter">
-                    <label for="f-cal">Калории</label>
-                    <select id="f-cal" aria-label="Калории">
-                      <option>Любые</option>
-                      <option>&lt;100</option>
-                      <option>&lt;200</option>
-                    </select>
-                  </div>
-                </div>
-              </form>
-
-              <div class="categories" aria-label="Категории рецептов">
-                <div class="panel-title">КАТЕГОРИИ</div>
-
-                <div class="cols" role="list">
-                  <div class="category-box" role="listitem">
-                    <div>Завтраки</div>
-                    <div>Супы</div>
-                    <div>Салаты</div>
-                    <div>Выпечка</div>
-                    <div>Десерты</div>
-                    <div>Вегетарианские</div>
-                    <div>Мясные</div>
-                    <div>Напитки</div>
-                  </div>
-
-                  <div class="category-box" role="listitem">
-                    <div>Паста</div>
-                    <div>Рыба</div>
-                    <div>Постные</div>
-                    <div>Быстро</div>
-                    <div>Детское</div>
-                    <div>На мангале</div>
-                    <div>Сезонные</div>
-                    <div>Праздничные</div>
-                  </div>
-                </div>
-              </div>
-            </aside>
-
-            <!-- правая колонка: результаты и история -->
-            <section class="right-column" aria-label="Результаты и история">
-              <div class="results" aria-labelledby="results-title">
-                <h3 id="results-title" class="panel-title">НАЙДЕННЫЕ РЕЦЕПТЫ</h3>
-
-                <div id="resultsGrid" class="grid" role="list" aria-label="Результаты поиска"></div>
-              </div>
-
-              <div class="history" aria-labelledby="history-title">
-                <h3 id="history-title" class="panel-title">ИСТОРИЯ ПОИСКА</h3>
-
-                <div id="historyBox" class="box" aria-live="polite">
-                  <div id="historyList">Пусто</div>
-                </div>
-              </div>
-            </section>
-
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ChefBook - Поиск рецептов</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="search.css" />
+    <link rel="stylesheet" href="common.css" />
+    <script src="search.js" defer></script>
+  </head>
+  <body>
+    <div class="page">
+      <div
+        class="site-root"
+        role="document"
+        aria-label="Поиск рецептов — прототип"
+      >
+        <!-- Шапка -->
+        <header class="site__header" role="banner" aria-label="Шапка">
+          <div class="site-title">
+            <img src="/icons/logo.svg" alt="" aria-hidden="true" />
+            <span>ChefBook</span>
           </div>
-        </section>
-      </main>
 
-      <!-- Подвал -->
-      <footer class="footer" role="contentinfo" aria-label="Нижняя навигация">
-        <button class="btn home" type="button" aria-label="Перейти на главную">Главная</button>
-        <button class="btn profile" type="button" aria-label="Профиль / Регистрация">Профиль / Регистрация</button>
-        <button class="btn only-about" type="button" aria-label="О нас">О нас</button>
-      </footer>
-    </div>
-  </div>
-
-  <script>
-    // sample data
-    const sample = [
-      { title: 'Простой салат с курицей', desc: 'Вкусный салат за 15 минут' },
-      { title: 'Шоколадный кекс', desc: 'Нежный десерт для всей семьи' },
-      { title: 'Суп-пюре из тыквы', desc: 'Легкий и согревающий' },
-      { title: 'Паста с лососем', desc: 'Быстро и сытно' },
-      { title: 'Запечённый картофель', desc: 'Идеально для гарнира' },
-      { title: 'Овсянка с ягодами', desc: 'Полезный завтрак' }
-    ];
-
-    // render results as accessible list of cards
-    function renderResults(list) {
-      const grid = document.getElementById('resultsGrid');
-      grid.innerHTML = '';
-
-      const items = (list && list.length) ? list : sample;
-
-      items.forEach((r, i) => {
-        const item = document.createElement('article');
-        item.className = 'card';
-        item.setAttribute('role', 'listitem');
-        item.tabIndex = 0;
-        item.innerHTML = `
-          <div class="photo" aria-hidden="true"></div>
-
-          <h4 class="title">${escapeHtml(r.title)}</h4>
-
-          <p class="desc">${escapeHtml(r.desc)}</p>
-
-          <div class="compose-row">
-            <button class="btn compose-btn" data-i="${i}" aria-label="Открыть рецепт ${escapeHtml(r.title)}">
-              Открыть
+          <nav
+            class="site__nav"
+            role="navigation"
+            aria-label="Главная навигация шапки"
+          >
+            <button
+              class="home-button btn"
+              aria-label="Главная страница (кнопка)"
+              data-href="index.html"
+              type="button"
+            >
+              <img
+                src="/icons/home.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ГЛАВНАЯ</span>
             </button>
+
+            <button
+              class="profile btn"
+              role="button"
+              aria-label="Профиль / Регистрация"
+              data-href="profile.html"
+              type="button"
+            >
+              <img
+                src="/icons/profile.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ПРОФИЛЬ / РЕГИСТРАЦИЯ</span>
+            </button>
+          </nav>
+        </header>
+
+        <main
+          class="site__main"
+          role="main"
+          aria-label="Контент — поиск рецептов"
+        >
+          <div class="search-div" aria-labelledby="search-title">
+            <h1 id="search-title" class="search-title">Поиск</h1>
+
+            <div class="content-inner">
+              <!-- Форма с фильтрами и категориями -->
+              <div class="left-column" aria-label="Фильтры и категории">
+                <form
+                  class="search-area"
+                  role="search"
+                  aria-label="Форма поиска"
+                >
+                  <section>
+                    <h2 id="filters-title" class="panel-title">ФИЛЬТРЫ</h2>
+                    <div class="search-row">
+                      <label for="question" class="visually-hidden"
+                        >Поиск по названию или ингредиенту</label
+                      >
+                      <input
+                        id="question"
+                        class="input"
+                        name="question"
+                        placeholder="Введите название или ингредиент"
+                        autocomplete="off"
+                      />
+                      <button
+                        id="searchBtn"
+                        class="search-button btn"
+                        type="submit"
+                        aria-label="Начать поиск"
+                      >
+                        Начать поиск
+                      </button>
+                    </div>
+
+                    <div class="filters" aria-hidden="false">
+                      <div class="filter">
+                        <label for="f-ing">Ингредиенты</label>
+                        <select id="f-ing" name="ingredient">
+                          <option value="">Любые</option>
+                          <option value="Курица">Курица</option>
+                          <option value="Овощи">Овощи</option>
+                          <option value="Рыба">Рыба</option>
+                          <option value="Овсянка">Овсянка</option>
+                        </select>
+                      </div>
+                      <div class="filter">
+                        <label for="f-time">Время приготовления</label>
+                        <select id="f-time" name="time">
+                          <option value="">Любое</option>
+                          <option value="15">до 15 мин</option>
+                          <option value="30">до 30 мин</option>
+                        </select>
+                      </div>
+                      <div class="filter">
+                        <label for="f-cal">Калории</label>
+                        <select id="f-cal" name="cal">
+                          <option value="">Любые</option>
+                          <option value="100">&lt;100</option>
+                          <option value="200">&lt;200</option>
+                        </select>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="categories-section">
+                    <h2 id="categories-title" class="panel-title">КАТЕГОРИИ</h2>
+                    <fieldset
+                      class="categories"
+                      aria-labelledby="categories-title"
+                    >
+                      <div class="cols">
+                        <div class="category-box">
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Завтраки"
+                            />
+                            <span>Завтраки</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Супы"
+                            />
+                            <span>Супы</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Салаты"
+                            />
+                            <span>Салаты</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Выпечка"
+                            />
+                            <span>Выпечка</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Десерты"
+                            />
+                            <span>Десерты</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Вегетарианские"
+                            />
+                            <span>Вегетарианские</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Мясные"
+                            />
+                            <span>Мясные</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Напитки"
+                            />
+                            <span>Напитки</span>
+                          </label>
+                        </div>
+
+                        <div class="category-box">
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Паста"
+                            />
+                            <span>Паста</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Рыба"
+                            />
+                            <span>Рыба</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Постные"
+                            />
+                            <span>Постные</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Быстро"
+                            />
+                            <span>Быстро</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Детское"
+                            />
+                            <span>Детское</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="На мангале"
+                            />
+                            <span>На мангале</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Сезонные"
+                            />
+                            <span>Сезонные</span>
+                          </label>
+
+                          <label class="category-item">
+                            <input
+                              class="category-checkbox"
+                              type="checkbox"
+                              name="categories[]"
+                              value="Праздничные"
+                            />
+                            <span>Праздничные</span>
+                          </label>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </section>
+                </form>
+              </div>
+
+              <!-- правая колонка: результат -->
+              <div class="right-column">
+                <section class="results" aria-label="Найденные рецепты">
+                  <h2 class="panel-title">НАЙДЕННЫЕ РЕЦЕПТЫ</h2>
+                  <ul id="resultsGrid" class="recipes-list" role="list"></ul>
+                </section>
+
+                <section class="history" aria-label="История поиска">
+                  <h2 class="panel-title">ИСТОРИЯ ПОИСКА</h2>
+                  <div id="historyBox" class="box">
+                    <div id="historyList">Пусто</div>
+                  </div>
+                </section>
+              </div>
+            </div>
           </div>
-        `;
-        grid.appendChild(item);
-      });
-    }
+        </main>
 
-    // simple helper to avoid HTML injection in this tiny demo
-    function escapeHtml(s) {
-      return String(s)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-    }
+        <footer
+          class="site__footer"
+          role="contentinfo"
+          aria-label="Нижняя навигация"
+        >
+          <button
+            class="nav-item btn home"
+            type="button"
+            data-href="index.html"
+          >
+            <img
+              src="/icons/home.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Главная</span>
+          </button>
 
-    function addToHistory(title) {
-      const hList = document.getElementById('historyList');
-      const item = document.createElement('div');
-      item.textContent = title;
+          <button
+            class="nav-item btn profile"
+            type="button"
+            data-href="profile.html"
+          >
+            <img
+              src="/icons/profile.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Профиль / Регистрация</span>
+          </button>
 
-      if (hList.textContent === 'Пусто') hList.textContent = '';
-      hList.prepend(item);
-    }
-
-    document.getElementById('searchBtn').addEventListener('click', () => {
-      const q = document.getElementById('q').value.trim().toLowerCase();
-      const filtered = sample.filter(s =>
-        s.title.toLowerCase().includes(q) ||
-        s.desc.toLowerCase().includes(q)
-      );
-      renderResults(filtered);
-    });
-
-    // delegation: Open button
-    document.getElementById('resultsGrid').addEventListener('click', (e) => {
-      if (e.target.matches('.compose-btn')) {
-        const title = e.target.closest('.card').querySelector('.title').textContent;
-        addToHistory(title);
-        alert('Открыт рецепт: ' + title);
-      }
-    });
-
-    // initial
-    renderResults(sample);
-
-    // header home button: navigate to index.html (adjust if routing differs)
-    const homeButtons = Array.from(document.querySelectorAll('.home'));
-    homeButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        window.location.href = 'index.html';
-      });
-    });
-  </script>
-</body>
+          <button
+            class="nav-item btn only-about"
+            type="button"
+            data-href="about.html"
+            aria-label="О нас"
+          >
+            <img
+              src="/icons/info.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">О нас</span>
+          </button>
+        </footer>
+      </div>
+    </div>
+  </body>
 </html>
