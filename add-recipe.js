@@ -3,7 +3,6 @@ const STORAGE_KEY_RECIPE = "chefbook_new_recipe_v1";
 // Элементы
 const ingredientsList = document.getElementById("ingredientsList");
 const addIngredientBtn = document.getElementById("addIngredientBtn");
-const servingsInput = document.getElementById("servings");
 const categoriesBox = document.getElementById("categoriesBox");
 const stepsBox = document.getElementById("stepsBox");
 const addStepBtn = document.getElementById("addStepBtn");
@@ -87,37 +86,65 @@ function addIngredientRow(name = "", qty = "", unit = "") {
   ingredientIdCounter++;
   const id = "ing_" + ingredientIdCounter;
   const row = el("div", { class: "ingredient-row", id });
+
+  // inputs
   const nameInput = el("input", {
     class: "input ing-name",
-    placeholder: "Ингредиент",
+    placeholder: "Ингредиент (напр., Мука)",
     value: name,
     "aria-label": "Ингредиент",
+    maxlength: 100,
   });
   const qtyInput = el("input", {
     class: "input ing-qty",
     placeholder: "Кол-во (на 1 порцию)",
     value: qty,
     type: "text",
+    inputmode: "decimal",
     "aria-label": "Количество ингредиента",
+    maxlength: 20,
   });
   const unitInput = el("input", {
     class: "input ing-unit",
-    placeholder: "Ед. изм.",
+    placeholder: "Ед. изм. (напр., г, шт)",
     value: unit,
     type: "text",
     "aria-label": "Единицы измерения",
+    maxlength: 20,
   });
+
+  // кнопка удалить (в колонке действий)
+  const remBtnWrapper = el("div", { class: "ing-actions" });
   const remBtn = el(
     "button",
     {
       class: "btn small remove-ing",
       type: "button",
       title: "Удалить ингредиент",
+      "aria-label": "Удалить ингредиент",
     },
-    "Удалить"
+    "✕"
+  );
+  remBtnWrapper.appendChild(remBtn);
+
+  // подсказки для строки — ОБЯЗАТЕЛЬНО класс row-hint (и можно оставить field-hint для стилей)
+  const rowHint = el(
+    "div",
+    { class: "row-hint field-hint", id: id + "_hint" },
+    "Название до 100 символов. Кол-во — число или дробь (например 1.5). Мера до 20 символов."
   );
 
-  const rowError = el("div", { class: "row-error" });
+  // строка ошибки
+  const rowError = el("div", {
+    class: "row-error",
+    role: "status",
+    "aria-live": "polite",
+  });
+
+  // связать aria-describedby (локальная подсказка). Можно добавить глобальную ingredients_hint, если нужно:
+  nameInput.setAttribute("aria-describedby", id + "_hint");
+  qtyInput.setAttribute("aria-describedby", id + "_hint");
+  unitInput.setAttribute("aria-describedby", id + "_hint");
 
   remBtn.addEventListener("click", () => {
     // запрет удаления последнего ингредиента
@@ -138,11 +165,14 @@ function addIngredientRow(name = "", qty = "", unit = "") {
     });
   });
 
+  // ВАЖНО: порядок дочерних элементов — inputs, actions, затем подсказка и ошибка.
   row.appendChild(nameInput);
   row.appendChild(qtyInput);
   row.appendChild(unitInput);
-  row.appendChild(remBtn);
-  row.appendChild(rowError);
+  row.appendChild(remBtnWrapper);
+  row.appendChild(rowHint);   // <-- прямой ребёнок .ingredient-row
+  row.appendChild(rowError);  // <-- прямой ребёнок .ingredient-row
+
   ingredientsList.appendChild(row);
   return row;
 }
@@ -157,10 +187,16 @@ function addStep(text = "", imgData = null) {
     {
       class: "input step-text",
       rows: 3,
-      placeholder: "Описание шага",
+      placeholder: "Описание шага (что делать, время, температуру)",
       maxlength: 500,
+      "aria-describedby": id + "_hint",
     },
     text
+  );
+  const stepHint = el(
+    "div",
+    { class: "field-hint", id: id + "_hint" },
+    "Текст шага — до 500 символов. Рекомендуется: что делать и сколько времени."
   );
   const imgLabel = el(
     "label",
@@ -182,7 +218,11 @@ function addStep(text = "", imgData = null) {
     "Удалить"
   );
 
-  const rowError = el("div", { class: "row-error" });
+  const rowError = el("div", {
+    class: "row-error",
+    role: "status",
+    "aria-live": "polite",
+  });
 
   imgLabel.addEventListener("click", () => imgInput.click());
   imgInput.addEventListener("change", (e) => {
@@ -220,6 +260,7 @@ function addStep(text = "", imgData = null) {
   });
 
   row.appendChild(txt);
+  row.appendChild(stepHint);
   row.appendChild(imgLabel);
   row.appendChild(imgInput);
   row.appendChild(remBtn);
@@ -306,7 +347,6 @@ dishPhotos.addEventListener("change", (e) => {
 function collectRecipe() {
   const title = document.getElementById("title").value.trim();
   const desc = document.getElementById("shortDesc").value.trim();
-  const servings = parseFloat(servingsInput.value) || 1;
   const ingredients = Array.from(document.querySelectorAll(".ingredient-row"))
     .map((row) => {
       return {
@@ -338,7 +378,7 @@ function collectRecipe() {
   return {
     title,
     desc,
-    servings,
+    servings: 1,
     ingredients,
     categoriesSelected,
     steps,
@@ -375,7 +415,6 @@ function validateForm() {
   }
 
   // Фото: опционально, но если есть фото — ok.
-  // делаем placeholder
   setFieldError("photos", "");
 
   // Ингредиенты: каждый ряд — все три поля обязательны
@@ -447,7 +486,6 @@ function validateForm() {
     setFieldError("steps", "Исправьте ошибки в шагах");
     hasErrors = true;
   } else {
-    // ensure at least one step exists (should be, по инициализации)
     const stepsCount = document.querySelectorAll(".step-row").length;
     if (stepsCount === 0) {
       setFieldError("steps", "Добавьте минимум один шаг приготовления");

@@ -1,5 +1,9 @@
 @import "common.css";
 
+:root {
+  --ing-cols: 2fr 120px 100px 40px; /* единая сетка для ингредиентов */
+}
+
 .site__main {
   flex: 1 1 auto;
   overflow: auto;
@@ -55,6 +59,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  width: 100%;
 }
 .field-label {
   font-size: 13px;
@@ -67,14 +72,29 @@
   border: 1px solid var(--border);
   background: var(--muted);
   font-size: 14px;
+  width: 100%;
 }
 
-/* Текст ошибки */
+h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 6px 0;
+}
+
+/* Подсказка под полем */
+.field-hint {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Текст ошибки — фиксированная высота, чтобы не менять ширину/формат блока */
 .field-error {
   margin-top: 6px;
   font-size: 13px;
   color: #c33;
-  min-height: 18px;
+  min-height: 18px; /* зарезервированное пространство */
+  line-height: 18px;
+  overflow-wrap: break-word;
 }
 
 /* panels */
@@ -111,25 +131,89 @@
   margin-left: 8px;
 }
 
-.ingredients-box .ingredient-row {
-  display: flex;
+/* Заголовок колонок ингредиентов */
+.ingredients-header {
+  display: grid;
+  grid-template-columns: var(--ing-cols);
   gap: 8px;
-  align-items: center;
+  font-weight: 700;
   margin-bottom: 8px;
+  color: #444;
+  align-items: center;
 }
-.ingredient-row .input {
-  flex: 1;
+
+.ingredients-header > * {
+  display: flex;
+  align-items: center;
+  /* убрать лишние паддинги, чтобы позиция совпадала с полем */
+  padding: 0;
+  margin: 0;
+}
+
+/* Ряд ингредиента — grid, чтобы ошибка занимала выделенную строку и не меняла ширину */
+.ingredient-row {
+  display: grid;
+  grid-template-columns: var(--ing-cols);
+  grid-template-rows: var(--ing-row-h) minmax(18px, auto) minmax(18px, auto);
+  gap: 8px;
+  margin-bottom: 8px;
   min-width: 0;
+  align-items: center;
+  box-sizing: border-box;
 }
+
+.ingredient-row .input {
+  width: 100%;
+  min-width: 0;
+  height: calc(
+    var(--ing-row-h) - 0px
+  ); /* подгоняем (box-sizing ниже делает включение border/padding) */
+  box-sizing: border-box;
+  padding: 10px; /* можно подправить, если хочется другой внутренний отступ */
+  border-radius: 8px;
+}
+
+/* каждому input явное позиционирование по колонкам (необязательно, но явнее) */
 .ingredient-row .ing-name {
-  flex: 2;
+  grid-column: 1 / 2;
+  grid-row: 1;
 }
 .ingredient-row .ing-qty {
-  width: 140px;
+  grid-column: 2 / 3;
+  grid-row: 1;
 }
 .ingredient-row .ing-unit {
-  width: 110px;
+  grid-column: 3 / 4;
+  grid-row: 1;
 }
+.ingredient-row .ing-actions {
+  grid-column: 4 / 5;
+  grid-row: 1;
+  justify-self: end;
+}
+
+/* Подсказка строки (hint) — вторая строка, занимает колонки с 1 до 4 */
+.ingredient-row .row-hint {
+  grid-column: 1 / 4;
+  grid-row: 2;
+  font-size: 12px;
+  color: #666;
+  min-height: 18px;
+  line-height: 18px;
+}
+
+/* Строка ошибки — третья строка, под подсказкой */
+.ingredient-row .row-error {
+  grid-column: 1 / 5;
+  grid-row: 3;
+  color: #c33;
+  font-size: 13px;
+  min-height: 18px;
+  line-height: 18px;
+  overflow-wrap: break-word;
+}
+
+/* Кнопка удаления в колонке действий */
 .btn.small {
   padding: 6px 8px;
   font-size: 12px;
@@ -147,6 +231,33 @@
   gap: 8px;
   margin-bottom: 10px;
   position: relative;
+}
+
+.step-row label.btn {
+  margin-top: 6px;
+  display: inline-block;
+}
+
+.step-row label.btn {
+  margin-top: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--panel);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.step-row .row-error {
+  color: #c33;
+  font-size: 13px;
+  min-height: 18px;
+  line-height: 18px;
 }
 .step-photo-preview {
   width: 100%;
@@ -192,7 +303,7 @@
 }
 
 .form-actions {
-  margin-top: 18px
+  margin-top: 18px;
 }
 
 /* Неактивная кнопка сохранения */
@@ -221,11 +332,9 @@
 
 /* small screen tweaks */
 @media (max-width: 420px) {
-  .ingredient-row .ing-qty {
-    width: 90px;
-  }
-  .ingredient-row .ing-unit {
-    width: 80px;
+  .ingredients-header,
+  .ingredient-row {
+    grid-template-columns: 1fr 90px 80px auto;
   }
   .photo-thumb {
     width: 56px;
