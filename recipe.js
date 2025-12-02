@@ -44,8 +44,8 @@
 
     /* Кнопка "Подписаться" на автора */
     (function setupSubscribe() {
-      const authorId = "alexsandra-ivanova"; // уникальный ID автора, совпадает с data-author-id
-      const subscribeBtn = document.getElementById("authorFollowBtn"); // <--- исправлено
+      const authorId = "alexsandra-ivanova"; // уникальный ID автора
+      const subscribeBtn = document.getElementById("authorFollowBtn");
       if (!subscribeBtn) return;
 
       // Проверяем подписку в localStorage

@@ -87,7 +87,7 @@ function addIngredientRow(name = "", qty = "", unit = "") {
   const id = "ing_" + ingredientIdCounter;
   const row = el("div", { class: "ingredient-row", id });
 
-  // inputs
+  // Поля
   const nameInput = el("input", {
     class: "input ing-name",
     placeholder: "Ингредиент (напр., Мука)",
@@ -165,13 +165,12 @@ function addIngredientRow(name = "", qty = "", unit = "") {
     });
   });
 
-  // ВАЖНО: порядок дочерних элементов — inputs, actions, затем подсказка и ошибка.
   row.appendChild(nameInput);
   row.appendChild(qtyInput);
   row.appendChild(unitInput);
   row.appendChild(remBtnWrapper);
-  row.appendChild(rowHint);   // <-- прямой ребёнок .ingredient-row
-  row.appendChild(rowError);  // <-- прямой ребёнок .ingredient-row
+  row.appendChild(rowHint);
+  row.appendChild(rowError);
 
   ingredientsList.appendChild(row);
   return row;
@@ -414,7 +413,6 @@ function validateForm() {
     setFieldError("shortDesc", "");
   }
 
-  // Фото: опционально, но если есть фото — ok.
   setFieldError("photos", "");
 
   // Ингредиенты: каждый ряд — все три поля обязательны
@@ -432,7 +430,7 @@ function validateForm() {
     }
   });
 
-  // Ensure at least one complete ingredient exists
+  // Проверяем, есть ли хотя бы один полный ингредиент
   const completeIngredients = Array.from(
     document.querySelectorAll(".ingredient-row")
   )

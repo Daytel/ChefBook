@@ -1,4 +1,4 @@
-// sample author id (in real app — from URL or server)
+// author id
 const AUTHOR_ID = "author_1";
 const COMMENTS_KEY = "chefbook_comments_" + AUTHOR_ID;
 
@@ -17,17 +17,18 @@ const postComment = document.getElementById("postComment");
 const resetComment = document.getElementById("resetComment");
 const commentsList = document.getElementById("commentsList");
 
-// sample author data (Александра Иванова)
+// author data (Александра Иванова)
 const sampleAuthor = {
   id: AUTHOR_ID,
   name: "Александра Иванова",
   bio: "Любит простые и быстрые рецепты для будних дней. Делится лайфхаками по хранению продуктов.",
   recipes: 12,
   followers: 134,
-  avatarUrl: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=200",
+  avatarUrl:
+    "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=200",
 };
 
-// helpers
+// хелперы
 function loadComments() {
   try {
     const raw = localStorage.getItem(COMMENTS_KEY);

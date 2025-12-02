@@ -74,7 +74,7 @@ function renderAuthor() {
   authorAvatar.innerHTML = `<img src="${sampleAuthor.avatarUrl}" alt="${sampleAuthor.name}" class="avatar-img" />`;
 }
 
-/* --- Рендер карточек (поддерживает ингредиенты-объекты с qty/unit) --- */
+/* Рендер карточек (поддерживает ингредиенты-объекты с qty/unit) */
 function renderSaved(list) {
   const grid = document.getElementById("savedGrid");
   if (!grid) return;

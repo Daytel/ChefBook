@@ -86,7 +86,13 @@
 
             <div class="content-inner add-inner">
               <!-- Форма: добавлен action + method -->
-              <form id="recipeForm" class="left-column add-column" novalidate action="/submit-recipe" method="post">
+              <form
+                id="recipeForm"
+                class="left-column add-column"
+                novalidate
+                action="/submit-recipe"
+                method="post"
+              >
                 <!-- Название рецепта -->
                 <h2 class="panel-title">НАЗВАНИЕ РЕЦЕПТА</h2>
                 <div class="field">
@@ -99,7 +105,9 @@
                     required
                     aria-describedby="title_hint"
                   />
-                  <div id="title_hint" class="field-hint">Обязательное. До 30 символов.</div>
+                  <div id="title_hint" class="field-hint">
+                    Обязательное. До 30 символов.
+                  </div>
                   <div class="field-error" data-for="title"></div>
                 </div>
 
@@ -114,17 +122,15 @@
                     maxlength="300"
                     aria-describedby="shortDesc_hint"
                   ></textarea>
-                  <div id="shortDesc_hint" class="field-hint">Необязательно. До 300 символов.</div>
+                  <div id="shortDesc_hint" class="field-hint">
+                    Необязательно. До 300 символов.
+                  </div>
                   <div class="field-error" data-for="shortDesc"></div>
                 </div>
 
                 <h2 class="panel-title">ФОТО БЛЮДА</h2>
                 <div class="box photo-box">
-                  <label
-                    for="dishPhotos"
-                    class="btn"
-                    >Загрузить фото</label
-                  >
+                  <label for="dishPhotos" class="btn">Загрузить фото</label>
                   <input
                     id="dishPhotos"
                     class="visually-hidden"
@@ -138,7 +144,10 @@
                     class="photos-preview"
                     aria-live="polite"
                   ></div>
-                  <p id="photos_hint" class="field-hint">Можно загрузить несколько фото. Поддерживаются изображения (jpg, png). Выберите главное фото, кликнув по миниатюре.</p>
+                  <p id="photos_hint" class="field-hint">
+                    Можно загрузить несколько фото. Поддерживаются изображения
+                    (jpg, png). Выберите главное фото, кликнув по миниатюре.
+                  </p>
                   <div class="field-error" data-for="photos"></div>
                 </div>
 
@@ -158,7 +167,10 @@
                   </div>
                   <!-- Добавление через JS -->
                 </div>
-                <div id="ingredients_hint" class="field-hint">Каждый ингредиент: название, количество (на 1 порцию), единица измерения. Минимум один полный ингредиент.</div>
+                <div id="ingredients_hint" class="field-hint">
+                  Каждый ингредиент: название, количество (на 1 порцию), единица
+                  измерения. Минимум один полный ингредиент.
+                </div>
                 <div class="field-error" data-for="ingredients"></div>
 
                 <div class="ingredient-add">
@@ -166,7 +178,9 @@
                     Добавить ингредиент
                   </button>
                 </div>
-                <div id="servings_hint" class="field-hint">Целое число, минимум 1.</div>
+                <div id="servings_hint" class="field-hint">
+                  Целое число, минимум 1.
+                </div>
 
                 <!-- Категории -->
                 <h2 class="panel-title">КАТЕГОРИИ</h2>
@@ -178,18 +192,18 @@
                 >
                   <!-- Добавление через JS -->
                 </div>
-                <div id="categories_hint" class="field-hint">Выберите минимум одну категорию.</div>
+                <div id="categories_hint" class="field-hint">
+                  Выберите минимум одну категорию.
+                </div>
                 <div class="field-error" data-for="categories"></div>
 
                 <!-- Шаги приготовления -->
-                <h2 class="panel-title">
-                  ШАГИ ПРИГОТОВЛЕНИЯ
-                </h2>
+                <h2 class="panel-title">ШАГИ ПРИГОТОВЛЕНИЯ</h2>
                 <div id="stepsBox" class="box steps-box" aria-live="polite">
                   <div class="steps-hint" id="steps_hint">Текст шага</div>
                   <!-- Добавление через JS -->
                 </div>
-                
+
                 <div class="step-add">
                   <button id="addStepBtn" class="btn" type="button">
                     Добавить шаг

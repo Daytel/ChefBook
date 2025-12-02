@@ -46,7 +46,7 @@ if (form) {
       return;
     }
 
-    // demo: accept any non-empty credentials
+    // Имитация аутентификации
     try {
       const remember = form.remember.checked;
       const authObj = { user: login, ts: Date.now() };

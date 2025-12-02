@@ -24,7 +24,6 @@
   gap: 12px;
 }
 .reviews-inner {
-  /* теперь одна колонка всегда (правая колонка удалена) */
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
@@ -35,7 +34,7 @@
   gap: 12px;
 }
 
-/* panel title (используется как h2) */
+/* panel title */
 .panel-title {
   margin: 0;
   font-size: 14px;
@@ -44,7 +43,6 @@
   text-transform: uppercase;
 }
 
-/* author card */
 /* Стили для блока автора */
 .author-card {
   display: flex;
@@ -63,10 +61,10 @@
 /* Аватар */
 .author-avatar {
   flex-shrink: 0;
-  width: 80px;      /* фиксированная ширина блока */
-  height: 80px;     /* фиксированная высота блока */
+  width: 80px; /* фиксированная ширина блока */
+  height: 80px; /* фиксированная высота блока */
   border-radius: 50%; /* круглая форма */
-  overflow: hidden;   /* обрезка выходящего за пределы содержимого */
+  overflow: hidden; /* обрезка выходящего за пределы содержимого */
 }
 
 .author-avatar img {
@@ -100,7 +98,7 @@
   gap: 8px;
 }
 
-/* === стили для формы комментария (добавлены) === */
+/* стили для формы комментария (добавлены) */
 .comment-form {
   display: flex;
   flex-direction: column;
@@ -118,7 +116,7 @@
   resize: vertical;
 }
 
-/* Row with buttons and note */
+/* Строка с кнопкми и примечанием */
 .comment-form-row {
   display: flex;
   gap: 12px;
@@ -191,7 +189,6 @@
   justify-content: flex-end;
 }
 
-/* right column boxes (используем .box и можно удалить правую колонку в разметке) */
 .box {
   background: var(--muted);
   padding: 12px;
@@ -199,24 +196,10 @@
   border: 1px solid var(--border);
 }
 
-/* responsive desktop */
-/* убираем создание двух колонок — страница однаколоночная */
 @media (min-width: 1000px) {
   .reviews-inner {
     grid-template-columns: 1fr;
     gap: 18px;
     align-items: start;
-  }
-}
-
-/* small tweaks */
-@media (max-width: 420px) {
-  .page {
-    padding: 18px 12px;
-  }
-  .author-avatar {
-    width: 72px;
-    height: 72px;
-    font-size: 34px;
   }
 }

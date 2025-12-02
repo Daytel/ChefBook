@@ -30,7 +30,6 @@
   text-align: left;
 }
 
-/* profile layout: vertical default -> single column */
 .content-inner {
   display: flex;
   flex-direction: column;
@@ -39,7 +38,7 @@
 
 .profile-inner {
   display: grid;
-  grid-template-columns: 1fr; /* vertical: single column */
+  grid-template-columns: 1fr;
   gap: 12px;
 }
 
@@ -190,7 +189,7 @@
   padding: 8px;
   border-radius: 8px;
   background: white;
-  border: 1px solid rgba(0,0,0,0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 .recipe-title {
   font-weight: 600;
@@ -330,26 +329,15 @@
   }
 }
 
-/* ====== Horizontal layout (for widths >= 1000px) — ONLY other format ====== */
+/* Горизонтальный экран (ширина >= 1000px) */
 @media (min-width: 1000px) {
-  /* profile columns: left narrow, right flexible */
+  /* левая узкая, правая широкая */
   .profile-inner {
     grid-template-columns: 380px 1fr;
     gap: 18px;
     align-items: start;
   }
   .content-inner {
-    display: block; /* или flex-direction: row, если нужно */
-  }
-}
-
-/* ====== Small visual tweaks for narrow but not tiny devices (keeps only vertical/horizontal modes) ====== */
-@media (max-width: 420px) {
-  .avatar-preview {
-    width: 80px;
-    height: 80px;
-  }
-  .profile-inner {
-    gap: 10px;
+    display: block;
   }
 }

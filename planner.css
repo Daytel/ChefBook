@@ -89,7 +89,7 @@ h3 {
 .author-avatar img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* важная штука: сохраняет пропорции и обрезает лишнее */
+  object-fit: cover;
   display: block;
 }
 
@@ -97,7 +97,7 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-width: 0;       /* позволяет содержимому правильно переноситься */
+  min-width: 0; /* позволяет содержимому правильно переноситься */
   overflow: hidden;
 }
 

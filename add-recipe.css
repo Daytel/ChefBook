@@ -28,13 +28,12 @@
   font-size: 13px;
 }
 
-/* Main content area — allow it to expand naturally */
+/* Основная часть */
 .site__main {
   flex: 1 1 auto;
   padding: 14px;
 }
 
-/* layout */
 .content-inner {
   display: flex;
   flex-direction: column;
@@ -46,7 +45,7 @@
   gap: 12px;
 }
 
-/* columns */
+/* Колонки */
 .left-column,
 .right-column {
   display: flex;
@@ -54,7 +53,7 @@
   gap: 12px;
 }
 
-/* form fields */
+/* Поля формы */
 .field {
   display: flex;
   flex-direction: column;
@@ -113,7 +112,7 @@ h3 {
   border: 1px solid var(--border);
 }
 
-/* Ingredients */
+/* Ингредиенты */
 .ingredient-add {
   display: flex;
   gap: 8px;
@@ -145,7 +144,7 @@ h3 {
 .ingredients-header > * {
   display: flex;
   align-items: center;
-  /* убрать лишние паддинги, чтобы позиция совпадала с полем */
+  /* убираем лишние паддинги, чтобы позиция совпадала с полем */
   padding: 0;
   margin: 0;
 }
@@ -165,15 +164,13 @@ h3 {
 .ingredient-row .input {
   width: 100%;
   min-width: 0;
-  height: calc(
-    var(--ing-row-h) - 0px
-  ); /* подгоняем (box-sizing ниже делает включение border/padding) */
+  height: calc(var(--ing-row-h) - 0px);
   box-sizing: border-box;
-  padding: 10px; /* можно подправить, если хочется другой внутренний отступ */
+  padding: 10px;
   border-radius: 8px;
 }
 
-/* каждому input явное позиционирование по колонкам (необязательно, но явнее) */
+/* каждому input явное позиционирование по колонкам */
 .ingredient-row .ing-name {
   grid-column: 1 / 2;
   grid-row: 1;
@@ -220,7 +217,7 @@ h3 {
   border-radius: 8px;
 }
 
-/* steps */
+/* Шаги приготовления */
 .step-add {
   margin-top: 8px;
 }
@@ -272,7 +269,7 @@ h3 {
   display: inline-block;
 }
 
-/* photos preview */
+/* Превью фото */
 .photos-preview {
   display: flex;
   gap: 8px;
@@ -322,22 +319,10 @@ h3 {
 
 /* Горизонтальный формат */
 @media (min-width: 1000px) {
-  /* two-column layout */
+  /* в 2 колонки */
   .add-inner {
     grid-template-columns: 1fr 360px;
     gap: 18px;
     align-items: start;
-  }
-}
-
-/* small screen tweaks */
-@media (max-width: 420px) {
-  .ingredients-header,
-  .ingredient-row {
-    grid-template-columns: 1fr 90px 80px auto;
-  }
-  .photo-thumb {
-    width: 56px;
-    height: 56px;
   }
 }

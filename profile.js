@@ -118,7 +118,7 @@ function updatePreview() {
         : "выкл");
 }
 
-/* Обновить текст в заголовке dropdown (показывает выбранные / подсказку) --- */
+/* Обновить текст в заголовке dropdown (показывает выбранные / подсказку) */
 function updateDropdownHeaderForContainer(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -316,7 +316,7 @@ document.querySelectorAll(".dropdown-container").forEach((container) => {
   });
 });
 
-/* Save / Clear handlers */
+/* Сохранение/Очистка хендлеров */
 saveBtn.addEventListener("click", saveProfile);
 clearBtn.addEventListener("click", () => {
   if (
@@ -397,7 +397,7 @@ function saveRecipes(arr) {
   }
 }
 
-/* Для демонстрации добавим 1-2 примера, если пусто */
+/* Если пусто - добавим рецепты */
 function ensureSampleRecipes() {
   const existing = loadRecipes();
   if (existing.length === 0) {
@@ -471,11 +471,11 @@ function renderUserRecipes() {
   });
 }
 
-/* --- Modal handling --- */
+/* Управление модальными окнами */
 function showModal() {
   if (!confirmModal) return;
   confirmModal.classList.remove("hidden");
-  // prevent background scroll
+  // предотвращение фоновой прокрутки
   document.body.style.overflow = "hidden";
 }
 function hideModal() {

@@ -1,4 +1,4 @@
-// ---------- sample saved recipes (with images + ingredients) ----------
+// Сохраненные рецепты (с фото и ингредиентами)
 const sampleSaved = [
   {
     id: "r1",
@@ -50,7 +50,7 @@ const sampleAuthor = {
     "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=200",
 };
 
-// ---------- state ----------
+// Состояния
 const STORAGE_KEYS = {
   SAVED: "chefbook.savedRecipes",
   PLAN: "chefbook.weekPlan",
@@ -62,7 +62,7 @@ let weekPlan = loadPlan();
 let selectedDay = null;
 let weekStart = loadWeekStart();
 
-// ---------- helpers ----------
+// Хелперы
 function formatDateKey(d) {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
@@ -121,7 +121,7 @@ function loadWeekStart() {
   return startOfWeek(new Date());
 }
 
-// ---------- rendering ----------
+// Рендеры
 function renderSavedList() {
   const box = document.getElementById("savedList");
   box.innerHTML = "";
@@ -142,7 +142,9 @@ function renderSavedList() {
         <h4 class="title">${escapeHtml(r.title)}</h4>
         <p class="desc">${escapeHtml(r.desc)}</p>
         <div class="compose-row">
-          <button class="btn small add-btn" data-id="${r.id}">Добавить в меню</button>
+          <button class="btn small add-btn" data-id="${
+            r.id
+          }">Добавить в меню</button>
           <button class="btn small remove-saved" data-id="${
             r.id
           }">Удалить из сохранённых</button>
@@ -223,7 +225,9 @@ function renderCalendar() {
           <div style="display:flex; align-items:center; gap:6px;">
             <label class="muted" style="font-size:12px; margin-right:4px;">Порции:</label>
             <button class="btn small portion-decrease" data-day="${key}" data-i="${idx}" aria-label="Уменьшить порции">−</button>
-            <input type="number" min="1" class="portion-input" value="${entry.portions}" style="width:56px; text-align:center;" data-day="${key}" data-i="${idx}">
+            <input type="number" min="1" class="portion-input" value="${
+              entry.portions
+            }" style="width:56px; text-align:center;" data-day="${key}" data-i="${idx}">
             <button class="btn small portion-increase" data-day="${key}" data-i="${idx}" aria-label="Увеличить порции">+</button>
             <button class="btn small remove-day-recipe" data-day="${key}" data-i="${idx}" style="margin-left:6px;">✕</button>
           </div>
@@ -241,7 +245,9 @@ function renderCalendar() {
             weekPlan[key][idx].portions = v;
           } else {
             // fallback: ищем запись с таким recipeId
-            const found = weekPlan[key]?.find((x) => x.recipeId === entry.recipeId);
+            const found = weekPlan[key]?.find(
+              (x) => x.recipeId === entry.recipeId
+            );
             if (found) found.portions = v;
           }
 
@@ -250,35 +256,48 @@ function renderCalendar() {
         });
 
         // Кнопка увеличить
-        item.querySelector(".portion-increase").addEventListener("click", (ev) => {
-          ev.stopPropagation();
-          if (!weekPlan[key]) return;
-          if (weekPlan[key][idx]) {
-            weekPlan[key][idx].portions = Number(weekPlan[key][idx].portions || 0) + 1;
-          } else {
-            // fallback по recipeId
-            const found = weekPlan[key]?.find((x) => x.recipeId === entry.recipeId);
-            if (found) found.portions = Number(found.portions || 0) + 1;
-          }
-          saveState();
-          if (key === selectedDay) renderIngredients();
-          renderCalendar(); // повторный рендер, чтобы обновить инпут
-        });
+        item
+          .querySelector(".portion-increase")
+          .addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            if (!weekPlan[key]) return;
+            if (weekPlan[key][idx]) {
+              weekPlan[key][idx].portions =
+                Number(weekPlan[key][idx].portions || 0) + 1;
+            } else {
+              // fallback по recipeId
+              const found = weekPlan[key]?.find(
+                (x) => x.recipeId === entry.recipeId
+              );
+              if (found) found.portions = Number(found.portions || 0) + 1;
+            }
+            saveState();
+            if (key === selectedDay) renderIngredients();
+            renderCalendar(); // повторный рендер, чтобы обновить инпут
+          });
 
         // Кнопка уменьшить
-        item.querySelector(".portion-decrease").addEventListener("click", (ev) => {
-          ev.stopPropagation();
-          if (!weekPlan[key]) return;
-          if (weekPlan[key][idx]) {
-            weekPlan[key][idx].portions = Math.max(1, Number(weekPlan[key][idx].portions || 0) - 1);
-          } else {
-            const found = weekPlan[key]?.find((x) => x.recipeId === entry.recipeId);
-            if (found) found.portions = Math.max(1, Number(found.portions || 0) - 1);
-          }
-          saveState();
-          if (key === selectedDay) renderIngredients();
-          renderCalendar();
-        });
+        item
+          .querySelector(".portion-decrease")
+          .addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            if (!weekPlan[key]) return;
+            if (weekPlan[key][idx]) {
+              weekPlan[key][idx].portions = Math.max(
+                1,
+                Number(weekPlan[key][idx].portions || 0) - 1
+              );
+            } else {
+              const found = weekPlan[key]?.find(
+                (x) => x.recipeId === entry.recipeId
+              );
+              if (found)
+                found.portions = Math.max(1, Number(found.portions || 0) - 1);
+            }
+            saveState();
+            if (key === selectedDay) renderIngredients();
+            renderCalendar();
+          });
 
         // оставляем кнопку удаления как было — слушатель внизу обработает её клик
         listEl.appendChild(item);
@@ -403,7 +422,7 @@ function renderAuthor() {
     "Подписчиков: " + author.followers;
 }
 
-// ---------- actions ----------
+// Активности
 function addRecipeToDay(dayKey, recipeId) {
   if (!weekPlan[dayKey]) weekPlan[dayKey] = [];
 

@@ -184,7 +184,9 @@ function addToHistory(title) {
 
 /* Фильтрация */
 function filterRecipes() {
-  const question = (document.getElementById("question")?.value || "").trim().toLowerCase();
+  const question = (document.getElementById("question")?.value || "")
+    .trim()
+    .toLowerCase();
   const ingVal = (document.getElementById("f-ing")?.value || "").trim();
   const timeVal = (document.getElementById("f-time")?.value || "").trim();
   const calVal = (document.getElementById("f-cal")?.value || "").trim();
