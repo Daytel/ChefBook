@@ -42,6 +42,46 @@
       });
     }
 
+    /* Сохранение рецепта (сердечко) */
+    (function setupFavorite() {
+      const recipeId = "tortilla-airgrill"; // уникальный ID рецепта
+      const savedRecipes = JSON.parse(localStorage.getItem("savedRecipes") || "[]");
+
+      // Создаём кнопку
+      const heartBtn = document.createElement("button");
+      heartBtn.className = "btn-heart";
+      heartBtn.type = "button";
+      heartBtn.setAttribute("aria-label", "Сохранить рецепт");
+      heartBtn.innerHTML = savedRecipes.includes(recipeId)
+        ? "❤️"
+        : "🤍";
+
+      // Стили кнопки (можно вынести в CSS)
+      heartBtn.style.fontSize = "28px";
+      heartBtn.style.border = "none";
+      heartBtn.style.background = "transparent";
+      heartBtn.style.cursor = "pointer";
+      heartBtn.style.marginLeft = "8px";
+
+      // Добавляем кнопку рядом с заголовком рецепта
+      const title = document.querySelector(".recipe-title");
+      if (title) title.appendChild(heartBtn);
+
+      function toggleFavorite() {
+        let recipes = JSON.parse(localStorage.getItem("savedRecipes") || "[]");
+        if (recipes.includes(recipeId)) {
+          recipes = recipes.filter((id) => id !== recipeId);
+          heartBtn.innerHTML = "🤍";
+        } else {
+          recipes.push(recipeId);
+          heartBtn.innerHTML = "❤️";
+        }
+        localStorage.setItem("savedRecipes", JSON.stringify(recipes));
+      }
+
+      heartBtn.addEventListener("click", toggleFavorite);
+    })();
+
     /* Карусель */
     (function setupCarousel() {
       const carousel = document.getElementById("recipeCarousel");
@@ -165,13 +205,12 @@
 
         const img = document.createElement("img");
         img.alt = thumbs[index].alt || "";
-        img.src = images[index]; // можно добавить прелоадер при желании
+        img.src = images[index];
 
         overlay.appendChild(closeBtn);
         overlay.appendChild(img);
         document.body.appendChild(overlay);
 
-        // Фокус — на кнопку закрытия
         closeBtn.focus();
 
         function closeLightbox() {
@@ -194,7 +233,6 @@
           }
         }
 
-        // Закрыть при клике вне картинки (на фон)
         overlay.addEventListener("click", (ev) => {
           if (ev.target === overlay) closeLightbox();
         });
@@ -202,7 +240,7 @@
         closeBtn.addEventListener("click", closeLightbox);
         document.addEventListener("keydown", onDocumentKey);
 
-        // Отслеживаем свайп внутри лайтбокса
+        // Свайп в лайтбоксе
         let lbStartX = null;
         img.addEventListener(
           "touchstart",
@@ -229,13 +267,10 @@
         });
       }
 
-      // Открывать лайтбокс по клику на главную картинку
       mainImg.addEventListener("click", () => openLightbox(currentIndex));
 
-      // Инициализация: установить начальный слайд
       showSlide(currentIndex);
 
-      // Предзагрузка соседних изображений (чтобы листание было плавнее)
       function preloadNearby() {
         if (!images.length) return;
         const next = (currentIndex + 1) % images.length;
@@ -246,7 +281,6 @@
         });
       }
 
-      // Вызывать предзагрузку при показе слайда
       const originalShow = showSlide;
       showSlide = function (index, opts) {
         originalShow(index, opts);
