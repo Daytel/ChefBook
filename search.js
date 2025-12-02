@@ -3,7 +3,7 @@ const sample = [
   {
     title: "Куриное филе в сливочном соусе",
     desc: "Нежное куриное филе, запечённое в сливочном соусе с ароматными травами.",
-    img: "https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_67ed6c66498fe30323716f51_67ed6d6b36519e2e618c73ab/scale_1200",
+    img: "./images/chicken_fillet.jpg",
     categories: ["Мясные", "Быстро"],
     ingredients: ["Куриное филе", "Сливки", "Лук"],
     time: 30,
@@ -12,7 +12,7 @@ const sample = [
   {
     title: "Паста с грибным соусом",
     desc: "Классическая паста с соусом из шампиньонов и пармезана.",
-    img: "https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_67f35afc406c8053930a2ff8_67f36edf407ab92f6270035d/scale_1200",
+    img: "./images/pasta_mushroom_sauce.jpg",
     categories: ["Паста", "Вегетарианские"],
     ingredients: ["Паста", "Грибы", "Пармезан"],
     time: 25,
@@ -21,7 +21,7 @@ const sample = [
   {
     title: "Салат с авокадо",
     desc: "Освежающий салат с авокадо, помидорами и лаймовым соусом.",
-    img: "https://avatars.mds.yandex.net/i?id=22846ea570d3a5617496a992c393e9aa25bb7472-16389722-images-thumbs&n=13",
+    img: "./images/salad_avocado.webp",
     categories: ["Салаты", "Вегетарианские"],
     ingredients: ["Авокадо", "Помидоры", "Лайм"],
     time: 10,
@@ -30,7 +30,7 @@ const sample = [
   {
     title: "Рататуй",
     desc: "Овощное рагу из баклажанов, кабачков и томатов.",
-    img: "https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_67980daca6a7ef56cef9bdfb_67980dbe71bec7618da79da3/scale_1200",
+    img: "./images/ratatouille.jpg",
     categories: ["Супы", "Вегетарианские", "Сезонные"],
     ingredients: ["Баклажан", "Кабачок", "Томат"],
     time: 40,
@@ -39,7 +39,7 @@ const sample = [
   {
     title: "Овсяная каша с медом",
     desc: "Полезная каша на завтрак с ягодами и медом.",
-    img: "https://www.gourmet-magazin.de/fileadmin/user_upload/rezepte/gerichte/vegetarisch/porridge-honig-1.jpg",
+    img: "./images/oatmeal_porridge_honey.jpg",
     categories: ["Завтраки", "Вегетарианские"],
     ingredients: ["Овсянка", "Молоко", "Мед"],
     time: 10,
@@ -48,7 +48,7 @@ const sample = [
   {
     title: "Суп-пюре из тыквы",
     desc: "Кремовый суп из тыквы со сливками и пряностями.",
-    img: "https://povarito.ru/assets/images/recipes/tykvennyy-krem-sup.jpg",
+    img: "./images/pumpkin_puree_soup.jpg",
     categories: ["Супы", "Сезонные", "Постные"],
     ingredients: ["Тыква", "Лук", "Сливки"],
     time: 30,
@@ -57,7 +57,7 @@ const sample = [
   {
     title: "Блины с творогом",
     desc: "Тонкие блины с начинкой из сладкого творога.",
-    img: "https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_67892f422e43b84eb97f4f5b_67892f452e43b84eb97f50bf/scale_1200",
+    img: "./images/pancakes_cottage_cheese.jpg",
     categories: ["Выпечка", "Десерты"],
     ingredients: ["Мука", "Молоко", "Творог"],
     time: 25,
@@ -66,7 +66,7 @@ const sample = [
   {
     title: "Рыба на пару",
     desc: "Нежная рыба, приготовленная на пару с лимоном.",
-    img: "https://i3.wp.com/avatars.dzeninfra.ru/get-zen_doc/1705212/pub_5de6bc84ec575b00b19ae79f_5de6bd0c0be00a00ae4ec089/scale_1200?resize=768%2C768&ssl=1",
+    img: "./images/steamed_fish.jpg",
     categories: ["Рыба", "Быстро"],
     ingredients: ["Филе рыбы", "Лимон", "Соль", "Перец"],
     time: 20,
@@ -75,7 +75,7 @@ const sample = [
   {
     title: "Тёплый салат с печёными овощами",
     desc: "Овощи, запечённые до карамелизации, под соусом.",
-    img: "https://avatars.mds.yandex.net/i?id=cdee16fc97d158362c5a9c117fb8a0ada2fd16a0-4459486-images-thumbs&n=13",
+    img: "./images/salad_baked_vegetables.webp",
     categories: ["Салаты", "Вегетарианские"],
     ingredients: ["Перец", "Баклажан", "Оливковое масло"],
     time: 15,
@@ -84,7 +84,7 @@ const sample = [
   {
     title: "Тирамису",
     desc: "Классический итальянский десерт с маскарпоне и кофе.",
-    img: "https://avatars.mds.yandex.net/i?id=fa8e17ae45b2d4bd98772f28c3598f70db81b89b-12164789-images-thumbs&n=13",
+    img: "./images/tiramisu.webp",
     categories: ["Десерты"],
     ingredients: ["Маскарпоне", "Печенье савоярди", "Кофе"],
     time: 15,
@@ -93,7 +93,7 @@ const sample = [
   {
     title: "Карри с овощами",
     desc: "Ароматное карри с кокосовым молоком и овощами.",
-    img: "https://i.ytimg.com/vi/8VL9miwoth0/maxresdefault.jpg",
+    img: "./images/curry_vegetables.jpg",
     categories: ["Супы", "Вегетарианские", "Постные"],
     ingredients: ["Кокосовое молоко", "Карри паста", "Овощи"],
     time: 35,
@@ -102,7 +102,7 @@ const sample = [
   {
     title: "Шоколадный кекс",
     desc: "Насыщенный кекс с бурым шоколадом и глазурью.",
-    img: "https://i.pinimg.com/originals/db/62/13/db62137dc5e55422c0cbd77cfc953595.jpg",
+    img: "./images/chocolate_cupcake.jpg",
     categories: ["Выпечка", "Десерты"],
     ingredients: ["Шоколад", "Мука", "Яйца"],
     time: 40,

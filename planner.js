@@ -4,7 +4,7 @@ const sampleSaved = [
     id: "r1",
     title: "Простой салат с курицей",
     desc: "Вкусный салат за 15 минут",
-    img: "https://thumbs.dreamstime.com/b/salat-mit-bulgur-gebrannter-huhn-gr%C3%BCne-paprika-basilikum-und-feta-auf-einer-wei%C3%9Fen-jury-nahaufnahme-horizontales-format-wei%C3%9Fer-199389945.jpg",
+    img: "./images/salad_chicken.webp",
     ingredients: [
       { name: "Курица (филе)", qty: 300, unit: "г" },
       { name: "Салат", qty: 150, unit: "г" },
@@ -16,7 +16,7 @@ const sampleSaved = [
     id: "r2",
     title: "Шоколадный кекс",
     desc: "Нежный десерт",
-    img: "https://i.pinimg.com/originals/db/62/13/db62137dc5e55422c0cbd77cfc953595.jpg",
+    img: "./images/chocolate_cupcake.jpg",
     ingredients: [
       { name: "Мука", qty: 200, unit: "г" },
       { name: "Какао-порошок", qty: 30, unit: "г" },
@@ -28,7 +28,7 @@ const sampleSaved = [
     id: "r3",
     title: "Паста с лососем",
     desc: "Быстро и сытно",
-    img: "https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_6697446f54b1da77a375bb2d_669744c1b57ddf67fc835c34/scale_1200",
+    img: "./images/pasta_salmon.png",
     ingredients: [
       { name: "Паста", qty: 200, unit: "г" },
       { name: "Лосось", qty: 150, unit: "г" },
@@ -47,7 +47,7 @@ const sampleAuthor = {
   recipes: 12,
   followers: 134,
   avatarUrl:
-    "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=200",
+    "./images/avatar.jpg",
 };
 
 // Состояния
