@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="planner.css" />
     <link rel="stylesheet" href="common.css" />
     <script src="planner.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   </head>
   <body>
     <div class="page">
@@ -82,13 +83,37 @@
           aria-label="Контент — планировщик меню"
         >
           <div class="planner-div" aria-labelledby="planner-title">
-            <h1 id="planner-title" class="search-title">
-              Планировщик меню
-            </h1>
+            <h1 id="planner-title" class="search-title">Планировщик меню</h1>
 
             <div class="content-inner">
               <!-- Левая колонка: сохранённые рецепты -->
               <div class="left-column" aria-label="Сохранённые рецепты">
+                <div
+                  class="author-card box"
+                  role="region"
+                  aria-label="Карточка пользователя"
+                  id="authorCard"
+                >
+                  <div class="author-row">
+                    <div
+                      class="author-avatar"
+                      id="authorAvatar"
+                      aria-hidden="true"
+                    >
+                      <!-- вставляется <img> из saved.js -->
+                    </div>
+                    <div class="author-info">
+                      <h2 id="authorName">Автор</h2>
+                      <div id="authorBio" class="muted">
+                        Информация об авторе
+                      </div>
+                      <div class="author-meta">
+                        <span id="authorRecipes">Рецептов: 0</span>
+                        <span id="authorFollowers">Подписчиков: 0</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div
                   class="panel-title"
                   style="text-align: left; margin-bottom: 8px"

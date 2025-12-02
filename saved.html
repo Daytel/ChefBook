@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>ChefBook - Сохранённые рецепты</title>
     <link rel="stylesheet" href="search.css" />
+    <link rel="stylesheet" href="reviews.css" />
     <link rel="stylesheet" href="common.css" />
     <script src="saved.js" defer></script>
   </head>
@@ -81,6 +82,37 @@
             <h1 class="search-title">Сохранённые рецепты</h1>
 
             <div class="content-inner">
+              <!-- Левая колонка: блок автора (аналогично reviews.html) -->
+              <div class="left-column">
+                <div
+                  class="author-card box"
+                  role="region"
+                  aria-label="Карточка пользователя"
+                  id="authorCard"
+                >
+                  <div class="author-row">
+                    <div
+                      class="author-avatar"
+                      id="authorAvatar"
+                      aria-hidden="true"
+                    >
+                      <!-- вставляется <img> из saved.js -->
+                    </div>
+                    <div class="author-info">
+                      <h2 id="authorName">Автор</h2>
+                      <div id="authorBio" class="muted">
+                        Информация об авторе
+                      </div>
+                      <div class="author-meta">
+                        <span id="authorRecipes">Рецептов: 0</span>
+                        <span id="authorFollowers">Подписчиков: 0</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Правая колонка: сетка сохранённых рецептов -->
               <div class="right-column">
                 <div class="results">
                   <div

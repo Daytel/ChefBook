@@ -16,13 +16,13 @@
 
 /* Заголовки */
 h1 {
-  font-size: 28px;   /* Главный заголовок страницы */
+  font-size: 28px; /* Главный заголовок страницы */
   font-weight: 700;
   margin: 0 0 12px 0;
 }
 
 h2 {
-  font-size: 22px;   /* Заголовки разделов */
+  font-size: 22px; /* Заголовки разделов */
   font-weight: 600;
   margin: 0 0 8px 0;
 }
@@ -56,6 +56,79 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.author-card {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start; /* выравнивание по верху — имя и биография будут справа от аватара */
+  padding: 12px;
+  background: #f5f5f7;
+  border-radius: 12px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.author-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.author-avatar {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px; /* не даём аватару сжиматься/растягиваться */
+  border-radius: 50%;
+  overflow: hidden; /* обрезаем внутреннее изображение по кругу */
+  background: #ddd;
+  display: block;
+}
+
+.author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* важная штука: сохраняет пропорции и обрезает лишнее */
+  display: block;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;       /* позволяет содержимому правильно переноситься */
+  overflow: hidden;
+}
+
+.author-name {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.author-role {
+  font-size: 14px;
+  margin: 0;
+  opacity: 0.75;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.author-desc {
+  font-size: 14px;
+  color: #666;
+}
+
+.author-recipes {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #444;
 }
 
 .saved-list {
@@ -167,6 +240,43 @@ h3 {
   cursor: default;
 }
 
+.day-recipe-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.day-recipe-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.portion-label {
+  font-size: 12px;
+  color: #555;
+}
+
+.portion-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.portion-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--border, #ccc);
+  background: #fff;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.portion-btn:hover {
+  background: #f0f0f0;
+}
+
 /* ingredients box */
 .box {
   background: var(--muted);
@@ -189,6 +299,17 @@ h3 {
 }
 .ing-qty {
   font-weight: 700;
+}
+
+.portion-input {
+  width: 48px;
+  padding: 4px;
+  font-size: 14px;
+  margin-left: 6px;
+  margin-right: 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border, #ddd);
+  text-align: center;
 }
 
 /* small helpers */
