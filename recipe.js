@@ -42,28 +42,62 @@
       });
     }
 
+    /* Кнопка "Подписаться" на автора */
+    (function setupSubscribe() {
+      const authorId = "alexsandra-ivanova"; // уникальный ID автора, совпадает с data-author-id
+      const subscribeBtn = document.getElementById("authorFollowBtn"); // <--- исправлено
+      if (!subscribeBtn) return;
+
+      // Проверяем подписку в localStorage
+      const subscribedAuthors = JSON.parse(
+        localStorage.getItem("subscribedAuthors") || "[]"
+      );
+      if (subscribedAuthors.includes(authorId)) {
+        subscribeBtn.textContent = "Вы подписаны";
+        subscribeBtn.classList.add("subscribed");
+        subscribeBtn.setAttribute("aria-pressed", "true");
+      }
+
+      subscribeBtn.addEventListener("click", function () {
+        let authors = JSON.parse(
+          localStorage.getItem("subscribedAuthors") || "[]"
+        );
+        if (authors.includes(authorId)) {
+          // Отписка
+          authors = authors.filter((id) => id !== authorId);
+          subscribeBtn.textContent = "Подписаться";
+          subscribeBtn.classList.remove("subscribed");
+          subscribeBtn.setAttribute("aria-pressed", "false");
+        } else {
+          // Подписка
+          authors.push(authorId);
+          subscribeBtn.textContent = "Вы подписаны";
+          subscribeBtn.classList.add("subscribed");
+          subscribeBtn.setAttribute("aria-pressed", "true");
+        }
+        localStorage.setItem("subscribedAuthors", JSON.stringify(authors));
+      });
+    })();
+
     /* Сохранение рецепта (сердечко) */
     (function setupFavorite() {
       const recipeId = "tortilla-airgrill"; // уникальный ID рецепта
-      const savedRecipes = JSON.parse(localStorage.getItem("savedRecipes") || "[]");
+      const savedRecipes = JSON.parse(
+        localStorage.getItem("savedRecipes") || "[]"
+      );
 
-      // Создаём кнопку
       const heartBtn = document.createElement("button");
       heartBtn.className = "btn-heart";
       heartBtn.type = "button";
       heartBtn.setAttribute("aria-label", "Сохранить рецепт");
-      heartBtn.innerHTML = savedRecipes.includes(recipeId)
-        ? "❤️"
-        : "🤍";
+      heartBtn.innerHTML = savedRecipes.includes(recipeId) ? "❤️" : "🤍";
 
-      // Стили кнопки (можно вынести в CSS)
       heartBtn.style.fontSize = "28px";
       heartBtn.style.border = "none";
       heartBtn.style.background = "transparent";
       heartBtn.style.cursor = "pointer";
       heartBtn.style.marginLeft = "8px";
 
-      // Добавляем кнопку рядом с заголовком рецепта
       const title = document.querySelector(".recipe-title");
       if (title) title.appendChild(heartBtn);
 
@@ -97,16 +131,13 @@
 
       if (!mainImg || !thumbs.length) return;
 
-      // Список больших изображений (data-src предпочтительнее)
       const images = thumbs.map((t) => t.dataset.src || t.src);
 
-      // Начальный индекс — по aria-current
       let currentIndex = thumbs.findIndex(
         (t) => t.getAttribute("aria-current") === "true"
       );
       if (currentIndex === -1) currentIndex = 0;
 
-      // Показать слайд
       function showSlide(index, opts = {}) {
         if (!images.length) return;
         if (index < 0) index = images.length - 1;
@@ -116,15 +147,12 @@
         const src = images[currentIndex];
         const alt = thumbs[currentIndex].alt || "";
 
-        // Подменяем главное изображение
         mainImg.src = src;
         mainImg.alt = alt;
 
-        // Обновляем aria-label контейнера (полезно для скринридеров)
         if (mainWrapper)
           mainWrapper.setAttribute("aria-label", "Просмотр — " + alt);
 
-        // Обновляем миниатюры
         thumbs.forEach((t, i) => {
           if (i === currentIndex) t.setAttribute("aria-current", "true");
           else t.removeAttribute("aria-current");
@@ -139,13 +167,11 @@
         }
       }
 
-      // Кнопки prev/next
       if (prevBtn)
         prevBtn.addEventListener("click", () => showSlide(currentIndex - 1));
       if (nextBtn)
         nextBtn.addEventListener("click", () => showSlide(currentIndex + 1));
 
-      // Миниатюры: click + клавиатура
       thumbs.forEach((t, i) => {
         if (t.tabIndex === undefined || t.tabIndex === -1) t.tabIndex = 0;
         t.addEventListener("click", () => showSlide(i));
@@ -157,7 +183,6 @@
         });
       });
 
-      // Клавиши стрелок при фокусе внутри карусели
       carousel.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft") {
           e.preventDefault();
@@ -168,7 +193,6 @@
         }
       });
 
-      // Свайп (touch)
       let touchStartX = null;
       mainImg.addEventListener(
         "touchstart",
@@ -190,12 +214,11 @@
         touchStartX = null;
       });
 
-      // Лайтбокс
       function openLightbox(index) {
         index = typeof index === "number" ? index : currentIndex;
         const overlay = document.createElement("div");
         overlay.className = "lightbox";
-        overlay.tabIndex = -1; // чтобы можно было слушать клавиши
+        overlay.tabIndex = -1;
 
         const closeBtn = document.createElement("button");
         closeBtn.className = "close-btn";
@@ -240,7 +263,6 @@
         closeBtn.addEventListener("click", closeLightbox);
         document.addEventListener("keydown", onDocumentKey);
 
-        // Свайп в лайтбоксе
         let lbStartX = null;
         img.addEventListener(
           "touchstart",
