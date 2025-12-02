@@ -6,7 +6,7 @@
     <title>ChefBook - Авторизация</title>
     <link rel="stylesheet" href="auth.css" />
     <link rel="stylesheet" href="common.css" />
-    <script src="search.js" defer></script>
+    <script src="auth.js" defer></script>
   </head>
   <body>
     <div class="page">
@@ -43,7 +43,7 @@
             </button>
 
             <button
-              class="profile btn"
+              class="profile-button btn"
               role="button"
               aria-label="Профиль / Регистрация"
               data-href="profile.html"
@@ -71,18 +71,22 @@
                 class="auth-form"
                 aria-label="Форма входа"
                 autocomplete="on"
+                action="/login"
+                method="post"
               >
-                <label for="login" class="label">Логин</label>
+                <label for="login" class="label">Электронная почта</label>
                 <input
                   id="login"
                   name="login"
                   class="input"
-                  type="text"
-                  inputmode="text"
+                  type="email"
+                  inputmode="email"
                   autocomplete="username"
                   required
                   aria-required="true"
-                  placeholder="Введите логин"
+                  placeholder="example@domain.com"
+                  pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+                  title="Введите корректный email: обязателен символ @ и точка после него"
                 />
 
                 <label for="password" class="label">Пароль</label>
@@ -95,14 +99,17 @@
                     autocomplete="current-password"
                     required
                     aria-required="true"
-                    placeholder="Введите пароль"
+                    placeholder="Минимум 8 символов"
+                    minlength="8"
+                    pattern="(?=.*\d)(?=.*[A-Za-z]).{8,}"
+                    title="Пароль должен быть минимум 8 символов и содержать буквы и цифры"
                   />
                   <button
                     type="button"
                     class="btn small toggle-pass"
                     aria-label="Показать пароль"
                   >
-                    П
+                    Показать
                   </button>
                 </div>
 
@@ -117,9 +124,6 @@
 
                 <div style="margin-top: 12px; display: flex; gap: 8px">
                   <button id="loginBtn" class="btn" type="submit">Войти</button>
-                  <button id="cancelBtn" class="btn" type="button">
-                    Отмена
-                  </button>
                 </div>
 
                 <div
@@ -185,9 +189,5 @@
         </footer>
       </div>
     </div>
-
-    <script>
-
-    </script>
   </body>
 </html>

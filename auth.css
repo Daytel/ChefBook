@@ -29,7 +29,17 @@
 .search-title {
   margin: 0 0 12px 0;
   font-size: 20px;
-  text-align: left;
+  text-align: center;
+}
+
+.auth-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* небольшой запас сверху/снизу для мобильных */
+  padding: 18px 0;
+  width: 100%;
 }
 
 /* layout */
@@ -125,7 +135,7 @@
     border-radius: 8px;
   }
   .content-inner {
-    align-items: flex-start;
+    align-items: center;
   }
 }
 @media (max-width: 420px) {

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // --- Footer: автоподстановка data-href (если нужно) ---
+  // --- Footer: автоподстановка data-href ---
   (function ensureFooterLinks() {
     const footerMap = {
       home: 'index.html',
@@ -132,18 +132,5 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     });
-  })();
-
-  // --- Search button: если нет data-href, оставить заглушку (или тут открыть модал) ---
-  (function searchButtonHandler() {
-    const searchBtn = document.querySelector('.search-button');
-    if (!searchBtn) return;
-    if (!searchBtn.getAttribute('data-href')) {
-      searchBtn.addEventListener('click', () => {
-        // сюда можно поставить открытие модалки/панели поиска
-        console.log('ПОИСК: открой модал/страницу/фильтры');
-      });
-    }
-    // Если data-href присутствует — навигация уже привязана в navablesHandler
   })();
 });
