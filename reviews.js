@@ -106,10 +106,10 @@ function renderComments() {
       const head = document.createElement("div");
       head.className = "comment-head";
       head.innerHTML = `<strong class="comment-author">${escapeHtml(
-        c.name
+        c.name,
       )}</strong>
                         <span class="comment-date">${formatDate(
-                          c.createdAt
+                          c.createdAt,
                         )}</span>`;
 
       const body = document.createElement("div");
@@ -209,13 +209,13 @@ renderComments();
 
 // nav buttons simple
 Array.from(document.querySelectorAll(".home")).forEach((b) =>
-  b.addEventListener("click", () => (window.location.href = "index.html"))
+  b.addEventListener("click", () => (window.location.href = "index.html")),
 );
 Array.from(document.querySelectorAll(".profile")).forEach((b) =>
-  b.addEventListener("click", () => (window.location.href = "profile.html"))
+  b.addEventListener("click", () => (window.location.href = "profile.html")),
 );
 Array.from(document.querySelectorAll(".search")).forEach((b) =>
-  b.addEventListener("click", () => (window.location.href = "search.html"))
+  b.addEventListener("click", () => (window.location.href = "search.html")),
 );
 
 document.querySelectorAll("button[data-href]").forEach((btn) => {

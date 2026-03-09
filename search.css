@@ -239,6 +239,57 @@
   border: 1px solid var(--border);
 }
 
+.recipes-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+/* наследуем общие правила .btn, но делаем круглыми и компактными */
+.nav-arrow {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+  background: var(--panel);
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
+}
+
+/* hover / active */
+.nav-arrow:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* disabled state */
+.nav-arrow:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+/* индикатор страницы */
+.page-indicator {
+  font-size: 13px;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--muted);
+  border: 1px solid var(--border);
+  min-width: 110px;
+  text-align: center;
+}
+
 @media (max-width: 1000px) {
   .home-button,
   .search-button,
@@ -262,6 +313,19 @@
 
   .results .grid {
     grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Сохранить аккуратный вид на мобильных */
+@media (max-width: 480px) {
+  .nav-arrow {
+    width: 40px;
+    height: 40px;
+  }
+  .page-indicator {
+    min-width: 90px;
+    font-size: 12px;
+    padding: 6px 8px;
   }
 }
 

@@ -54,7 +54,9 @@
   cursor: pointer;
   border-radius: 8px;
   color: var(--muted-text, #444); /* цвет иконки, когда не сохранено */
-  transition: transform 160ms ease, color 160ms ease,
+  transition:
+    transform 160ms ease,
+    color 160ms ease,
     background-color 160ms ease;
 }
 
@@ -69,7 +71,9 @@
   fill: none; /* по умолчанию — контур */
   stroke: currentColor;
   stroke-width: 1.2;
-  transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1), fill 200ms ease,
+  transition:
+    transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    fill 200ms ease,
     stroke 200ms ease;
   transform-origin: 50% 50%;
 }
@@ -167,7 +171,10 @@
   cursor: pointer;
   opacity: 0.75;
   border: 2px solid transparent;
-  transition: opacity 0.12s, transform 0.12s, border-color 0.12s;
+  transition:
+    opacity 0.12s,
+    transform 0.12s,
+    border-color 0.12s;
 }
 .carousel-thumbs img:hover,
 .carousel-thumbs img:focus {

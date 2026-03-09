@@ -50,17 +50,17 @@
 
       // Проверяем подписку в localStorage
       const subscribedAuthors = JSON.parse(
-        localStorage.getItem("subscribedAuthors") || "[]"
+        localStorage.getItem("subscribedAuthors") || "[]",
       );
       if (subscribedAuthors.includes(authorId)) {
-        subscribeBtn.textContent = "Вы подписаны";
+        subscribeBtn.textContent = "Отписаться";
         subscribeBtn.classList.add("subscribed");
         subscribeBtn.setAttribute("aria-pressed", "true");
       }
 
       subscribeBtn.addEventListener("click", function () {
         let authors = JSON.parse(
-          localStorage.getItem("subscribedAuthors") || "[]"
+          localStorage.getItem("subscribedAuthors") || "[]",
         );
         if (authors.includes(authorId)) {
           // Отписка
@@ -71,7 +71,7 @@
         } else {
           // Подписка
           authors.push(authorId);
-          subscribeBtn.textContent = "Вы подписаны";
+          subscribeBtn.textContent = "Отписаться";
           subscribeBtn.classList.add("subscribed");
           subscribeBtn.setAttribute("aria-pressed", "true");
         }
@@ -83,7 +83,7 @@
     (function setupFavorite() {
       const recipeId = "tortilla-airgrill"; // уникальный ID рецепта
       const savedRecipes = JSON.parse(
-        localStorage.getItem("savedRecipes") || "[]"
+        localStorage.getItem("savedRecipes") || "[]",
       );
 
       const heartBtn = document.createElement("button");
@@ -123,7 +123,7 @@
 
       const mainImg = document.getElementById("carouselImage");
       const thumbs = Array.from(
-        carousel.querySelectorAll(".carousel-thumbs img")
+        carousel.querySelectorAll(".carousel-thumbs img"),
       );
       const prevBtn = document.getElementById("carouselPrev");
       const nextBtn = document.getElementById("carouselNext");
@@ -134,7 +134,7 @@
       const images = thumbs.map((t) => t.dataset.src || t.src);
 
       let currentIndex = thumbs.findIndex(
-        (t) => t.getAttribute("aria-current") === "true"
+        (t) => t.getAttribute("aria-current") === "true",
       );
       if (currentIndex === -1) currentIndex = 0;
 
@@ -200,7 +200,7 @@
           if (e.touches && e.touches.length === 1)
             touchStartX = e.touches[0].clientX;
         },
-        { passive: true }
+        { passive: true },
       );
 
       mainImg.addEventListener("touchend", (e) => {
@@ -270,7 +270,7 @@
             if (e.touches && e.touches.length === 1)
               lbStartX = e.touches[0].clientX;
           },
-          { passive: true }
+          { passive: true },
         );
         img.addEventListener("touchend", (e) => {
           if (lbStartX == null) return;

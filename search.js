@@ -78,7 +78,7 @@ const sample = [
     img: "./images/salad_baked_vegetables.webp",
     categories: ["Салаты", "Вегетарианские"],
     ingredients: ["Перец", "Баклажан", "Оливковое масло"],
-    time: 15,
+    time: 35,
     cal: 180,
   },
   {
@@ -121,7 +121,7 @@ function escapeHtml(s) {
 }
 
 /* Рендер карточек */
-function renderResults(list) {
+function renderResults(list, startIndex = 0) {
   const grid = document.getElementById("resultsGrid");
   if (!grid) return;
 
@@ -145,7 +145,8 @@ function renderResults(list) {
       const li = document.createElement("li");
       li.className = "recipe-card";
       li.setAttribute("role", "listitem");
-      li.dataset.id = r.id ?? i + 1;
+      // dataset id: если у объекта есть id — используем, иначе вычисляем глобальный индекс
+      li.dataset.id = r.id ?? startIndex + i + 1;
 
       const ingList = (r.ingredients || [])
         .map((ing) => `<li>${escapeHtml(ing)}</li>`)
@@ -153,7 +154,7 @@ function renderResults(list) {
 
       li.innerHTML = `
         <img class="recipe-photo" alt="${escapeHtml(
-          r.title
+          r.title,
         )}" src="${escapeHtml(r.img)}" />
         <h2 class="recipe-title">${escapeHtml(r.title)}</h2>
         <p class="recipe-desc">${escapeHtml(r.desc)}</p>
@@ -191,7 +192,7 @@ function filterRecipes() {
   const timeVal = (document.getElementById("f-time")?.value || "").trim();
   const calVal = (document.getElementById("f-cal")?.value || "").trim();
   const selectedCats = Array.from(
-    document.querySelectorAll(".category-checkbox:checked")
+    document.querySelectorAll(".category-checkbox:checked"),
   ).map((c) => c.value);
 
   const maxTime = timeVal ? Number(timeVal) : null;
@@ -211,7 +212,7 @@ function filterRecipes() {
       if (
         !Array.isArray(s.ingredients) ||
         !s.ingredients.some(
-          (it) => (it || "").toLowerCase() === ingVal.toLowerCase()
+          (it) => (it || "").toLowerCase() === ingVal.toLowerCase(),
         )
       )
         return false;
@@ -235,34 +236,137 @@ function filterRecipes() {
   });
 }
 
-/* Поиск и рендер */
+/* ПАГИНАЦИЯ */
+let currentResults = sample.slice();
+let currentPage = 1;
+let pageSize = getPageSize();
+let totalPages = Math.max(1, Math.ceil(currentResults.length / pageSize));
+
+function getPageSize() {
+  // Адаптивно: на десктопе 12, на мобильном 6 (соответствует сетке CSS).
+  return window.matchMedia("(min-width: 1000px)").matches ? 12 : 6;
+}
+
+function updatePagingMeta() {
+  pageSize = getPageSize();
+  totalPages = Math.max(
+    1,
+    Math.ceil(currentResults.length / Math.max(1, pageSize)),
+  );
+  if (currentPage > totalPages) currentPage = totalPages;
+}
+
+/* Рендер конкретной страницы: вычисляем slice и передаём startIndex */
+function renderPage(list, page = 1, replaceUrl = true) {
+  currentResults = Array.isArray(list) ? list.slice() : [];
+  currentPage = Math.max(1, Number(page) || 1);
+  updatePagingMeta();
+
+  const start = (currentPage - 1) * pageSize;
+  const pageSlice = currentResults.slice(start, start + pageSize);
+
+  renderResults(pageSlice, start); // передаём startIndex для правильной нумерации
+
+  updateNavButtons();
+
+  // Обновляем URL параметр page (и фильтры) без добавления в историю,
+  // чтобы при перезагрузке состояние восстанавливалось.
+  if (replaceUrl) updateUrlParams(false);
+}
+
+function updateNavButtons() {
+  const prev = document.getElementById("navPrev");
+  const next = document.getElementById("navNext");
+  const indicator = document.getElementById("pageIndicator");
+
+  if (!indicator) return;
+
+  if (prev) prev.disabled = currentPage <= 1;
+  if (next) next.disabled = currentPage >= totalPages;
+
+  indicator.textContent = `Страница ${currentPage} из ${totalPages} (${currentResults.length})`;
+}
+
+/* Инициализация контролов навигации */
+function initNavControls() {
+  const prev = document.getElementById("navPrev");
+  const next = document.getElementById("navNext");
+  if (prev) {
+    prev.addEventListener("click", () => {
+      if (currentPage > 1) renderPage(currentResults, currentPage - 1);
+    });
+  }
+  if (next) {
+    next.addEventListener("click", () => {
+      if (currentPage < totalPages) renderPage(currentResults, currentPage + 1);
+    });
+  }
+
+  // при изменении размера экрана пересчитываем pageSize и корректно позиционируем страницу
+  window.addEventListener("resize", () => {
+    const oldSize = pageSize;
+    const newSize = getPageSize();
+    if (oldSize !== newSize) {
+      const firstItemIndex = (currentPage - 1) * oldSize;
+      currentPage = Math.floor(firstItemIndex / newSize) + 1;
+      renderPage(currentResults, currentPage);
+    }
+  });
+}
+
+/* Синхронизация URL с текущими фильтрами и страницей.
+   addToHistory: если true — записываем в историю (pushState), иначе replaceState.
+*/
+function updateUrlParams(addToHistory = false) {
+  const params = new URLSearchParams();
+
+  const qText = (document.getElementById("question")?.value || "").trim();
+  if (qText) params.set("question", qText);
+
+  const ingVal = document.getElementById("f-ing")?.value;
+  if (ingVal) params.set("ingredient", ingVal);
+
+  const timeVal = document.getElementById("f-time")?.value;
+  if (timeVal) params.set("time", timeVal);
+
+  const calVal = document.getElementById("f-cal")?.value;
+  if (calVal) params.set("cal", calVal);
+
+  document
+    .querySelectorAll(".category-checkbox:checked")
+    .forEach((cb) => params.append("categories[]", cb.value));
+
+  if (currentPage && currentPage > 1) params.set("page", String(currentPage));
+
+  const newURL =
+    window.location.pathname +
+    (params.toString() ? "?" + params.toString() : "");
+  if (addToHistory) {
+    window.history.pushState({}, "", newURL);
+  } else {
+    window.history.replaceState({}, "", newURL);
+  }
+}
+
+/* Поиск и рендер — теперь использует renderPage */
 function doSearchAndRender(addHistory = true) {
   const res = filterRecipes();
-  renderResults(res);
+
+  // при новом поиске сбрасываем на первую страницу
+  currentPage = 1;
+  renderPage(res, currentPage, true);
 
   if (addHistory) {
     const qText = (document.getElementById("question")?.value || "").trim();
     const selectedCats = Array.from(
-      document.querySelectorAll(".category-checkbox:checked")
+      document.querySelectorAll(".category-checkbox:checked"),
     ).map((c) => c.value);
     const histTitle =
       qText || (selectedCats.length ? selectedCats.join(", ") : "Поиск");
     addToHistory(histTitle);
 
-    // обновляем URL без перезагрузки
-    const params = new URLSearchParams();
-    if (qText) params.set("question", qText);
-    const ingVal = document.getElementById("f-ing")?.value;
-    if (ingVal) params.set("ingredient", ingVal);
-    const timeVal = document.getElementById("f-time")?.value;
-    if (timeVal) params.set("time", timeVal);
-    const calVal = document.getElementById("f-cal")?.value;
-    if (calVal) params.set("cal", calVal);
-    document
-      .querySelectorAll(".category-checkbox:checked")
-      .forEach((cb) => params.append("categories[]", cb.value));
-    const newURL = window.location.pathname + "?" + params.toString();
-    window.history.replaceState({}, "", newURL);
+    // обновляем URL (и добавляем в историю результатов поиска)
+    updateUrlParams(true);
   }
 }
 
@@ -366,10 +470,8 @@ function initComposePopups() {
   });
 }
 
-/* Инициализация по URL */
+/* Инициализация по URL: применяем параметры фильтров и показываем нужную страницу */
 function initFromURL() {
-  renderResults(sample);
-
   const params = new URLSearchParams(window.location.search);
 
   document.getElementById("question").value = params.get("question") || "";
@@ -381,6 +483,21 @@ function initFromURL() {
   document
     .querySelectorAll(".category-checkbox")
     .forEach((cb) => (cb.checked = cats.includes(cb.value)));
+
+  // Выполняем фильтрацию и рендер — учитываем параметр page, если есть
+  const res = filterRecipes();
+  currentResults = res.slice();
+  pageSize = getPageSize();
+  totalPages = Math.max(
+    1,
+    Math.ceil(currentResults.length / Math.max(1, pageSize)),
+  );
+
+  const pageParam = Number(params.get("page")) || 1;
+  currentPage = Math.min(Math.max(1, pageParam), totalPages);
+
+  renderPage(currentResults, currentPage, false);
+  // Навигация и кнопки будут инициализированы в DOMContentLoaded
 }
 
 /* DOM Ready */
@@ -402,7 +519,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .querySelectorAll(".category-checkbox")
     .forEach((cb) =>
-      cb.addEventListener("change", () => doSearchAndRender(false))
+      cb.addEventListener("change", () => doSearchAndRender(false)),
     );
 
   document.querySelectorAll("button[data-href]").forEach((btn) => {
@@ -412,5 +529,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  renderResults(sample);
+  // Инициализация контролов навигации (кнопки и ресайз)
+  initNavControls();
 });

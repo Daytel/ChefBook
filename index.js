@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Всплывающие окна "Состав"
   (function ingredientsPopup() {
     const composeButtons = Array.from(
-      document.querySelectorAll(".compose-btn")
+      document.querySelectorAll(".compose-btn"),
     );
     let openMenu = null;
 

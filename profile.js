@@ -97,7 +97,7 @@ function readSelected(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return [];
   return Array.from(
-    container.querySelectorAll('input[type="checkbox"]:checked')
+    container.querySelectorAll('input[type="checkbox"]:checked'),
   ).map((i) => i.value);
 }
 
@@ -123,7 +123,7 @@ function updateDropdownHeaderForContainer(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
   const header = container.querySelector(
-    ".dropdown-header .dropdown-placeholder"
+    ".dropdown-header .dropdown-placeholder",
   );
   const selected = readSelected(containerId);
   if (!header) return;
@@ -178,7 +178,7 @@ function saveProfile() {
       freq: plannerFreq.value,
     },
     trackedAuthors: Array.from(
-      (authorsList || document).querySelectorAll("input[type=checkbox]")
+      (authorsList || document).querySelectorAll("input[type=checkbox]"),
     )
       .filter((i) => i.checked)
       .map((i) => i.dataset.id),
@@ -329,7 +329,7 @@ clearBtn.addEventListener("click", () => {
     const c = document.getElementById(id);
     if (c)
       c.querySelectorAll("input[type=checkbox]").forEach(
-        (cb) => (cb.checked = false)
+        (cb) => (cb.checked = false),
       );
   });
   if (avatarPreview) {

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
@@ -311,6 +311,68 @@
                 <section class="results" aria-label="Найденные рецепты">
                   <h2 class="panel-title">НАЙДЕННЫЕ РЕЦЕПТЫ</h2>
                   <ul id="resultsGrid" class="recipes-list" role="list"></ul>
+
+                  <!-- Навигация по страницам результатов -->
+                  <div
+                    class="recipes-nav"
+                    aria-label="Навигация рецептов"
+                    role="navigation"
+                  >
+                    <button
+                      id="navPrev"
+                      class="btn nav-arrow"
+                      type="button"
+                      aria-label="Предыдущая страница"
+                      aria-controls="resultsGrid"
+                      disabled
+                    >
+                      <!-- Вставил компактную SVG-стрелку влево -->
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </button>
+
+                    <div
+                      id="pageIndicator"
+                      class="page-indicator"
+                      aria-live="polite"
+                      aria-atomic="true"
+                    >
+                      Страница 1
+                    </div>
+
+                    <button
+                      id="navNext"
+                      class="btn nav-arrow"
+                      type="button"
+                      aria-label="Следующая страница"
+                      aria-controls="resultsGrid"
+                      disabled
+                    >
+                      <!-- Вставил компактную SVG-стрелку вправо -->
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </section>
 
                 <section class="history" aria-label="История поиска">

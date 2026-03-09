@@ -46,8 +46,7 @@ const sampleAuthor = {
   bio: "Любит простые и быстрые рецепты для будних дней. Делится лайфхаками по хранению продуктов.",
   recipes: 12,
   followers: 134,
-  avatarUrl:
-    "./images/avatar.jpg",
+  avatarUrl: "./images/avatar.jpg",
 };
 
 // Состояния
@@ -178,8 +177,8 @@ function renderCalendar() {
         <div class="day-head">
           <div class="day-name">${dayName(d)}</div>
           <div class="day-date">${d.getDate()}.${String(
-      d.getMonth() + 1
-    ).padStart(2, "0")}</div>
+            d.getMonth() + 1,
+          ).padStart(2, "0")}</div>
         </div>
         <div class="day-recipes" role="list"></div>
       `;
@@ -189,7 +188,7 @@ function renderCalendar() {
       dayEl.classList.add("dragover");
     });
     dayEl.addEventListener("dragleave", () =>
-      dayEl.classList.remove("dragover")
+      dayEl.classList.remove("dragover"),
     );
     dayEl.addEventListener("drop", (ev) => {
       ev.preventDefault();
@@ -246,7 +245,7 @@ function renderCalendar() {
           } else {
             // fallback: ищем запись с таким recipeId
             const found = weekPlan[key]?.find(
-              (x) => x.recipeId === entry.recipeId
+              (x) => x.recipeId === entry.recipeId,
             );
             if (found) found.portions = v;
           }
@@ -267,7 +266,7 @@ function renderCalendar() {
             } else {
               // fallback по recipeId
               const found = weekPlan[key]?.find(
-                (x) => x.recipeId === entry.recipeId
+                (x) => x.recipeId === entry.recipeId,
               );
               if (found) found.portions = Number(found.portions || 0) + 1;
             }
@@ -285,11 +284,11 @@ function renderCalendar() {
             if (weekPlan[key][idx]) {
               weekPlan[key][idx].portions = Math.max(
                 1,
-                Number(weekPlan[key][idx].portions || 0) - 1
+                Number(weekPlan[key][idx].portions || 0) - 1,
               );
             } else {
               const found = weekPlan[key]?.find(
-                (x) => x.recipeId === entry.recipeId
+                (x) => x.recipeId === entry.recipeId,
               );
               if (found)
                 found.portions = Math.max(1, Number(found.portions || 0) - 1);
@@ -355,7 +354,7 @@ function renderIngredients() {
       `<div class="ing-row">
           <div class="ing-name">${escapeHtml(m.name)}</div>
           <div class="ing-qty">${m.qty} ${escapeHtml(m.unit)}</div>
-       </div>`
+       </div>`,
   );
 
   // Кнопки: копировать и PDF

@@ -123,7 +123,7 @@ function addIngredientRow(name = "", qty = "", unit = "") {
       title: "Удалить ингредиент",
       "aria-label": "Удалить ингредиент",
     },
-    "✕"
+    "✕",
   );
   remBtnWrapper.appendChild(remBtn);
 
@@ -131,7 +131,7 @@ function addIngredientRow(name = "", qty = "", unit = "") {
   const rowHint = el(
     "div",
     { class: "row-hint field-hint", id: id + "_hint" },
-    "Название до 100 символов. Кол-во — число или дробь (например 1.5). Мера до 20 символов."
+    "Название до 100 символов. Кол-во — число или дробь (например 1.5). Мера до 20 символов.",
   );
 
   // строка ошибки
@@ -190,17 +190,17 @@ function addStep(text = "", imgData = null) {
       maxlength: 500,
       "aria-describedby": id + "_hint",
     },
-    text
+    text,
   );
   const stepHint = el(
     "div",
     { class: "field-hint", id: id + "_hint" },
-    "Текст шага — до 500 символов. Рекомендуется: что делать и сколько времени."
+    "Текст шага — до 500 символов. Рекомендуется: что делать и сколько времени.",
   );
   const imgLabel = el(
     "label",
     { class: "btn", style: "margin-top:6px; display:inline-block;" },
-    "Загрузить фото шага"
+    "Загрузить фото шага",
   );
   const imgInput = el("input", {
     type: "file",
@@ -214,7 +214,7 @@ function addStep(text = "", imgData = null) {
       type: "button",
       title: "Удалить шаг",
     },
-    "Удалить"
+    "Удалить",
   );
 
   const rowError = el("div", {
@@ -295,7 +295,7 @@ function renderPhotos() {
         title: "Удалить фото",
         type: "button",
       },
-      "✕"
+      "✕",
     );
     rm.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -356,7 +356,7 @@ function collectRecipe() {
     })
     .filter((i) => i.name && i.qty && i.unit);
   const categoriesSelected = Array.from(
-    categoriesBox.querySelectorAll('input[type="checkbox"]:checked')
+    categoriesBox.querySelectorAll('input[type="checkbox"]:checked'),
   ).map((cb) => cb.value);
   const steps = Array.from(document.querySelectorAll(".step-row"))
     .map((row) => {
@@ -432,7 +432,7 @@ function validateForm() {
 
   // Проверяем, есть ли хотя бы один полный ингредиент
   const completeIngredients = Array.from(
-    document.querySelectorAll(".ingredient-row")
+    document.querySelectorAll(".ingredient-row"),
   )
     .map((row) => {
       const name = row.querySelector(".ing-name").value.trim();
@@ -456,7 +456,7 @@ function validateForm() {
 
   // Categories: минимум 1
   const cats = Array.from(
-    categoriesBox.querySelectorAll('input[type="checkbox"]:checked')
+    categoriesBox.querySelectorAll('input[type="checkbox"]:checked'),
   );
   if (cats.length === 0) {
     setFieldError("categories", "Выберите минимум одну категорию");
@@ -505,11 +505,11 @@ saveRecipe.addEventListener("click", () => {
   if (!ok) {
     // фокусируемся на первой ошибке
     const firstErr = document.querySelector(
-      ".field-error:not(:empty), .row-error:not(:empty)"
+      ".field-error:not(:empty), .row-error:not(:empty)",
     );
     if (firstErr) {
       const parentInput = firstErr.closest(
-        ".field, .ingredient-row, .step-row"
+        ".field, .ingredient-row, .step-row",
       );
       const input = parentInput && parentInput.querySelector("input, textarea");
       if (input) input.focus();

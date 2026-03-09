@@ -55,8 +55,7 @@ const sampleAuthor = {
   bio: "Любит простые и быстрые рецепты для будних дней. Делится лайфхаками по хранению продуктов.",
   recipes: 12,
   followers: 134,
-  avatarUrl:
-    "./images/avatar.jpg",
+  avatarUrl: "./images/avatar.jpg",
 };
 
 function renderAuthor() {
@@ -98,7 +97,7 @@ function renderSaved(list) {
         // Форматируем: если есть qty — добавляем тире и qty+unit
         if (qty)
           return `<li>${name} — ${escapeHtml(
-            qty + (unit ? " " + unit : "")
+            qty + (unit ? " " + unit : ""),
           )}</li>`;
         return `<li>${name}</li>`;
       })
@@ -241,12 +240,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // навигация нижнего меню (если есть классы .home/.profile/.search как в других страницах)
   Array.from(document.querySelectorAll(".home")).forEach((b) =>
-    b.addEventListener("click", () => (window.location.href = "index.html"))
+    b.addEventListener("click", () => (window.location.href = "index.html")),
   );
   Array.from(document.querySelectorAll(".profile")).forEach((b) =>
-    b.addEventListener("click", () => (window.location.href = "profile.html"))
+    b.addEventListener("click", () => (window.location.href = "profile.html")),
   );
   Array.from(document.querySelectorAll(".search")).forEach((b) =>
-    b.addEventListener("click", () => (window.location.href = "search.html"))
+    b.addEventListener("click", () => (window.location.href = "search.html")),
   );
 });
