@@ -240,12 +240,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // навигация нижнего меню (если есть классы .home/.profile/.search как в других страницах)
   Array.from(document.querySelectorAll(".home")).forEach((b) =>
-    b.addEventListener("click", () => (window.location.href = "index.html")),
+    b.addEventListener("click", () => (window.location.href = "/")),
   );
   Array.from(document.querySelectorAll(".profile")).forEach((b) =>
-    b.addEventListener("click", () => (window.location.href = "profile.html")),
+    b.addEventListener("click", () => (window.location.href = "/profile.html")),
   );
   Array.from(document.querySelectorAll(".search")).forEach((b) =>
-    b.addEventListener("click", () => (window.location.href = "search.html")),
+    b.addEventListener("click", () => (window.location.href = "/Catalog")),
   );
 });

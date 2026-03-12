@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <!-- Версия .NET — используй ту, что установлена у тебя (dotnet version) -->
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Название сборки и пространство имён совпадают с namespace в коде -->
+    <AssemblyName>RecipeApp</AssemblyName>
+    <RootNamespace>RecipeApp</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Подключение к MySQL через Pomelo (рекомендуемый драйвер) -->
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+
+    <!-- Entity Framework Core — ORM для работы с БД -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+
+    <!-- Нужен для команд миграций: dotnet ef migrations add / database update -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

@@ -3,7 +3,6 @@ using RecipeApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Настройка подключения к MySQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
@@ -12,11 +11,19 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-app.UseStaticFiles(); // Обязательно для работы фото
+app.UseDefaultFiles();   // index.html
+app.UseStaticFiles();
 app.UseRouting();
 
+// Явный маршрут для каталога
+app.MapControllerRoute(
+    name: "catalog",
+    pattern: "Catalog",
+    defaults: new { controller = "Catalog", action = "Index" });
+
+// Общий маршрут для остальных контроллеров
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Catalog}/{action=Index}/{id?}");
+    pattern: "{controller}/{action}/{id?}");
 
 app.Run();

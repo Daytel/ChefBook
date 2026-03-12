@@ -56,7 +56,7 @@ if (form) {
 
       msg.textContent = "Успешный вход. Перенаправление...";
       setTimeout(() => {
-        window.location.href = "profile.html";
+        window.location.href = "/profile.html";
       }, 700);
     } catch (err) {
       msg.textContent = "Ошибка при сохранении данных";

@@ -1,0 +1,200 @@
+@model List<RecipeApp.Models.Recipe>
+@using RecipeApp.Models
+
+@{
+    ViewData["Title"] = "Поиск рецептов";
+
+    // Данные, переданные из CatalogController через ViewBag
+    var allCategories = ViewBag.AllCategories as List<Category> ?? new List<Category>();
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+
+    // Делим категории на два столбца для вёрстки
+    var half = (int)Math.Ceiling(allCategories.Count / 2.0);
+    var leftCategories  = allCategories.Take(half).ToList();
+    var rightCategories = allCategories.Skip(half).ToList();
+}
+
+<!-- Шапка -->
+<header class="site__header" role="banner" aria-label="Шапка">
+    <div class="site-title">
+        <img src="~/icons/logo.svg" alt="" aria-hidden="true" />
+        <span>ChefBook</span>
+    </div>
+    <nav class="site__nav" role="navigation" aria-label="Главная навигация шапки">
+        <button class="home-button btn" data-href="/" type="button" aria-label="Главная страница">
+            <img src="~/icons/home.svg" class="btn-icon" alt="" aria-hidden="true" />
+            <span class="btn-label">ГЛАВНАЯ</span>
+        </button>
+        <button class="profile btn" data-href="/profile" type="button" aria-label="Профиль / Регистрация">
+            <img src="~/icons/profile.svg" class="btn-icon" alt="" aria-hidden="true" />
+            <span class="btn-label">ПРОФИЛЬ / РЕГИСТРАЦИЯ</span>
+        </button>
+    </nav>
+</header>
+
+<!-- Контент -->
+<main class="site__main" role="main" aria-label="Поиск рецептов">
+    <div class="search-div" aria-labelledby="search-title">
+        <h1 id="search-title" class="search-title">Поиск</h1>
+
+        <div class="content-inner">
+            <!-- Левая колонка: фильтры и категории -->
+            <div class="left-column" aria-label="Фильтры и категории">
+                <form class="search-area" role="search" aria-label="Форма поиска">
+
+                    <section>
+                        <h2 class="panel-title">ФИЛЬТРЫ</h2>
+                        <div class="search-row">
+                            <label for="question" class="visually-hidden">Поиск по названию или ингредиенту</label>
+                            <input id="question" class="input" name="question"
+                                   placeholder="Введите название или ингредиент"
+                                   autocomplete="off" />
+                            <button id="searchBtn" class="search-button btn" type="submit" aria-label="Начать поиск">
+                                Начать поиск
+                            </button>
+                        </div>
+
+                        <div class="filters">
+                            <div class="filter">
+                                <label for="f-time">Время приготовления</label>
+                                <select id="f-time" name="time">
+                                    <option value="">Любое</option>
+                                    <option value="15">до 15 мин</option>
+                                    <option value="30">до 30 мин</option>
+                                    <option value="60">до 60 мин</option>
+                                </select>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Категории из БД — рендерятся сервером -->
+                    <section class="categories-section">
+                        <h2 class="panel-title">КАТЕГОРИИ</h2>
+                        <fieldset class="categories" aria-label="Категории рецептов">
+                            <div class="cols">
+                                <div class="category-box">
+                                    @foreach (var cat in leftCategories)
+                                    {
+                                        <label class="category-item">
+                                            <input class="category-checkbox" type="checkbox"
+                                                   name="categories[]"
+                                                   value="@cat.Id"
+                                                   data-name="@cat.Name" />
+                                            <span>@cat.Name</span>
+                                        </label>
+                                    }
+                                </div>
+                                <div class="category-box">
+                                    @foreach (var cat in rightCategories)
+                                    {
+                                        <label class="category-item">
+                                            <input class="category-checkbox" type="checkbox"
+                                                   name="categories[]"
+                                                   value="@cat.Id"
+                                                   data-name="@cat.Name" />
+                                            <span>@cat.Name</span>
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                        </fieldset>
+                    </section>
+
+                </form>
+            </div>
+
+            <!-- Правая колонка: результаты -->
+            <div class="right-column">
+                <section class="results" aria-label="Найденные рецепты">
+                    <h2 class="panel-title">НАЙДЕННЫЕ РЕЦЕПТЫ</h2>
+
+                    <!--
+                        Начальные карточки — серверный рендер (SSR).
+                        При изменении фильтров search.js очистит этот список
+                        и заполнит его заново через AJAX-запрос к /api/recipes.
+                    -->
+                    <ul id="resultsGrid" class="recipes-list" role="list">
+                        @foreach (var recipe in Model)
+                        {
+                            var mainPhoto = recipe.Photos?.FirstOrDefault(p => p.IsMain)?.PhotoUrl
+                                            ?? recipe.Photos?.FirstOrDefault()?.PhotoUrl
+                                            ?? "/images/placeholder.jpg";
+                            <li class="recipe-card" role="listitem" data-id="@recipe.Id">
+                                <img class="recipe-photo" src="@mainPhoto" alt="@recipe.Title" />
+                                <h2 class="recipe-title">@recipe.Title</h2>
+                                <p class="recipe-desc">@recipe.Description</p>
+                                <div class="compose-row">
+                                    <button class="compose-btn btn" type="button"
+                                            aria-haspopup="true" aria-expanded="false">
+                                        Состав
+                                    </button>
+                                </div>
+                                <div class="ingredients" role="dialog"
+                                     aria-label="Ингредиенты" aria-hidden="true"
+                                     style="display:none;">
+                                    <h2>Ингредиенты</h2>
+                                    <ul>
+                                        @foreach (var ri in recipe.RecipeIngredients ?? new())
+                                        {
+                                            <li>@ri.Ingredient?.Name — @ri.QuantityPerPortion @ri.Unit</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- Пагинация -->
+                    <div class="recipes-nav" aria-label="Навигация рецептов" role="navigation">
+                        <button id="navPrev" class="btn nav-arrow" type="button"
+                                aria-label="Предыдущая страница"
+                                @(currentPage <= 1 ? "disabled" : "")>
+                            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <div id="pageIndicator" class="page-indicator"
+                             aria-live="polite" aria-atomic="true">
+                            Страница @currentPage из @totalPages (@Model.Count)
+                        </div>
+                        <button id="navNext" class="btn nav-arrow" type="button"
+                                aria-label="Следующая страница"
+                                @(currentPage >= totalPages ? "disabled" : "")>
+                            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" fill="currentColor" />
+                            </svg>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="history" aria-label="История поиска">
+                    <h2 class="panel-title">ИСТОРИЯ ПОИСКА</h2>
+                    <div id="historyBox" class="box">
+                        <div id="historyList">Пусто</div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Подвал -->
+<footer class="site__footer" role="contentinfo" aria-label="Нижняя навигация">
+    <button class="nav-item btn home" type="button" data-href="/">
+        <img src="~/icons/home.svg" class="btn-icon" alt="" aria-hidden="true" />
+        <span class="btn-label">Главная</span>
+    </button>
+    <button class="nav-item btn profile" type="button" data-href="/profile">
+        <img src="~/icons/profile.svg" class="btn-icon" alt="" aria-hidden="true" />
+        <span class="btn-label">Профиль / Регистрация</span>
+    </button>
+    <button class="nav-item btn only-about" type="button" data-href="/about" aria-label="О нас">
+        <img src="~/icons/info.svg" class="btn-icon" alt="" aria-hidden="true" />
+        <span class="btn-label">О нас</span>
+    </button>
+</footer>
+
+<!-- search.js подключается последним — DOM уже готов -->
+<script src="~/common.js"></script>
+<script src="~/search.js"></script>

@@ -1,108 +1,191 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeApp.Models
 {
-    public class User {
+    [Table("users")]
+    public class User
+    {
+        [Column("id")]
         public int Id { get; set; }
-        public string Email { get; set; }
-        public string PasswordHash { get; set; }
-        public string DisplayName { get; set; }
-        public string AvatarUrl { get; set; }
-        public string Bio { get; set; }
+        [Column("email")]
+        public required string Email { get; set; }
+        [Column("password_hash")]
+        public required string PasswordHash { get; set; }
+        [Column("display_name")]
+        public string? DisplayName { get; set; }
+        [Column("avatar_url")]
+        public string? AvatarUrl { get; set; }
+        [Column("bio")]
+        public string? Bio { get; set; }
+        [Column("planner_notif_enabled")]
         public bool PlannerNotifEnabled { get; set; }
-        public string PlannerNotifFreq { get; set; }
+        [Column("planner_notif_freq")]
+        public string? PlannerNotifFreq { get; set; }
     }
 
-    public class Recipe {
+    [Table("recipes")]
+    public class Recipe
+    {
+        [Column("id")]
         public int Id { get; set; }
-        [MaxLength(30)] public string Title { get; set; }
-        [MaxLength(300)] public string Description { get; set; }
+        [Column("title")]
+        [MaxLength(30)] public required string Title { get; set; }
+        [Column("description")]
+        [MaxLength(300)] public string? Description { get; set; }
+        [Column("cooking_time_minutes")]
         public int CookingTimeMinutes { get; set; }
+        [Column("author_id")]
         public int AuthorId { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now; // Для сортировки по новизне
-        public User Author { get; set; }
-        public List<RecipePhoto> Photos { get; set; }
-        public List<RecipeIngredient> RecipeIngredients { get; set; }
-        public List<RecipeCategory> RecipeCategories { get; set; }
-        public List<RecipeStep> Steps { get; set; }
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public User? Author { get; set; }
+        public List<RecipePhoto> Photos { get; set; } = [];
+        public List<RecipeIngredient> RecipeIngredients { get; set; } = [];
+        public List<RecipeCategory> RecipeCategories { get; set; } = [];
+        public List<RecipeStep> Steps { get; set; } = [];
     }
 
-    public class Category {
+    [Table("categories")]
+    public class Category
+    {
+        [Column("id")]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public List<RecipeCategory> RecipeCategories { get; set; }
+        [Column("name")]
+        public required string Name { get; set; }
+        public List<RecipeCategory> RecipeCategories { get; set; } = [];
     }
 
-    public class Ingredient {
+    [Table("ingredients")]
+    public class Ingredient
+    {
+        [Column("id")]
         public int Id { get; set; }
-        public string Name { get; set; }
+        [Column("name")]
+        public required string Name { get; set; }
     }
 
-    public class RecipeIngredient {
+    [Table("recipe_ingredients")]
+    public class RecipeIngredient
+    {
+        [Column("recipe_id")]
         public int RecipeId { get; set; }
+        [Column("ingredient_id")]
         public int IngredientId { get; set; }
+        [Column("quantity_per_portion")]
         public double QuantityPerPortion { get; set; }
-        [MaxLength(20)] public string Unit { get; set; }
-        public Recipe Recipe { get; set; }
-        public Ingredient Ingredient { get; set; }
+        [Column("unit")]
+        [MaxLength(20)] public required string Unit { get; set; }
+
+        public Recipe? Recipe { get; set; }
+        public Ingredient? Ingredient { get; set; }
     }
 
-    public class RecipeCategory {
+    [Table("recipe_categories")]
+    public class RecipeCategory
+    {
+        [Column("recipe_id")]
         public int RecipeId { get; set; }
+        [Column("category_id")]
         public int CategoryId { get; set; }
-        public Recipe Recipe { get; set; }
-        public Category Category { get; set; }
+
+        public Recipe? Recipe { get; set; }
+        public Category? Category { get; set; }
     }
 
-    public class RecipeStep {
+    [Table("recipe_steps")]
+    public class RecipeStep
+    {
+        [Column("id")]
         public int Id { get; set; }
+        [Column("recipe_id")]
         public int RecipeId { get; set; }
+        [Column("step_number")]
         public int StepNumber { get; set; }
-        [MaxLength(500)] public string Instruction { get; set; }
-        public string PhotoUrl { get; set; }
+        [Column("instruction")]
+        [MaxLength(500)] public required string Instruction { get; set; }
+        [Column("photo_url")]
+        public string? PhotoUrl { get; set; }
     }
 
-    public class RecipePhoto {
+    [Table("recipe_photos")]
+    public class RecipePhoto
+    {
+        [Column("id")]
         public int Id { get; set; }
+        [Column("recipe_id")]
         public int RecipeId { get; set; }
-        public string PhotoUrl { get; set; }
+        [Column("photo_url")]
+        public required string PhotoUrl { get; set; }
+        [Column("is_main")]
         public bool IsMain { get; set; }
     }
 
-    public class Favorite {
+    [Table("favorites")]
+    public class Favorite
+    {
+        [Column("user_id")]
         public int UserId { get; set; }
+        [Column("recipe_id")]
         public int RecipeId { get; set; }
     }
 
-    public class Subscription {
+    [Table("subscriptions")]
+    public class Subscription
+    {
+        [Column("follower_id")]
         public int FollowerId { get; set; }
+        [Column("author_id")]
         public int AuthorId { get; set; }
+        [Column("is_notified")]
         public bool IsNotified { get; set; }
     }
 
-    public class RecipeComment {
+    [Table("recipe_comments")]
+    public class RecipeComment
+    {
+        [Column("id")]
         public int Id { get; set; }
+        [Column("user_id")]
         public int UserId { get; set; }
+        [Column("recipe_id")]
         public int RecipeId { get; set; }
-        public string CommentText { get; set; }
+        [Column("comment_text")]
+        public required string CommentText { get; set; }
+        [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 
-    public class AuthorReview {
+    [Table("author_reviews")]
+    public class AuthorReview
+    {
+        [Column("id")]
         public int Id { get; set; }
+        [Column("reviewer_id")]
         public int ReviewerId { get; set; }
+        [Column("author_id")]
         public int AuthorId { get; set; }
-        public string ReviewText { get; set; }
+        [Column("review_text")]
+        public required string ReviewText { get; set; }
     }
 
-    public class MenuPlanner {
+    [Table("menu_planner")]
+    public class MenuPlanner
+    {
+        [Column("id")]
         public int Id { get; set; }
+        [Column("user_id")]
         public int UserId { get; set; }
+        [Column("recipe_id")]
         public int RecipeId { get; set; }
+        [Column("planned_date")]
         public DateTime PlannedDate { get; set; }
+        [Column("portions")]
         public int Portions { get; set; }
-        public Recipe Recipe { get; set; }
+
+        public Recipe? Recipe { get; set; }
     }
 }
