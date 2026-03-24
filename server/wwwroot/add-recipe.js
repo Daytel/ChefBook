@@ -8,10 +8,8 @@ const stepsBox = document.getElementById("stepsBox");
 const addStepBtn = document.getElementById("addStepBtn");
 const dishPhotos = document.getElementById("dishPhotos");
 const photosPreview = document.getElementById("photosPreview");
-
-const saveRecipe = document.getElementById("saveRecipe");
-const clearRecipe = document.getElementById("clearRecipe");
-
+const saveRecipeBtn = document.getElementById("saveRecipe");
+const clearRecipeBtn = document.getElementById("clearRecipe");
 const form = document.getElementById("recipeForm");
 
 // Категории
@@ -67,14 +65,12 @@ function renderCategories(selected = []) {
   categories.forEach((c, i) => {
     const id = "cat_" + i;
     const label = el("label", {
-      style: "display:flex; align-items:center; gap:8px; padding:4px 0;",
+      style: "display:flex;align-items:center;gap:8px;padding:4px 0;",
       for: id,
     });
     const cb = el("input", { type: "checkbox", value: c, id });
     if (selected.includes(c)) cb.checked = true;
-    cb.addEventListener("change", () => {
-      validateForm();
-    });
+    cb.addEventListener("change", validateForm);
     label.appendChild(cb);
     label.appendChild(document.createTextNode(c));
     categoriesBox.appendChild(label);
@@ -101,7 +97,7 @@ function addIngredientRow(name = "", qty = "", unit = "") {
     value: qty,
     type: "text",
     inputmode: "decimal",
-    "aria-label": "Количество ингредиента",
+    "aria-label": "Количество",
     maxlength: 20,
   });
   const unitInput = el("input", {
@@ -127,7 +123,7 @@ function addIngredientRow(name = "", qty = "", unit = "") {
   );
   remBtnWrapper.appendChild(remBtn);
 
-  // подсказки для строки — ОБЯЗАТЕЛЬНО класс row-hint (и можно оставить field-hint для стилей)
+  // подсказки для строки — ОБЯЗАТЕЛЬНО класс row-hint
   const rowHint = el(
     "div",
     { class: "row-hint field-hint", id: id + "_hint" },
@@ -141,7 +137,7 @@ function addIngredientRow(name = "", qty = "", unit = "") {
     "aria-live": "polite",
   });
 
-  // связать aria-describedby (локальная подсказка). Можно добавить глобальную ingredients_hint, если нужно:
+  // связать aria-describedby
   nameInput.setAttribute("aria-describedby", id + "_hint");
   qtyInput.setAttribute("aria-describedby", id + "_hint");
   unitInput.setAttribute("aria-describedby", id + "_hint");
@@ -159,11 +155,9 @@ function addIngredientRow(name = "", qty = "", unit = "") {
   });
 
   // Валидация при вводе
-  [nameInput, qtyInput, unitInput].forEach((inp) => {
-    inp.addEventListener("input", () => {
-      validateForm();
-    });
-  });
+  [nameInput, qtyInput, unitInput].forEach((inp) =>
+    inp.addEventListener("input", validateForm),
+  );
 
   row.appendChild(nameInput);
   row.appendChild(qtyInput);
@@ -171,7 +165,6 @@ function addIngredientRow(name = "", qty = "", unit = "") {
   row.appendChild(remBtnWrapper);
   row.appendChild(rowHint);
   row.appendChild(rowError);
-
   ingredientsList.appendChild(row);
   return row;
 }
@@ -181,6 +174,7 @@ function addStep(text = "", imgData = null) {
   stepIdCounter++;
   const id = "step_" + stepIdCounter;
   const row = el("div", { class: "step-row", id });
+
   const txt = el(
     "textarea",
     {
@@ -199,7 +193,7 @@ function addStep(text = "", imgData = null) {
   );
   const imgLabel = el(
     "label",
-    { class: "btn", style: "margin-top:6px; display:inline-block;" },
+    { class: "btn", style: "margin-top:6px;display:inline-block;" },
     "Загрузить фото шага",
   );
   const imgInput = el("input", {
@@ -209,14 +203,9 @@ function addStep(text = "", imgData = null) {
   });
   const remBtn = el(
     "button",
-    {
-      class: "btn small remove-step",
-      type: "button",
-      title: "Удалить шаг",
-    },
+    { class: "btn small remove-step", type: "button", title: "Удалить шаг" },
     "Удалить",
   );
-
   const rowError = el("div", {
     class: "row-error",
     role: "status",
@@ -229,15 +218,14 @@ function addStep(text = "", imgData = null) {
     if (!f) return;
     const reader = new FileReader();
     reader.onload = (ev) => {
-      const url = ev.target.result;
       // Добавление фото шага
       let preview = row.querySelector(".step-photo-preview");
       if (!preview) {
         preview = el("div", { class: "step-photo-preview" });
         row.insertBefore(preview, remBtn);
       }
-      preview.style.backgroundImage = `url(${url})`;
-      preview.dataset.url = url;
+      preview.style.backgroundImage = `url(${ev.target.result})`;
+      preview.dataset.url = ev.target.result;
       validateForm();
     };
     reader.readAsDataURL(f);
@@ -254,9 +242,7 @@ function addStep(text = "", imgData = null) {
     validateForm();
   });
 
-  txt.addEventListener("input", () => {
-    validateForm();
-  });
+  txt.addEventListener("input", validateForm);
 
   row.appendChild(txt);
   row.appendChild(stepHint);
@@ -268,12 +254,11 @@ function addStep(text = "", imgData = null) {
 
   // если есть imgData, показать превью
   if (imgData) {
-    let preview = el("div", { class: "step-photo-preview" });
+    const preview = el("div", { class: "step-photo-preview" });
     preview.style.backgroundImage = `url(${imgData})`;
     preview.dataset.url = imgData;
     row.insertBefore(preview, remBtn);
   }
-
   return row;
 }
 
@@ -324,8 +309,7 @@ function renderPhotos() {
 }
 
 dishPhotos.addEventListener("change", (e) => {
-  const files = Array.from(e.target.files || []);
-  files.forEach((f) => {
+  Array.from(e.target.files || []).forEach((f) => {
     const reader = new FileReader();
     reader.onload = (ev) => {
       photos.push({
@@ -346,29 +330,30 @@ dishPhotos.addEventListener("change", (e) => {
 function collectRecipe() {
   const title = document.getElementById("title").value.trim();
   const desc = document.getElementById("shortDesc").value.trim();
+  const cookingTime = parseInt(
+    document.getElementById("cookingTime").value.trim(),
+    10,
+  );
+
   const ingredients = Array.from(document.querySelectorAll(".ingredient-row"))
-    .map((row) => {
-      return {
-        name: row.querySelector(".ing-name").value.trim(),
-        qty: row.querySelector(".ing-qty").value.trim(),
-        unit: row.querySelector(".ing-unit").value.trim(),
-      };
-    })
+    .map((row) => ({
+      name: row.querySelector(".ing-name").value.trim(),
+      qty: row.querySelector(".ing-qty").value.trim(),
+      unit: row.querySelector(".ing-unit").value.trim(),
+    }))
     .filter((i) => i.name && i.qty && i.unit);
+
   const categoriesSelected = Array.from(
     categoriesBox.querySelectorAll('input[type="checkbox"]:checked'),
   ).map((cb) => cb.value);
+
   const steps = Array.from(document.querySelectorAll(".step-row"))
-    .map((row) => {
-      return {
-        text: row.querySelector(".step-text").value.trim(),
-        img:
-          (row.querySelector(".step-photo-preview") &&
-            row.querySelector(".step-photo-preview").dataset.url) ||
-          null,
-      };
-    })
+    .map((row) => ({
+      text: row.querySelector(".step-text").value.trim(),
+      img: row.querySelector(".step-photo-preview")?.dataset.url || null,
+    }))
     .filter((s) => s.text);
+
   const photosList = photos.map((p) => ({
     dataUrl: p.dataUrl,
     isMain: p.isMain,
@@ -377,12 +362,11 @@ function collectRecipe() {
   return {
     title,
     desc,
-    servings: 1,
+    cookingTime,
     ingredients,
     categoriesSelected,
     steps,
     photosList,
-    createdAt: new Date().toISOString(),
   };
 }
 
@@ -391,8 +375,7 @@ function validateForm() {
   let hasErrors = false;
 
   // Название: обязательно, max 30
-  const titleEl = document.getElementById("title");
-  const title = titleEl.value.trim();
+  const title = document.getElementById("title").value.trim();
   if (!title) {
     setFieldError("title", "Название обязательно");
     hasErrors = true;
@@ -404,8 +387,7 @@ function validateForm() {
   }
 
   // Описание: опционально, max 300
-  const shortDescEl = document.getElementById("shortDesc");
-  const sd = shortDescEl.value.trim();
+  const sd = document.getElementById("shortDesc").value.trim();
   if (sd.length > 300) {
     setFieldError("shortDesc", "Максимум 300 символов");
     hasErrors = true;
@@ -413,52 +395,52 @@ function validateForm() {
     setFieldError("shortDesc", "");
   }
 
+  // Время приготовления — ОБЯЗАТЕЛЬНОЕ
+  const ctVal = document.getElementById("cookingTime").value.trim();
+  const ctNum = parseInt(ctVal, 10);
+  if (!ctVal || isNaN(ctNum) || ctNum < 1) {
+    setFieldError("cookingTime", "Укажите время приготовления (минимум 1 мин)");
+    hasErrors = true;
+  } else if (ctNum > 1440) {
+    setFieldError("cookingTime", "Максимум 1440 минут (24 часа)");
+    hasErrors = true;
+  } else {
+    setFieldError("cookingTime", "");
+  }
+
   setFieldError("photos", "");
 
   // Ингредиенты: каждый ряд — все три поля обязательны
   setFieldError("ingredients", "");
   document.querySelectorAll(".ingredient-row").forEach((row) => {
-    const name = row.querySelector(".ing-name").value.trim();
-    const qty = row.querySelector(".ing-qty").value.trim();
-    const unit = row.querySelector(".ing-unit").value.trim();
-    const rowError = row.querySelector(".row-error");
-    if (!name || !qty || !unit) {
-      rowError.textContent = "Заполните все поля ингредиента";
+    const n = row.querySelector(".ing-name").value.trim();
+    const q = row.querySelector(".ing-qty").value.trim();
+    const u = row.querySelector(".ing-unit").value.trim();
+    const re = row.querySelector(".row-error");
+    if (!n || !q || !u) {
+      re.textContent = "Заполните все поля ингредиента";
       hasErrors = true;
     } else {
-      rowError.textContent = "";
+      re.textContent = "";
     }
   });
 
   // Проверяем, есть ли хотя бы один полный ингредиент
-  const completeIngredients = Array.from(
+  const completeIng = Array.from(
     document.querySelectorAll(".ingredient-row"),
-  )
-    .map((row) => {
-      const name = row.querySelector(".ing-name").value.trim();
-      const qty = row.querySelector(".ing-qty").value.trim();
-      const unit = row.querySelector(".ing-unit").value.trim();
-      return name && qty && unit;
-    })
-    .filter(Boolean);
-  if (completeIngredients.length === 0) {
+  ).filter(
+    (row) =>
+      row.querySelector(".ing-name").value.trim() &&
+      row.querySelector(".ing-qty").value.trim() &&
+      row.querySelector(".ing-unit").value.trim(),
+  );
+  if (!completeIng.length) {
     setFieldError("ingredients", "Укажите минимум один полный ингредиент");
     hasErrors = true;
-  } else {
-    // если есть другие неполные — уже пометили их
-    if (
-      !document.querySelectorAll(".ingredient-row .row-error:not(:empty)")
-        .length
-    ) {
-      setFieldError("ingredients", "");
-    }
   }
 
   // Categories: минимум 1
-  const cats = Array.from(
-    categoriesBox.querySelectorAll('input[type="checkbox"]:checked'),
-  );
-  if (cats.length === 0) {
+  if (!categoriesBox.querySelectorAll("input:checked").length) {
     setFieldError("categories", "Выберите минимум одну категорию");
     hasErrors = true;
   } else {
@@ -466,72 +448,87 @@ function validateForm() {
   }
 
   // Steps: каждый шаг обязателен по тексту, max 500
-  let stepsHaveError = false;
+  let stepsErr = false;
   document.querySelectorAll(".step-row").forEach((row) => {
     const txt = row.querySelector(".step-text").value.trim();
-    const rowError = row.querySelector(".row-error");
+    const re = row.querySelector(".row-error");
     if (!txt) {
-      rowError.textContent = "Описание шага обязательно";
-      stepsHaveError = true;
+      re.textContent = "Описание шага обязательно";
+      stepsErr = true;
     } else if (txt.length > 500) {
-      rowError.textContent = "Максимум 500 символов в шаге";
-      stepsHaveError = true;
+      re.textContent = "Максимум 500 символов";
+      stepsErr = true;
     } else {
-      rowError.textContent = "";
+      re.textContent = "";
     }
   });
-  if (stepsHaveError) {
+  if (stepsErr) {
     setFieldError("steps", "Исправьте ошибки в шагах");
     hasErrors = true;
+  } else if (!stepsBox.querySelectorAll(".step-row").length) {
+    setFieldError("steps", "Добавьте минимум один шаг");
+    hasErrors = true;
   } else {
-    const stepsCount = document.querySelectorAll(".step-row").length;
-    if (stepsCount === 0) {
-      setFieldError("steps", "Добавьте минимум один шаг приготовления");
-      hasErrors = true;
-    } else {
-      setFieldError("steps", "");
-    }
+    setFieldError("steps", "");
   }
 
   // Включаем / отключаем кнопку сохранить
-  saveRecipe.disabled = hasErrors;
-
+  saveRecipeBtn.disabled = hasErrors;
   return !hasErrors;
 }
 
-// Сохраняем в локальное хранилище
-saveRecipe.addEventListener("click", () => {
-  const ok = validateForm();
-  if (!ok) {
-    // фокусируемся на первой ошибке
+// Сохранение — отправка на сервер
+saveRecipeBtn.addEventListener("click", async () => {
+  if (!validateForm()) {
     const firstErr = document.querySelector(
       ".field-error:not(:empty), .row-error:not(:empty)",
     );
     if (firstErr) {
-      const parentInput = firstErr.closest(
-        ".field, .ingredient-row, .step-row",
-      );
-      const input = parentInput && parentInput.querySelector("input, textarea");
+      const input = firstErr
+        .closest(".field, .ingredient-row, .step-row")
+        ?.querySelector("input, textarea");
       if (input) input.focus();
     }
     return;
   }
 
   const recipe = collectRecipe();
+  saveRecipeBtn.disabled = true;
+  saveRecipeBtn.textContent = "Сохранение...";
+
   try {
-    const raw = localStorage.getItem(STORAGE_KEY_RECIPE);
-    const arr = raw ? JSON.parse(raw) : [];
-    arr.push(recipe);
-    localStorage.setItem(STORAGE_KEY_RECIPE, JSON.stringify(arr));
-    alert("Рецепт сохранён (локально).");
-    window.location.href = "/profile.html";
+    const res = await fetch("/api/recipes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: recipe.title,
+        description: recipe.desc,
+        cookingTimeMinutes: recipe.cookingTime,
+        categories: recipe.categoriesSelected,
+        ingredients: recipe.ingredients,
+        steps: recipe.steps,
+        // Фото передаются как base64 — сервер сохранит файлы
+        photos: recipe.photosList,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `HTTP ${res.status}`);
+    }
+
+    const created = await res.json();
+    alert("Рецепт успешно сохранён!");
+    window.location.href = `/recipe.html?id=${created.id}`;
   } catch (err) {
     console.error(err);
     alert("Ошибка при сохранении: " + err.message);
+    saveRecipeBtn.disabled = false;
+    saveRecipeBtn.textContent = "Сохранить рецепт";
   }
 });
 
-clearRecipe.addEventListener("click", () => {
+clearRecipeBtn.addEventListener("click", () => {
   if (!confirm("Очистить форму?")) return;
   form.reset();
   ingredientsList.innerHTML = "";
@@ -560,26 +557,21 @@ addStepBtn.addEventListener("click", () => {
   addStep();
   validateForm();
 });
-document.getElementById("title").addEventListener("input", () => {
-  validateForm();
-});
-document.getElementById("shortDesc").addEventListener("input", () => {
-  validateForm();
-});
+document.getElementById("title").addEventListener("input", validateForm);
+document.getElementById("shortDesc").addEventListener("input", validateForm);
+document.getElementById("cookingTime").addEventListener("input", validateForm);
 
 // Навигация
 document.querySelectorAll("button[data-href]").forEach((btn) => {
   btn.addEventListener("click", () => {
-    const href = btn.dataset.href;
-    if (href) window.location.href = href;
+    if (btn.dataset.href) window.location.href = btn.dataset.href;
   });
 });
 
 // boot
+ingredientsList.addEventListener("input", validateForm);
+stepsBox.addEventListener("input", validateForm);
+
 renderCategories([]);
 renderInitial();
 renderPhotos();
-
-// Пример: отслеживаем изменения внутри списков динамически (делегирование)
-ingredientsList.addEventListener("input", () => validateForm());
-stepsBox.addEventListener("input", () => validateForm());

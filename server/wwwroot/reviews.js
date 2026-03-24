@@ -1,226 +1,211 @@
-// author id
-const AUTHOR_ID = "author_1";
-const COMMENTS_KEY = "chefbook_comments_" + AUTHOR_ID;
+/*
+   /reviews.html?id=<authorId>
 
-// DOM
-const authorNameEl = document.getElementById("authorName");
-const authorBioEl = document.getElementById("authorBio");
-const authorRecipesEl = document.getElementById("authorRecipes");
-const authorFollowersEl = document.getElementById("authorFollowers");
-const authorAvatar = document.getElementById("authorAvatar");
-const followBtn = document.getElementById("followBtn");
+   Эндпоинты:
+     GET  /api/authors/{id}               — данные автора
+     GET  /api/subscriptions/check/{id}   — статус подписки
+     POST /api/subscriptions/toggle/{id}  — переключить подписку
+     GET  /api/author-reviews/{authorId}  — список отзывов
+     POST /api/author-reviews             — добавить отзыв
+*/
+(function () {
+  "use strict";
 
-const commentForm = document.getElementById("commentForm");
-const commentAuthor = document.getElementById("commentAuthor");
-const commentText = document.getElementById("commentText");
-const postComment = document.getElementById("postComment");
-const resetComment = document.getElementById("resetComment");
-const commentsList = document.getElementById("commentsList");
-
-// author data (Александра Иванова)
-const sampleAuthor = {
-  id: AUTHOR_ID,
-  name: "Александра Иванова",
-  bio: "Любит простые и быстрые рецепты для будних дней. Делится лайфхаками по хранению продуктов.",
-  recipes: 12,
-  followers: 134,
-  avatarUrl:
-    "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=200",
-};
-
-// хелперы
-function loadComments() {
-  try {
-    const raw = localStorage.getItem(COMMENTS_KEY);
-    return raw
-      ? JSON.parse(raw)
-      : [
-          {
-            id: "c1",
-            name: "Ирина",
-            text: "Отличные рецепты — всё проверено, спасибо!",
-            likes: 3,
-            own: false,
-            createdAt: Date.now() - 86400000,
-          },
-          {
-            id: "c2",
-            name: "Пётр",
-            text: "Очень понравился кекс. Простой и вкусный.",
-            likes: 1,
-            own: false,
-            createdAt: Date.now() - 3600000,
-          },
-        ];
-  } catch (e) {
-    console.error(e);
-    return [];
-  }
-}
-
-function saveComments(arr) {
-  localStorage.setItem(COMMENTS_KEY, JSON.stringify(arr));
-}
-
-function formatDate(ts) {
-  const d = new Date(ts);
-  return d.toLocaleString();
-}
-
-// render author card
-function renderAuthor() {
-  authorNameEl.textContent = sampleAuthor.name;
-  authorBioEl.textContent = sampleAuthor.bio;
-  authorRecipesEl.textContent = "Рецептов: " + sampleAuthor.recipes;
-  authorFollowersEl.textContent = "Подписчиков: " + sampleAuthor.followers;
-
-  // вставляем <img> аватар
-  authorAvatar.innerHTML = `<img src="${sampleAuthor.avatarUrl}" alt="${sampleAuthor.name}" class="avatar-img" />`;
-
-  const followed =
-    localStorage.getItem("chef_follow_" + sampleAuthor.id) === "1";
-  followBtn.textContent = followed ? "Отписаться" : "Подписаться";
-  followBtn.setAttribute("aria-pressed", followed ? "true" : "false");
-}
-
-// comments rendering
-function renderComments() {
-  const arr = loadComments();
-  commentsList.innerHTML = "";
-  if (!arr.length) {
-    const empty = document.createElement("div");
-    empty.className = "muted";
-    empty.textContent = "Пока нет отзывов — будьте первым!";
-    commentsList.appendChild(empty);
-    return;
+  function esc(s) {
+    return String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
   }
 
-  arr
-    .slice()
-    .reverse()
-    .forEach((c) => {
-      const item = document.createElement("article");
-      item.className = "comment";
-      item.setAttribute("role", "listitem");
+  function getAuthorId() {
+    const p = new URLSearchParams(window.location.search).get("id");
+    return p ? Number(p) : null;
+  }
 
-      const head = document.createElement("div");
-      head.className = "comment-head";
-      head.innerHTML = `<strong class="comment-author">${escapeHtml(
-        c.name,
-      )}</strong>
-                        <span class="comment-date">${formatDate(
-                          c.createdAt,
-                        )}</span>`;
+  const authorId = getAuthorId();
 
-      const body = document.createElement("div");
-      body.className = "comment-body";
-      body.textContent = c.text;
+  // TEMP: пока нет авторизации. 1 = залогинен как user 1, null = не залогинен.
+  const TEMP_USER_ID = 1;
 
-      const actions = document.createElement("div");
-      actions.className = "comment-actions";
-
-      const likeBtn = document.createElement("button");
-      likeBtn.className = "btn small like-btn";
-      likeBtn.type = "button";
-      likeBtn.innerText = "❤ " + (c.likes || 0);
-      likeBtn.addEventListener("click", () => {
-        c.likes = (c.likes || 0) + 1;
-        const comments = loadComments();
-        const idx = comments.findIndex((x) => x.id === c.id);
-        if (idx !== -1) comments[idx].likes = c.likes;
-        saveComments(comments);
-        renderComments();
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("button[data-href]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        window.location.href = btn.dataset.href;
       });
+    });
 
-      actions.appendChild(likeBtn);
+    if (!authorId) {
+      document.getElementById("authorName").textContent = "Автор не указан";
+      return;
+    }
 
-      if (c.own) {
-        const delBtn = document.createElement("button");
-        delBtn.className = "btn small";
-        delBtn.type = "button";
-        delBtn.textContent = "Удалить";
-        delBtn.addEventListener("click", () => {
-          if (!confirm("Удалить ваш комментарий?")) return;
-          let comments = loadComments();
-          comments = comments.filter((x) => x.id !== c.id);
-          saveComments(comments);
-          renderComments();
-        });
-        actions.appendChild(delBtn);
+    loadAuthor();
+    loadReviews();
+    setupForm();
+  });
+
+  /* Загрузка данных автора */
+  async function loadAuthor() {
+    try {
+      const res = await fetch(`/api/authors/${authorId}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const a = await res.json();
+
+      document.getElementById("authorName").textContent = a.name ?? "Автор";
+      document.getElementById("authorBio").textContent = a.bio ?? "";
+      document.getElementById("authorRecipes").textContent =
+        `Рецептов: ${a.recipesCount ?? 0}`;
+      document.getElementById("authorFollowers").textContent =
+        `Подписчиков: ${a.followersCount ?? 0}`;
+
+      const avatarImg = document.querySelector(".avatar-img");
+      if (avatarImg) {
+        avatarImg.src = a.avatarUrl ?? "/images/avatar.jpg";
+        avatarImg.alt = a.name ?? "Автор";
       }
 
-      item.appendChild(head);
-      item.appendChild(body);
-      item.appendChild(actions);
-      commentsList.appendChild(item);
-    });
-}
-
-// helper to escape text
-function escapeHtml(s) {
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-// post new comment
-postComment.addEventListener("click", () => {
-  const name = (commentAuthor.value || "Аноним").trim();
-  const text = (commentText.value || "").trim();
-  if (!text) {
-    alert("Введите текст отзыва");
-    return;
+      // Скрываем кнопку подписки если смотришь свою страницу
+      const actionsBlock = document.getElementById("authorActions");
+      if (TEMP_USER_ID === authorId) {
+        if (actionsBlock) actionsBlock.style.display = "none";
+      } else {
+        setupSubscription();
+      }
+    } catch (err) {
+      console.error("Ошибка загрузки автора:", err);
+      document.getElementById("authorName").textContent = "Ошибка загрузки";
+    }
   }
-  const comments = loadComments();
-  const id = "c_" + Date.now();
-  const newC = {
-    id,
-    name,
-    text,
-    likes: 0,
-    own: true,
-    createdAt: Date.now(),
-  };
-  comments.push(newC);
-  saveComments(comments);
-  commentAuthor.value = "";
-  commentText.value = "";
-  renderComments();
-});
 
-resetComment.addEventListener("click", () => {
-  commentAuthor.value = "";
-  commentText.value = "";
-});
+  /* Подписка */
+  function setupSubscription() {
+    const btn = document.getElementById("followBtn");
+    if (!btn) return;
 
-followBtn.addEventListener("click", () => {
-  const key = "chef_follow_" + sampleAuthor.id;
-  const current = localStorage.getItem(key) === "1";
-  localStorage.setItem(key, current ? "0" : "1");
-  renderAuthor();
-});
+    function setState(sub) {
+      btn.textContent = sub ? "Отписаться" : "Подписаться";
+      btn.setAttribute("aria-pressed", String(sub));
+    }
 
-// initial render
-renderAuthor();
-renderComments();
+    fetch(`/api/subscriptions/check/${authorId}`)
+      .then((r) => r.json())
+      .then((d) => setState(d.isSubscribed))
+      .catch(() => {});
 
-// nav buttons simple
-Array.from(document.querySelectorAll(".home")).forEach((b) =>
-  b.addEventListener("click", () => (window.location.href = "/")),
-);
-Array.from(document.querySelectorAll(".profile")).forEach((b) =>
-  b.addEventListener("click", () => (window.location.href = "/profile.html")),
-);
-Array.from(document.querySelectorAll(".search")).forEach((b) =>
-  b.addEventListener("click", () => (window.location.href = "/Catalog")),
-);
+    btn.addEventListener("click", async () => {
+      btn.disabled = true;
+      try {
+        const res = await fetch(`/api/subscriptions/toggle/${authorId}`, {
+          method: "POST",
+        });
+        if (!res.ok) throw new Error(res.status);
+        setState((await res.json()).isSubscribed);
+      } catch (e) {
+        console.error("Ошибка подписки:", e);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
 
-document.querySelectorAll("button[data-href]").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const href = btn.dataset.href;
-    if (href) window.location.href = href;
-  });
-});
+  /* Загрузка отзывов */
+  async function loadReviews() {
+    const list = document.getElementById("commentsList");
+    if (!list) return;
+    list.innerHTML = "<p style='color:#888'>Загрузка...</p>";
+
+    try {
+      const res = await fetch(`/api/author-reviews/${authorId}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const reviews = await res.json();
+
+      list.innerHTML = "";
+      if (!reviews.length) {
+        list.innerHTML =
+          "<p style='color:#888;padding:8px 0'>Отзывов пока нет</p>";
+        return;
+      }
+      reviews.forEach((r) => renderReview(r));
+    } catch (err) {
+      console.error("Ошибка загрузки отзывов:", err);
+      list.innerHTML = "<p style='color:#c00'>Не удалось загрузить отзывы</p>";
+    }
+  }
+
+  function renderReview(r, prepend = false) {
+    const list = document.getElementById("commentsList");
+    const item = document.createElement("div");
+    item.setAttribute("role", "listitem");
+    item.className = "comment-item";
+    item.innerHTML =
+      `<strong>${esc(r.reviewerName)}</strong>` +
+      `<p>${esc(r.text)}</p>` +
+      (r.createdAt
+        ? `<small style="color:#888">${esc(r.createdAt)}</small>`
+        : "");
+    prepend ? list.prepend(item) : list.appendChild(item);
+  }
+
+  /* Форма добавления отзыва */
+  function setupForm() {
+    const postBtn = document.getElementById("postComment");
+    const resetBtn = document.getElementById("resetComment");
+    const textArea = document.getElementById("commentText");
+    if (!postBtn) return;
+
+    const isLoggedIn = TEMP_USER_ID !== null;
+
+    if (!isLoggedIn) {
+      postBtn.disabled = true;
+      postBtn.title =
+        "Оставлять отзывы могут только зарегистрированные пользователи";
+      const hint = document.createElement("p");
+      hint.className = "muted comment-note";
+      hint.style.marginTop = "6px";
+      hint.textContent = "Войдите в аккаунт, чтобы оставить отзыв.";
+      postBtn.closest(".comment-form-row")?.after(hint);
+    } else {
+      postBtn.disabled = false;
+      postBtn.title = "";
+    }
+
+    postBtn.addEventListener("click", async () => {
+      if (!isLoggedIn) return;
+      const text = textArea?.value.trim() ?? "";
+      if (!text) return alert("Введите текст отзыва");
+
+      postBtn.disabled = true;
+      postBtn.textContent = "Публикация...";
+
+      try {
+        const res = await fetch("/api/author-reviews", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ authorId, text }),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error ?? `HTTP ${res.status}`);
+        }
+        const created = await res.json();
+
+        const list = document.getElementById("commentsList");
+        if (list.querySelector("p[style]")) list.innerHTML = "";
+        renderReview(created, true);
+        textArea.value = "";
+      } catch (e) {
+        alert(e.message || "Ошибка публикации");
+      } finally {
+        postBtn.disabled = false;
+        postBtn.textContent = "Опубликовать";
+      }
+    });
+
+    resetBtn?.addEventListener("click", () => {
+      if (textArea) textArea.value = "";
+    });
+  }
+})();

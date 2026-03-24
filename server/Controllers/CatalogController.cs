@@ -8,7 +8,7 @@ namespace RecipeApp.Controllers
     public class CatalogController : Controller
     {
         private readonly AppDbContext _context;
-        private const int PageSize = 12;
+        private const int PageSize = 9;
 
         public CatalogController(AppDbContext context) => _context = context;
 

@@ -13,7 +13,7 @@
       <div
         class="site-root"
         role="document"
-        aria-label="Отзывы об авторе — прототип"
+        aria-label="Отзывы об авторе — ChefBook"
       >
         <!-- Шапка -->
         <header class="site__header" role="banner" aria-label="Шапка">
@@ -21,7 +21,6 @@
             <img src="/icons/logo.svg" alt="" aria-hidden="true" />
             <span>ChefBook</span>
           </div>
-
           <nav
             class="site__nav"
             role="navigation"
@@ -41,7 +40,6 @@
               />
               <span class="btn-label">ГЛАВНАЯ</span>
             </button>
-
             <button
               class="search-button btn"
               aria-label="Страница поиска (кнопка)"
@@ -56,10 +54,8 @@
               />
               <span class="btn-label">ПОИСК</span>
             </button>
-
             <button
               class="profile-button btn"
-              role="button"
               aria-label="Профиль / Регистрация"
               data-href="/profile.html"
               type="button"
@@ -97,24 +93,24 @@
                     >
                       <img
                         src="./images/avatar.jpg"
-                        alt="Александра Иванова"
+                        alt=""
                         class="avatar-img"
                       />
                     </div>
                     <div class="author-info">
-                      <h2 id="authorName">Александра Иванова</h2>
-                      <div id="authorBio" class="muted">
-                        Любит простые и быстрые рецепты для будних дней. Делится
-                        лайфхаками по хранению продуктов.
-                      </div>
+                      <p id="authorName" class="author-name-text">
+                        Загрузка...
+                      </p>
+                      <div id="authorBio" class="muted"></div>
                       <div class="author-meta">
-                        <span id="authorRecipes">Рецептов: 12</span>
-                        <span id="authorFollowers">Подписчиков: 134</span>
+                        <span id="authorRecipes">Рецептов: —</span>
+                        <span id="authorFollowers">Подписчиков: —</span>
                       </div>
                     </div>
                   </div>
 
-                  <div class="author-actions">
+                  <!-- Кнопка подписки — скрывается если это страница самого пользователя -->
+                  <div class="author-actions" id="authorActions">
                     <button
                       id="followBtn"
                       class="btn"
@@ -126,28 +122,20 @@
                   </div>
                 </article>
 
-                <!-- секция отзывов -->
-                <h2 class="panel-title">ОТЗЫВЫ</h2>
+                <!-- Секция отзывов -->
                 <section
                   class="box comments-box"
                   id="commentsBox"
-                  aria-live="polite"
-                  aria-label="Список отзывов"
+                  aria-labelledby="reviews-section-title"
                 >
+                  <h2 id="reviews-section-title" class="panel-title">ОТЗЫВЫ</h2>
+
                   <form
                     id="commentForm"
                     class="comment-form"
                     aria-label="Добавить отзыв"
                   >
-                    <label for="commentAuthor" class="visually-hidden"
-                      >Имя</label
-                    >
-                    <input
-                      id="commentAuthor"
-                      class="input"
-                      placeholder="Ваше имя"
-                      aria-label="Ваше имя"
-                    />
+                    <!-- Поле имени убрано — используется имя из системы -->
 
                     <label for="commentText" class="visually-hidden"
                       >Текст отзыва</label
@@ -162,15 +150,22 @@
 
                     <div class="comment-form-row">
                       <div class="comment-buttons">
-                        <button id="postComment" class="btn" type="button">
+                        <!--
+                          Кнопка заблокирована для неавторизованных.
+                          Состояние и подсказка управляются из reviews.js.
+                        -->
+                        <button
+                          id="postComment"
+                          class="btn"
+                          type="button"
+                          disabled
+                          title=""
+                        >
                           Опубликовать
                         </button>
                         <button id="resetComment" class="btn" type="button">
                           Очистить
                         </button>
-                      </div>
-                      <div class="muted comment-note">
-                        Отзывы сохраняются локально (пример)
                       </div>
                     </div>
                   </form>
@@ -183,14 +178,14 @@
                     "
                   />
 
-                  <!-- Список комментариев -->
                   <div
                     id="commentsList"
                     class="comments-list"
                     role="list"
                     aria-label="Отзывы"
+                    aria-live="polite"
                   >
-                    <!-- Добавление через JS -->
+                    <!-- Заполняется из reviews.js -->
                   </div>
                 </section>
               </div>
@@ -217,7 +212,6 @@
             />
             <span class="btn-label">Главная</span>
           </button>
-
           <button
             class="nav-item btn search"
             type="button"
@@ -231,7 +225,6 @@
             />
             <span class="btn-label">Поиск</span>
           </button>
-
           <button
             class="nav-item btn profile"
             type="button"
@@ -245,7 +238,6 @@
             />
             <span class="btn-label">Профиль / Регистрация</span>
           </button>
-
           <button
             class="nav-item btn only-about"
             type="button"
