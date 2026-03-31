@@ -6,7 +6,8 @@
     <title>ChefBook — Главная</title>
     <link rel="stylesheet" href="index.css" />
     <link rel="stylesheet" href="common.css" />
-    
+    <script src="common.js" defer></script>
+    <script src="index.js" defer></script>
   </head>
   <body>
     <div class="page">
@@ -21,17 +22,30 @@
             <img src="/icons/logo.svg" alt="" aria-hidden="true" />
             <span>ChefBook</span>
           </div>
-
           <nav
-            class="site__nav"
+            class="site__nav site__nav--left"
             role="navigation"
-            aria-label="Главная навигация шапки"
+            aria-label="Основная навигация"
           >
             <button
-              class="search-button btn"
-              aria-label="Поиск рецептов (кнопка)"
-              data-href="/Catalog"
+              class="btn header-btn"
               type="button"
+              data-href="/index.html"
+              aria-label="Главная"
+            >
+              <img
+                src="/icons/home.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ГЛАВНАЯ</span>
+            </button>
+            <button
+              class="btn header-btn"
+              type="button"
+              data-href="/Catalog"
+              aria-label="Поиск"
             >
               <img
                 src="/icons/search.svg"
@@ -41,13 +55,13 @@
               />
               <span class="btn-label">ПОИСК</span>
             </button>
-
+          </nav>
+          <nav class="site__nav site__nav--right" aria-label="Аккаунт">
             <button
-              class="profile btn"
-              role="button"
-              aria-label="Профиль / Регистрация"
-              data-href="/profile.html"
+              class="btn header-btn nav-auth-btn"
               type="button"
+              data-href="/auth.html"
+              aria-label="Войти в аккаунт"
             >
               <img
                 src="/icons/profile.svg"
@@ -55,7 +69,7 @@
                 alt=""
                 aria-hidden="true"
               />
-              <span class="btn-label">ПРОФИЛЬ / РЕГИСТРАЦИЯ</span>
+              <span class="btn-label">ВОЙТИ</span>
             </button>
           </nav>
         </header>
@@ -70,8 +84,12 @@
             <h1 id="recipes-title" class="recipes-div__title">
               Список рецептов
             </h1>
-            <ul class="recipes-list" role="list" aria-label="Список рецептов" id="recipesGrid">
-            </ul>
+            <ul
+              class="recipes-list"
+              role="list"
+              aria-label="Список рецептов"
+              id="recipesGrid"
+            ></ul>
           </div>
         </main>
 
@@ -82,7 +100,7 @@
           aria-label="Нижняя навигация"
         >
           <button
-            class="nav-item btn home"
+            class="nav-item btn footer-home"
             type="button"
             data-href="/index.html"
           >
@@ -94,11 +112,23 @@
             />
             <span class="btn-label">Главная</span>
           </button>
-
           <button
-            class="nav-item btn profile"
+            class="nav-item btn footer-search"
             type="button"
-            data-href="/profile.html"
+            data-href="/Catalog"
+          >
+            <img
+              src="/icons/search.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Поиск</span>
+          </button>
+          <button
+            class="nav-item btn footer-auth nav-auth-btn"
+            type="button"
+            data-href="/auth.html"
           >
             <img
               src="/icons/profile.svg"
@@ -106,14 +136,12 @@
               alt=""
               aria-hidden="true"
             />
-            <span class="btn-label">Профиль / Регистрация</span>
+            <span class="btn-label">Войти</span>
           </button>
-
           <button
-            class="nav-item btn only-about"
+            class="nav-item btn footer-about"
             type="button"
             data-href="/about.html"
-            aria-label="О нас"
           >
             <img
               src="/icons/info.svg"
@@ -126,88 +154,5 @@
         </footer>
       </div>
     </div>
-
-
-  <script>
-  /* common.js — openIngredientsModal */
-  window.openIngredientsModal = async function(id) {
-    try {
-      const res = await fetch("/api/recipes/" + id + "/ingredients");
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const d = await res.json();
-      alert(d.recipeTitle + "\n\n" + d.ingredients.map(i => i.name + " — " + i.quantity + " " + i.unit).join("\n"));
-    } catch(e) { alert("Ошибка: " + e.message); }
-  };
-
-  /* index.js */
-  document.addEventListener("DOMContentLoaded", function() {
-
-    document.querySelectorAll("[data-href]").forEach(function(el) {
-      el.addEventListener("click", function() {
-        var href = el.getAttribute("data-href");
-        if (href) window.location.href = href;
-      });
-    });
-
-    var grid = document.querySelector(".recipes-list");
-    if (!grid) { console.error("НЕТ .recipes-list"); return; }
-
-    grid.innerHTML = '<li style="padding:20px;color:#888">Загрузка...</li>';
-
-    fetch("/api/recipes?page=1")
-      .then(function(r) {
-        console.log("API статус:", r.status);
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
-      })
-      .then(function(json) {
-        console.log("API ответ:", JSON.stringify(json).substring(0, 300));
-        var items = json.data || json.Data || [];
-        console.log("Рецептов:", items.length);
-
-        grid.innerHTML = "";
-        if (!items.length) {
-          grid.innerHTML = '<li style="padding:20px">Нет рецептов</li>';
-          return;
-        }
-
-        items.forEach(function(r) {
-          var li = document.createElement("li");
-          li.className = "recipe-card";
-          li.setAttribute("tabindex", "0");
-          li.dataset.id = r.id || r.Id;
-          var photo = r.mainPhoto || r.MainPhoto || "/images/placeholder.jpg";
-          var title = r.title || r.Title || "";
-          var desc  = r.description || r.Description || "";
-          li.innerHTML =
-            '<img class="recipe-photo" src="' + photo + '" alt="' + title + '">' +
-            '<h2 class="recipe-title">' + title + '</h2>' +
-            '<p class="recipe-desc">' + desc + '</p>' +
-            '<div class="compose-row">' +
-              '<button class="compose-btn btn" type="button">Состав</button>' +
-            '</div>';
-          grid.appendChild(li);
-        });
-
-        grid.addEventListener("click", function(e) {
-          var btn = e.target.closest(".compose-btn");
-          if (btn) {
-            e.stopPropagation();
-            var id = btn.closest(".recipe-card").dataset.id;
-            window.openIngredientsModal(Number(id));
-            return;
-          }
-          if (e.target.closest("button")) return;
-          var card = e.target.closest(".recipe-card");
-          if (card && card.dataset.id)
-            window.location.href = "/recipe.html?id=" + card.dataset.id;
-        });
-      })
-      .catch(function(err) {
-        console.error("Ошибка:", err);
-        grid.innerHTML = '<li style="padding:20px;color:red">Ошибка: ' + err.message + '</li>';
-      });
-  });
-  </script>
-</body>
+  </body>
 </html>

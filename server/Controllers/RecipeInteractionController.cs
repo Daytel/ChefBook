@@ -14,7 +14,7 @@ namespace RecipeApp.Controllers
 
         public RecipeInteractionController(AppDbContext db) => _db = db;
 
-        // ── GET /api/recipes/{id} — полные данные рецепта ─────────────
+        // GET /api/recipes/{id} — полные данные рецепта
         [HttpGet("recipes/{id:int}")]
         public async Task<IActionResult> GetRecipe(int id)
         {
@@ -58,7 +58,7 @@ namespace RecipeApp.Controllers
             });
         }
 
-        // ── GET /api/recipes/{id}/ingredients — для модалки «Состав» ──
+        // GET /api/recipes/{id}/ingredients — для модалки «Состав»
         [HttpGet("recipes/{id:int}/ingredients")]
         public async Task<IActionResult> GetIngredients(int id)
         {
@@ -81,7 +81,7 @@ namespace RecipeApp.Controllers
             });
         }
 
-        // ── POST /api/favorites/toggle/{recipeId} ─────────────────────
+        // POST /api/favorites/toggle/{recipeId}
         [HttpPost("favorites/toggle/{recipeId:int}")]
         public async Task<IActionResult> ToggleFavorite(int recipeId)
         {
@@ -97,7 +97,7 @@ namespace RecipeApp.Controllers
             return Ok(new { isFavorite });
         }
 
-        // ── GET /api/favorites/check/{recipeId} ───────────────────────
+        // GET /api/favorites/check/{recipeId}
         [HttpGet("favorites/check/{recipeId:int}")]
         public async Task<IActionResult> CheckFavorite(int recipeId)
         {
@@ -106,7 +106,7 @@ namespace RecipeApp.Controllers
             return Ok(new { isFavorite });
         }
 
-        // ── POST /api/subscriptions/toggle/{authorId} ─────────────────
+        // POST /api/subscriptions/toggle/{authorId}
         [HttpPost("subscriptions/toggle/{authorId:int}")]
         public async Task<IActionResult> ToggleSubscription(int authorId)
         {
@@ -123,7 +123,7 @@ namespace RecipeApp.Controllers
             return Ok(new { isSubscribed });
         }
 
-        // ── GET /api/subscriptions/check/{authorId} ───────────────────
+        // GET /api/subscriptions/check/{authorId}
         [HttpGet("subscriptions/check/{authorId:int}")]
         public async Task<IActionResult> CheckSubscription(int authorId)
         {
@@ -132,7 +132,7 @@ namespace RecipeApp.Controllers
             return Ok(new { isSubscribed });
         }
 
-        // ── POST /api/comments ────────────────────────────────────────
+        // POST /api/comments
         [HttpPost("comments")]
         public async Task<IActionResult> AddComment([FromBody] AddCommentRequest request)
         {
@@ -161,7 +161,7 @@ namespace RecipeApp.Controllers
             });
         }
 
-        // ── GET /api/comments/{recipeId} ──────────────────────────────
+        // GET /api/comments/{recipeId}
         [HttpGet("comments/{recipeId:int}")]
         public async Task<IActionResult> GetComments(int recipeId)
         {

@@ -1,251 +1,125 @@
-// Пример сохранённых рецептов (для отображения карточек)
-const sampleSaved = [
-  {
-    id: "r1",
-    title: "Простой салат с курицей",
-    desc: "Вкусный салат за 15 минут",
-    img: "./images/salad_chicken.webp",
-    ingredients: [
-      { name: "Курица (филе)", qty: 300, unit: "г" },
-      { name: "Салат", qty: 150, unit: "г" },
-      { name: "Помидоры", qty: 100, unit: "г" },
-      { name: "Оливковое масло", qty: 2, unit: "ст.л." },
-    ],
-  },
-  {
-    id: "r2",
-    title: "Шоколадный кекс",
-    desc: "Нежный десерт",
-    img: "./images/chocolate_cupcake.jpg",
-    ingredients: [
-      { name: "Мука", qty: 200, unit: "г" },
-      { name: "Какао-порошок", qty: 30, unit: "г" },
-      { name: "Яйца", qty: 2, unit: "шт" },
-      { name: "Сахар", qty: 120, unit: "г" },
-    ],
-  },
-  {
-    id: "r3",
-    title: "Паста с лососем",
-    desc: "Быстро и сытно",
-    img: "./images/pasta_salmon.png",
-    ingredients: [
-      { name: "Паста", qty: 200, unit: "г" },
-      { name: "Лосось", qty: 150, unit: "г" },
-      { name: "Сливки", qty: 100, unit: "мл" },
-      { name: "Пармезан", qty: 30, unit: "г" },
-    ],
-  },
-];
+/* saved.js — ChefBook  /saved.html
+   Загружает избранные рецепты текущего пользователя из API.
+*/
+(function () {
+  "use strict";
 
-function escapeHtml(s) {
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
+  function esc(s) {
+    return String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;");
+  }
 
-// Автор
-const AUTHOR_ID = "author_saved";
-const sampleAuthor = {
-  id: AUTHOR_ID,
-  name: "Александра Иванова",
-  bio: "Любит простые и быстрые рецепты для будних дней. Делится лайфхаками по хранению продуктов.",
-  recipes: 12,
-  followers: 134,
-  avatarUrl: "./images/avatar.jpg",
-};
+  const user = window.chefbook?.getUser?.() ?? null;
 
-function renderAuthor() {
-  const authorNameEl = document.getElementById("authorName");
-  const authorBioEl = document.getElementById("authorBio");
-  const authorRecipesEl = document.getElementById("authorRecipes");
-  const authorFollowersEl = document.getElementById("authorFollowers");
-  const authorAvatar = document.getElementById("authorAvatar");
-
-  if (!authorNameEl) return;
-  authorNameEl.textContent = sampleAuthor.name;
-  authorBioEl.textContent = sampleAuthor.bio;
-  authorRecipesEl.textContent = "Рецептов: " + sampleAuthor.recipes;
-  authorFollowersEl.textContent = "Подписчиков: " + sampleAuthor.followers;
-  authorAvatar.innerHTML = `<img src="${sampleAuthor.avatarUrl}" alt="${sampleAuthor.name}" class="avatar-img" />`;
-}
-
-/* Рендер карточек (поддерживает ингредиенты-объекты с qty/unit) */
-function renderSaved(list) {
-  const grid = document.getElementById("savedGrid");
-  if (!grid) return;
-  grid.innerHTML = "";
-
-  const items = Array.isArray(list) ? list : [];
-
-  items.forEach((r, i) => {
-    const item = document.createElement("article");
-    item.className = "card recipe-card";
-    item.setAttribute("role", "listitem");
-    item.tabIndex = 0;
-    item.dataset.id = r.id || i + 1;
-
-    // Если ingredients — массив объектов {name, qty, unit}
-    const ingList = (r.ingredients || [])
-      .map((ing) => {
-        const name = escapeHtml(ing.name || "");
-        const qty = ing.qty != null ? String(ing.qty) : "";
-        const unit = ing.unit ? String(ing.unit) : "";
-        // Форматируем: если есть qty — добавляем тире и qty+unit
-        if (qty)
-          return `<li>${name} — ${escapeHtml(
-            qty + (unit ? " " + unit : ""),
-          )}</li>`;
-        return `<li>${name}</li>`;
-      })
-      .join("");
-
-    item.innerHTML = `
-      <div class="photo" aria-hidden="true">
-        <img src="${r.img}" alt="${escapeHtml(r.title)}">
-      </div>
-      <h4 class="title">${escapeHtml(r.title)}</h4>
-      <p class="desc">${escapeHtml(r.desc)}</p>
-      <div class="compose-row">
-        <button class="btn compose-btn" type="button" aria-haspopup="true" aria-expanded="false">Состав</button>
-      </div>
-      <div class="ingredients" role="dialog" aria-label="Ингредиенты" aria-hidden="true" style="display:none;">
-        <h3>Ингредиенты</h3>
-        <ul>${ingList}</ul>
-      </div>
-    `;
-
-    grid.appendChild(item);
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!user) {
+      // Не авторизован — показываем сообщение
+      const grid = document.getElementById("savedGrid");
+      if (grid)
+        grid.innerHTML =
+          "<p style='padding:20px;color:#888'>Войдите в аккаунт, чтобы видеть сохранённые рецепты.</p>";
+      return;
+    }
+    loadSaved();
   });
 
-  initCardsNavigation();
-}
+  async function loadSaved() {
+    const grid = document.getElementById("savedGrid");
+    if (!grid) return;
+    grid.innerHTML = "<p style='color:#888;padding:12px'>Загрузка...</p>";
 
-/* Навигация: клик по карточке (кроме интерактивных элементов) ведёт на recipe.html?id=... */
-function initCardsNavigation() {
-  const grid = document.getElementById("savedGrid");
-  if (!grid) return;
-  const cards = grid.querySelectorAll(".recipe-card");
+    try {
+      const res = await fetch(`/api/saved/${user.id}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const items = await res.json();
 
-  cards.forEach((card) => {
-    if (!card.hasAttribute("tabindex")) card.setAttribute("tabindex", "0");
+      // Данные автора — берём из первого рецепта (у всех один автор-пользователь)
+      // В saved.html блок автора показывает самого пользователя
+      fillAuthorBlock(user);
 
-    function navigate() {
-      const id = card.dataset.id;
-      if (id) window.location.href = `recipe.html?id=${encodeURIComponent(id)}`;
+      grid.innerHTML = "";
+      if (!items.length) {
+        grid.innerHTML =
+          "<p style='padding:12px;color:#888'>Нет сохранённых рецептов.</p>";
+        return;
+      }
+
+      items.forEach((r) => renderCard(r, grid));
+      initCardNav(grid);
+      initComposeButtons(grid);
+    } catch (e) {
+      grid.innerHTML = `<p style='color:#c00;padding:12px'>Ошибка: ${esc(e.message)}</p>`;
     }
+  }
 
-    card.addEventListener("click", (e) => {
-      if (e.target.closest("button, a, input, textarea, select")) return;
-      navigate();
+  function fillAuthorBlock(u) {
+    const setTxt = (id, v) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = v;
+    };
+    setTxt("authorName", u.displayName || u.email || "Профиль");
+    const bioEl = document.getElementById("authorBio");
+    if (bioEl) bioEl.textContent = "";
+    const avatarEl = document.getElementById("authorAvatar");
+    if (avatarEl) {
+      const img =
+        avatarEl.querySelector("img") ?? document.createElement("img");
+      img.src = u.avatarUrl ?? "/images/avatar.jpg";
+      img.alt = u.displayName ?? "";
+      img.className = "avatar-img";
+      avatarEl.innerHTML = "";
+      avatarEl.appendChild(img);
+    }
+  }
+
+  function renderCard(r, container) {
+    const article = document.createElement("article");
+    article.className = "card recipe-card";
+    article.setAttribute("role", "listitem");
+    article.setAttribute("tabindex", "0");
+    article.dataset.id = r.id;
+
+    const photo = r.mainPhoto ?? "/images/placeholder.jpg";
+    article.innerHTML = `
+      <div class="photo" aria-hidden="true">
+        <img src="${esc(photo)}" alt="${esc(r.title)}" loading="lazy">
+      </div>
+      <h4 class="title">${esc(r.title)}</h4>
+      <p class="desc">${esc(r.description ?? "")}</p>
+      <div class="compose-row">
+        <button class="btn compose-btn" type="button">Состав</button>
+      </div>`;
+    container.appendChild(article);
+  }
+
+  function initCardNav(container) {
+    container.addEventListener("click", (e) => {
+      if (e.target.closest("button, a")) return;
+      const card = e.target.closest(".recipe-card");
+      if (card?.dataset.id)
+        window.location.href = `/recipe.html?id=${card.dataset.id}`;
     });
-
-    card.addEventListener("keydown", (e) => {
-      if (["Enter", " ", "Spacebar", "Space"].includes(e.key)) {
-        const active = document.activeElement;
-        if (
-          active &&
-          (active.tagName === "BUTTON" ||
-            active.tagName === "A" ||
-            active.tagName === "INPUT" ||
-            active.tagName === "TEXTAREA")
-        )
-          return;
+    container.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      if (document.activeElement?.tagName === "BUTTON") return;
+      const card = e.target.closest(".recipe-card");
+      if (card?.dataset.id) {
         e.preventDefault();
-        navigate();
+        window.location.href = `/recipe.html?id=${card.dataset.id}`;
       }
     });
-  });
-}
+  }
 
-/* Делегирование кнопки "Состав" — один открытый блок одновременно */
-function initComposePopups() {
-  const grid = document.getElementById("savedGrid");
-  let openMenu = null;
-  if (!grid) return;
-
-  grid.addEventListener("click", (e) => {
-    const btn = e.target.closest(".compose-btn");
-    if (!btn) return;
-
-    e.stopPropagation();
-    const card = btn.closest(".recipe-card");
-    const menu = card.querySelector(".ingredients");
-    if (!menu) return;
-
-    if (openMenu && openMenu !== menu) {
-      openMenu.style.display = "none";
-      const oldBtn = openMenu
-        .closest(".recipe-card")
-        ?.querySelector(".compose-btn");
-      if (oldBtn) oldBtn.setAttribute("aria-expanded", "false");
-      openMenu = null;
-    }
-
-    const isOpen = menu.style.display === "block";
-    if (isOpen) {
-      menu.style.display = "none";
-      menu.setAttribute("aria-hidden", "true");
-      btn.setAttribute("aria-expanded", "false");
-      openMenu = null;
-    } else {
-      menu.style.display = "block";
-      menu.setAttribute("aria-hidden", "false");
-      btn.setAttribute("aria-expanded", "true");
-      openMenu = menu;
-    }
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".recipe-card") && openMenu) {
-      openMenu.style.display = "none";
-      const oldBtn = openMenu
-        .closest(".recipe-card")
-        ?.querySelector(".compose-btn");
-      if (oldBtn) oldBtn.setAttribute("aria-expanded", "false");
-      openMenu.setAttribute("aria-hidden", "true");
-      openMenu = null;
-    }
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && openMenu) {
-      openMenu.style.display = "none";
-      const oldBtn = openMenu
-        .closest(".recipe-card")
-        ?.querySelector(".compose-btn");
-      if (oldBtn) oldBtn.setAttribute("aria-expanded", "false");
-      openMenu.setAttribute("aria-hidden", "true");
-      openMenu = null;
-    }
-  });
-}
-
-/* Навигация для кнопок header/footer */
-document.querySelectorAll("button[data-href]")?.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const href = btn.dataset.href;
-    if (href) window.location.href = href;
-  });
-});
-
-/* Инициализация страницы */
-document.addEventListener("DOMContentLoaded", () => {
-  renderAuthor();
-  renderSaved(sampleSaved);
-  initComposePopups();
-
-  // навигация нижнего меню (если есть классы .home/.profile/.search как в других страницах)
-  Array.from(document.querySelectorAll(".home")).forEach((b) =>
-    b.addEventListener("click", () => (window.location.href = "/")),
-  );
-  Array.from(document.querySelectorAll(".profile")).forEach((b) =>
-    b.addEventListener("click", () => (window.location.href = "/profile.html")),
-  );
-  Array.from(document.querySelectorAll(".search")).forEach((b) =>
-    b.addEventListener("click", () => (window.location.href = "/Catalog")),
-  );
-});
+  function initComposeButtons(container) {
+    container.addEventListener("click", (e) => {
+      const btn = e.target.closest(".compose-btn");
+      if (!btn) return;
+      e.stopPropagation();
+      const id = btn.closest(".recipe-card")?.dataset.id;
+      if (id && typeof window.openIngredientsModal === "function")
+        window.openIngredientsModal(Number(id));
+    });
+  }
+})();

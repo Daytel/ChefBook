@@ -9,7 +9,7 @@ namespace RecipeApp.Controllers
     public class RecipesController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private const int PageSize = 9;
+        private const int PageSize = 12;
 
         public RecipesController(AppDbContext context) => _context = context;
 

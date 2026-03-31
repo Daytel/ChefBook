@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="reviews.css" />
     <link rel="stylesheet" href="common.css" />
     <script src="saved.js" defer></script>
+    <script src="common.js" defer></script>
   </head>
   <body>
     <div class="page">
@@ -22,17 +23,16 @@
             <img src="/icons/logo.svg" alt="" aria-hidden="true" />
             <span>ChefBook</span>
           </div>
-
           <nav
-            class="site__nav"
+            class="site__nav site__nav--left"
             role="navigation"
-            aria-label="Главная навигация шапки"
+            aria-label="Основная навигация"
           >
             <button
-              class="home-button btn"
-              aria-label="Главная страница (кнопка)"
-              data-href="/index.html"
+              class="btn header-btn"
               type="button"
+              data-href="/index.html"
+              aria-label="Главная"
             >
               <img
                 src="/icons/home.svg"
@@ -42,12 +42,11 @@
               />
               <span class="btn-label">ГЛАВНАЯ</span>
             </button>
-
             <button
-              class="search-button btn"
-              aria-label="Страница поиска (кнопка)"
-              data-href="/Catalog"
+              class="btn header-btn"
               type="button"
+              data-href="/Catalog"
+              aria-label="Поиск"
             >
               <img
                 src="/icons/search.svg"
@@ -57,13 +56,13 @@
               />
               <span class="btn-label">ПОИСК</span>
             </button>
-
+          </nav>
+          <nav class="site__nav site__nav--right" aria-label="Аккаунт">
             <button
-              class="profile-button btn"
-              role="button"
-              aria-label="Профиль / Регистрация"
-              data-href="/profile.html"
+              class="btn header-btn nav-auth-btn"
               type="button"
+              data-href="/auth.html"
+              aria-label="Войти в аккаунт"
             >
               <img
                 src="/icons/profile.svg"
@@ -71,7 +70,7 @@
                 alt=""
                 aria-hidden="true"
               />
-              <span class="btn-label">ПРОФИЛЬ / РЕГИСТРАЦИЯ</span>
+              <span class="btn-label">ВОЙТИ</span>
             </button>
           </nav>
         </header>
@@ -134,7 +133,7 @@
           aria-label="Нижняя навигация"
         >
           <button
-            class="nav-item btn home"
+            class="nav-item btn footer-home"
             type="button"
             data-href="/index.html"
           >
@@ -146,9 +145,8 @@
             />
             <span class="btn-label">Главная</span>
           </button>
-
           <button
-            class="nav-item btn search"
+            class="nav-item btn footer-search"
             type="button"
             data-href="/Catalog"
           >
@@ -160,11 +158,10 @@
             />
             <span class="btn-label">Поиск</span>
           </button>
-
           <button
-            class="nav-item btn profile"
+            class="nav-item btn footer-auth nav-auth-btn"
             type="button"
-            data-href="/profile.html"
+            data-href="/auth.html"
           >
             <img
               src="/icons/profile.svg"
@@ -172,14 +169,12 @@
               alt=""
               aria-hidden="true"
             />
-            <span class="btn-label">Профиль / Регистрация</span>
+            <span class="btn-label">Войти</span>
           </button>
-
           <button
-            class="nav-item btn only-about"
+            class="nav-item btn footer-about"
             type="button"
             data-href="/about.html"
-            aria-label="О нас"
           >
             <img
               src="/icons/info.svg"

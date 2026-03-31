@@ -148,3 +148,59 @@
     padding: 12px;
   }
 }
+
+/* ── Вкладки Вход / Регистрация ── */
+.auth-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  width: 100%;
+  max-width: 420px;
+}
+.auth-tab {
+  flex: 1;
+  text-align: center;
+  opacity: 0.6;
+  transition:
+    opacity 0.15s,
+    border-color 0.15s;
+}
+.auth-tab.active,
+.auth-tab[aria-selected="true"] {
+  opacity: 1;
+  border-color: #333;
+  background: var(--muted);
+}
+
+/* ── Форма: label и input — каждый на своей строке ── */
+.auth-inner section {
+  width: 100%;
+  max-width: 420px;
+  background: var(--accent);
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-inner .label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 2px;
+}
+.auth-inner .label:first-child {
+  margin-top: 0;
+}
+.auth-inner .input {
+  display: block;
+  width: 100%;
+}
+
+/* authMsg */
+#authMsg {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}

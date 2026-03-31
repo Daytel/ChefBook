@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>ChefBook - Авторизация</title>
+    <title>ChefBook — Вход / Регистрация</title>
     <link rel="stylesheet" href="auth.css" />
     <link rel="stylesheet" href="common.css" />
+    <script src="common.js" defer></script>
     <script src="auth.js" defer></script>
   </head>
   <body>
@@ -13,25 +14,23 @@
       <div
         class="site-root"
         role="document"
-        aria-label="Авторизация — прототип"
+        aria-label="Авторизация — ChefBook"
       >
-        <!-- Шапка -->
         <header class="site__header" role="banner" aria-label="Шапка">
           <div class="site-title">
             <img src="/icons/logo.svg" alt="" aria-hidden="true" />
             <span>ChefBook</span>
           </div>
-
           <nav
-            class="site__nav"
+            class="site__nav site__nav--left"
             role="navigation"
-            aria-label="Главная навигация шапки"
+            aria-label="Основная навигация"
           >
             <button
-              class="home-button btn"
-              aria-label="Главная страница (кнопка)"
-              data-href="/index.html"
+              class="btn header-btn"
               type="button"
+              data-href="/index.html"
+              aria-label="Главная"
             >
               <img
                 src="/icons/home.svg"
@@ -41,13 +40,27 @@
               />
               <span class="btn-label">ГЛАВНАЯ</span>
             </button>
-
             <button
-              class="profile-button btn"
-              role="button"
-              aria-label="Профиль / Регистрация"
-              data-href="/profile.html"
+              class="btn header-btn"
               type="button"
+              data-href="/Catalog"
+              aria-label="Поиск"
+            >
+              <img
+                src="/icons/search.svg"
+                class="btn-icon"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="btn-label">ПОИСК</span>
+            </button>
+          </nav>
+          <nav class="site__nav site__nav--right" aria-label="Аккаунт">
+            <button
+              class="btn header-btn nav-auth-btn"
+              type="button"
+              data-href="/auth.html"
+              aria-label="Войти в аккаунт"
             >
               <img
                 src="/icons/profile.svg"
@@ -55,24 +68,52 @@
                 alt=""
                 aria-hidden="true"
               />
-              <span class="btn-label">ПРОФИЛЬ / РЕГИСТРАЦИЯ</span>
+              <span class="btn-label">ВОЙТИ</span>
             </button>
           </nav>
         </header>
 
-        <!-- main: форма авторизации -->
-        <main class="site__main" role="main" aria-label="Форма авторизации">
+        <main class="site__main" role="main" aria-label="Авторизация">
           <div class="auth-div" aria-labelledby="auth-title">
-            <h1 id="auth-title" class="search-title">Вход в аккаунт</h1>
+            <h1 id="auth-title" class="search-title">Вход / Регистрация</h1>
 
             <div class="content-inner auth-inner">
-              <form
-                id="authForm"
-                class="auth-form"
-                aria-label="Форма входа"
-                autocomplete="on"
-                action="/login"
-                method="post"
+              <!-- Вкладки -->
+              <div class="auth-tabs" role="tablist">
+                <button
+                  id="tabLogin"
+                  class="btn auth-tab"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="loginSection"
+                >
+                  Вход
+                </button>
+                <button
+                  id="tabRegister"
+                  class="btn auth-tab"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="registerSection"
+                >
+                  Регистрация
+                </button>
+              </div>
+
+              <!-- Сообщение об ошибке / успехе -->
+              <div
+                id="authMsg"
+                class="muted"
+                role="status"
+                aria-live="polite"
+                style="margin: 8px 0; min-height: 20px"
+              ></div>
+
+              <!-- Форма входа -->
+              <section
+                id="loginSection"
+                role="tabpanel"
+                aria-labelledby="tabLogin"
               >
                 <label for="login" class="label">Электронная почта</label>
                 <input
@@ -80,13 +121,8 @@
                   name="login"
                   class="input"
                   type="email"
-                  inputmode="email"
                   autocomplete="username"
-                  required
-                  aria-required="true"
                   placeholder="example@domain.com"
-                  pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
-                  title="Введите корректный email: обязателен символ @ и точка после него"
                 />
 
                 <label for="password" class="label">Пароль</label>
@@ -97,12 +133,7 @@
                     class="input"
                     type="password"
                     autocomplete="current-password"
-                    required
-                    aria-required="true"
                     placeholder="Минимум 8 символов"
-                    minlength="8"
-                    pattern="(?=.*\d)(?=.*[A-Za-z]).{8,}"
-                    title="Пароль должен быть минимум 8 символов и содержать буквы и цифры"
                   />
                   <button
                     type="button"
@@ -113,39 +144,54 @@
                   </button>
                 </div>
 
-                <div class="row-space">
-                  <label class="checkbox">
-                    <input id="remember" type="checkbox" name="remember" />
-                    <span>Запомнить меня</span>
-                  </label>
-
-                  <a href="help.html" class="link">Забыли пароль?</a>
+                <div style="margin-top: 16px">
+                  <button id="loginBtn" class="btn" type="button">Войти</button>
                 </div>
+              </section>
 
-                <div style="margin-top: 12px; display: flex; gap: 8px">
-                  <button id="loginBtn" class="btn" type="submit">Войти</button>
+              <!-- Форма регистрации -->
+              <section
+                id="registerSection"
+                role="tabpanel"
+                aria-labelledby="tabRegister"
+                hidden
+              >
+                <label for="regEmail" class="label">Электронная почта</label>
+                <input
+                  id="regEmail"
+                  name="regEmail"
+                  class="input"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="example@domain.com"
+                />
+
+                <label for="regPassword" class="label">Пароль</label>
+                <input
+                  id="regPassword"
+                  name="regPassword"
+                  class="input"
+                  type="password"
+                  autocomplete="new-password"
+                  placeholder="Минимум 8 символов"
+                />
+
+                <div style="margin-top: 16px">
+                  <button id="registerBtn" class="btn" type="button">
+                    Создать аккаунт
+                  </button>
                 </div>
-
-                <div
-                  id="authMsg"
-                  class="muted"
-                  role="status"
-                  aria-live="polite"
-                  style="margin-top: 10px"
-                ></div>
-              </form>
+              </section>
             </div>
           </div>
         </main>
-
-        <!-- Подвал -->
         <footer
           class="site__footer"
           role="contentinfo"
           aria-label="Нижняя навигация"
         >
           <button
-            class="nav-item btn home"
+            class="nav-item btn footer-home"
             type="button"
             data-href="/index.html"
           >
@@ -157,11 +203,23 @@
             />
             <span class="btn-label">Главная</span>
           </button>
-
           <button
-            class="nav-item btn profile"
+            class="nav-item btn footer-search"
             type="button"
-            data-href="/profile.html"
+            data-href="/Catalog"
+          >
+            <img
+              src="/icons/search.svg"
+              class="btn-icon"
+              alt=""
+              aria-hidden="true"
+            />
+            <span class="btn-label">Поиск</span>
+          </button>
+          <button
+            class="nav-item btn footer-auth nav-auth-btn"
+            type="button"
+            data-href="/auth.html"
           >
             <img
               src="/icons/profile.svg"
@@ -169,14 +227,12 @@
               alt=""
               aria-hidden="true"
             />
-            <span class="btn-label">Профиль / Регистрация</span>
+            <span class="btn-label">Войти</span>
           </button>
-
           <button
-            class="nav-item btn only-about"
+            class="nav-item btn footer-about"
             type="button"
             data-href="/about.html"
-            aria-label="О нас"
           >
             <img
               src="/icons/info.svg"

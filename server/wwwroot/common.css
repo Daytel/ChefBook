@@ -47,9 +47,9 @@ body {
    и растягивается по ширине и высоте. На больших экранах возвращается к фиксированной ширине. */
 .site-root {
   width: 100%;
-  height: 100vh; /* растягиваемся на всю высоту экрана */
+  height: 100vh;
   background: var(--panel);
-  border-radius: 0; /* на мобильных/малых экранах делаем без скругления */
+  border-radius: 0;
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
@@ -68,26 +68,27 @@ body {
   height: var(--header-height);
 }
 
-.site__nav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 0;
-}
-
 .site-title {
   display: flex;
   align-items: center;
   font-size: 1.4rem;
   font-weight: 700;
   gap: 6px;
+  flex-shrink: 0;
 }
 
-.logo-icon {
-  width: 22px;
-  height: 22px;
-  color: #333;
+.site__nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.site__nav--left {
+  flex: 1;
+  min-width: 0;
+}
+.site__nav--right {
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 /* Базовые стили для кнопок */
@@ -99,8 +100,10 @@ body {
   cursor: pointer;
   background: var(--panel);
   font-size: 13px;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 /* Иконка внутри кнопки */
@@ -108,17 +111,12 @@ body {
   width: 16px;
   height: 16px;
   flex: 0 0 16px;
-  display: inline-block;
 }
 
 /* Текст внутри кнопки */
 .btn-label {
   line-height: 1;
-}
-
-/* Утилита: скрыть иконки */
-.site-root.hide-icons .btn-icon {
-  display: none !important;
+  white-space: nowrap;
 }
 
 /* Подвал */
@@ -129,23 +127,34 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  gap: 12px;
-  padding: 8px 12px;
+  padding: 0 8px;
   background: linear-gradient(0deg, var(--panel), #fbfbfb);
   flex-shrink: 0;
 }
 
-.footer {
-  height: var(--footer-height);
-  min-height: var(--footer-height);
-  border-top: 1px solid var(--border);
-  display: flex;
+/* Кнопки подвала: вертикальный layout (иконка + текст) */
+.nav-item {
+  display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-around;
-  gap: 12px;
-  padding: 8px 12px;
-  background: linear-gradient(0deg, var(--panel), #fbfbfb);
-  flex-shrink: 0;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+  padding: 4px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.nav-item .btn-icon {
+  width: 20px;
+  height: 20px;
+}
+.nav-item .btn-label {
+  font-size: 11px;
+  white-space: nowrap;
 }
 
 /* Визуально скрытый текст для доступности */
@@ -154,8 +163,29 @@ body {
   left: -9999px;
 }
 
-/* На больших экранах вернём контейнер в фиксированную ширину —
-   если хотите всегда полноэкранный режим — удалите этот медиа-блок. */
+/*
+   УЗКИЕ ЭКРАНЫ (< 1000px):
+   — шапка СКРЫТА
+   — подвал показывает ВСЕ 4 кнопки равномерно
+*/
+@media (max-width: 999px) {
+  .site__header {
+    display: none;
+  }
+
+  .footer-home,
+  .footer-search,
+  .footer-auth,
+  .footer-about {
+    display: inline-flex;
+  }
+}
+
+/*
+   ШИРОКИЕ ЭКРАНЫ (≥ 1000px):
+   — шапка ВИДНА (Главная + Поиск слева, Профиль/Вход справа)
+   — подвал показывает ТОЛЬКО «О нас» посередине
+*/
 @media (min-width: 1000px) {
   .page {
     padding: 36px;
@@ -164,47 +194,44 @@ body {
     width: var(--container-width);
     height: calc(100vh - 72px);
     border-radius: 8px;
-    margin: 0 auto; /* центрирование на больших экранах */
+    margin: 0 auto;
   }
 
   .site__header {
+    display: flex;
     justify-content: space-between;
   }
 
-  .site__nav .search-button {
-    min-width: 80px;
+  /* Скрываем в подвале всё кроме «О нас» */
+  .footer-home,
+  .footer-search,
+  .footer-auth {
+    display: none !important;
   }
 
-  .logo {
-    display: block;
-    background: var(--muted);
-    padding: 8px 12px;
+  /* «О нас» — горизонтальный layout, не переносит текст */
+  .footer-about {
+    display: inline-flex !important;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    margin: 0 auto;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    font-weight: 700;
-    margin-right: 12px;
+    white-space: nowrap;
+    cursor: pointer;
+    background: var(--panel);
   }
-
-  .site__header .search-button.mobile-full {
-    flex: 0;
-    min-width: 160px;
+  .footer-about .btn-icon {
+    width: 16px;
+    height: 16px;
   }
-
-  .site__header .profile {
-    display: block;
-    margin-left: auto;
-  }
-
-  .site__footer {
-    justify-content: center;
-  }
-
-  .site__footer .home,
-  .site__footer .profile,
-  .site__footer .search {
-    display: none;
-  }
-
-  .site__footer .only-about {
-    min-width: 80px;
+  .footer-about .btn-label {
+    font-size: 13px;
+    white-space: nowrap;
   }
 }

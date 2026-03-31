@@ -6,6 +6,7 @@
     <title>ChefBook - Отзывы об авторе</title>
     <link rel="stylesheet" href="reviews.css" />
     <link rel="stylesheet" href="common.css" />
+    <script src="common.js" defer></script>
     <script src="reviews.js" defer></script>
   </head>
   <body>
@@ -13,7 +14,7 @@
       <div
         class="site-root"
         role="document"
-        aria-label="Отзывы об авторе — ChefBook"
+        aria-label="Отзывы об авторе — прототип"
       >
         <!-- Шапка -->
         <header class="site__header" role="banner" aria-label="Шапка">
@@ -22,15 +23,15 @@
             <span>ChefBook</span>
           </div>
           <nav
-            class="site__nav"
+            class="site__nav site__nav--left"
             role="navigation"
-            aria-label="Главная навигация шапки"
+            aria-label="Основная навигация"
           >
             <button
-              class="home-button btn"
-              aria-label="Главная страница (кнопка)"
-              data-href="/index.html"
+              class="btn header-btn"
               type="button"
+              data-href="/index.html"
+              aria-label="Главная"
             >
               <img
                 src="/icons/home.svg"
@@ -41,10 +42,10 @@
               <span class="btn-label">ГЛАВНАЯ</span>
             </button>
             <button
-              class="search-button btn"
-              aria-label="Страница поиска (кнопка)"
-              data-href="/Catalog"
+              class="btn header-btn"
               type="button"
+              data-href="/Catalog"
+              aria-label="Поиск"
             >
               <img
                 src="/icons/search.svg"
@@ -54,11 +55,13 @@
               />
               <span class="btn-label">ПОИСК</span>
             </button>
+          </nav>
+          <nav class="site__nav site__nav--right" aria-label="Аккаунт">
             <button
-              class="profile-button btn"
-              aria-label="Профиль / Регистрация"
-              data-href="/profile.html"
+              class="btn header-btn nav-auth-btn"
               type="button"
+              data-href="/auth.html"
+              aria-label="Войти в аккаунт"
             >
               <img
                 src="/icons/profile.svg"
@@ -66,7 +69,7 @@
                 alt=""
                 aria-hidden="true"
               />
-              <span class="btn-label">ПРОФИЛЬ / РЕГИСТРАЦИЯ</span>
+              <span class="btn-label">ВОЙТИ</span>
             </button>
           </nav>
         </header>
@@ -93,24 +96,26 @@
                     >
                       <img
                         src="./images/avatar.jpg"
-                        alt=""
+                        alt="Александра Иванова"
                         class="avatar-img"
                       />
                     </div>
                     <div class="author-info">
                       <p id="authorName" class="author-name-text">
-                        Загрузка...
+                        Александра Иванова
                       </p>
-                      <div id="authorBio" class="muted"></div>
+                      <div id="authorBio" class="muted">
+                        Любит простые и быстрые рецепты для будних дней. Делится
+                        лайфхаками по хранению продуктов.
+                      </div>
                       <div class="author-meta">
-                        <span id="authorRecipes">Рецептов: —</span>
-                        <span id="authorFollowers">Подписчиков: —</span>
+                        <span id="authorRecipes">Рецептов: 12</span>
+                        <span id="authorFollowers">Подписчиков: 134</span>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Кнопка подписки — скрывается если это страница самого пользователя -->
-                  <div class="author-actions" id="authorActions">
+                  <div class="author-actions">
                     <button
                       id="followBtn"
                       class="btn"
@@ -122,21 +127,21 @@
                   </div>
                 </article>
 
-                <!-- Секция отзывов -->
+                <!-- секция отзывов -->
+                <h2 class="panel-title">ОТЗЫВЫ</h2>
                 <section
                   class="box comments-box"
                   id="commentsBox"
-                  aria-labelledby="reviews-section-title"
+                  aria-live="polite"
+                  aria-label="Список отзывов"
                 >
-                  <h2 id="reviews-section-title" class="panel-title">ОТЗЫВЫ</h2>
-
+                  <!-- Форма отзыва. Имя берётся из localStorage (chefbook.user).
+                       Без авторизации — кнопка заблокирована с подсказкой. -->
                   <form
                     id="commentForm"
                     class="comment-form"
                     aria-label="Добавить отзыв"
                   >
-                    <!-- Поле имени убрано — используется имя из системы -->
-
                     <label for="commentText" class="visually-hidden"
                       >Текст отзыва</label
                     >
@@ -150,16 +155,12 @@
 
                     <div class="comment-form-row">
                       <div class="comment-buttons">
-                        <!--
-                          Кнопка заблокирована для неавторизованных.
-                          Состояние и подсказка управляются из reviews.js.
-                        -->
                         <button
                           id="postComment"
                           class="btn"
                           type="button"
                           disabled
-                          title=""
+                          title="Войдите в аккаунт, чтобы оставить отзыв"
                         >
                           Опубликовать
                         </button>
@@ -168,6 +169,14 @@
                         </button>
                       </div>
                     </div>
+                    <!-- Сообщение для неавторизованных — управляется из reviews.js -->
+                    <p
+                      id="authHint"
+                      class="muted comment-note"
+                      style="margin-top: 6px; display: none"
+                    >
+                      Войдите в аккаунт, чтобы оставить отзыв.
+                    </p>
                   </form>
 
                   <hr
@@ -178,14 +187,14 @@
                     "
                   />
 
+                  <!-- Список комментариев -->
                   <div
                     id="commentsList"
                     class="comments-list"
                     role="list"
                     aria-label="Отзывы"
-                    aria-live="polite"
                   >
-                    <!-- Заполняется из reviews.js -->
+                    <!-- Добавление через JS -->
                   </div>
                 </section>
               </div>
@@ -200,7 +209,7 @@
           aria-label="Нижняя навигация"
         >
           <button
-            class="nav-item btn home"
+            class="nav-item btn footer-home"
             type="button"
             data-href="/index.html"
           >
@@ -213,7 +222,7 @@
             <span class="btn-label">Главная</span>
           </button>
           <button
-            class="nav-item btn search"
+            class="nav-item btn footer-search"
             type="button"
             data-href="/Catalog"
           >
@@ -226,9 +235,9 @@
             <span class="btn-label">Поиск</span>
           </button>
           <button
-            class="nav-item btn profile"
+            class="nav-item btn footer-auth nav-auth-btn"
             type="button"
-            data-href="/profile.html"
+            data-href="/auth.html"
           >
             <img
               src="/icons/profile.svg"
@@ -236,13 +245,12 @@
               alt=""
               aria-hidden="true"
             />
-            <span class="btn-label">Профиль / Регистрация</span>
+            <span class="btn-label">Войти</span>
           </button>
           <button
-            class="nav-item btn only-about"
+            class="nav-item btn footer-about"
             type="button"
             data-href="/about.html"
-            aria-label="О нас"
           >
             <img
               src="/icons/info.svg"

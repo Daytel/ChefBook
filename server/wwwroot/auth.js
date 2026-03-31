@@ -1,77 +1,113 @@
-const form = document.getElementById("authForm");
-const msg = document.getElementById("authMsg");
-const toggle = document.querySelector(".toggle-pass");
-const passInput = document.getElementById("password");
+/* auth.js — ChefBook  /auth.html */
+document.addEventListener("DOMContentLoaded", () => {
+  const msg = document.getElementById("authMsg");
+  const tabLogin = document.getElementById("tabLogin");
+  const tabRegister = document.getElementById("tabRegister");
+  const loginSection = document.getElementById("loginSection");
+  const registerSection = document.getElementById("registerSection");
 
-// show/hide password — с проверкой наличия элементов
-if (toggle && passInput) {
-  toggle.addEventListener("click", () => {
-    if (passInput.type === "password") {
-      passInput.type = "text";
-      toggle.textContent = "Скрыть";
-      toggle.setAttribute("aria-label", "Скрыть пароль");
-    } else {
-      passInput.type = "password";
-      toggle.textContent = "Показать";
-      toggle.setAttribute("aria-label", "Показать пароль");
-    }
-    passInput.focus();
-  });
-}
+  /* Переключение вкладок */
+  function showTab(tab) {
+    const isLogin = tab === "login";
+    // hidden управляет видимостью секций
+    loginSection.hidden = !isLogin;
+    registerSection.hidden = isLogin;
+    tabLogin.setAttribute("aria-selected", String(isLogin));
+    tabRegister.setAttribute("aria-selected", String(!isLogin));
+    tabLogin.classList.toggle("active", isLogin);
+    tabRegister.classList.toggle("active", !isLogin);
+    if (msg) msg.textContent = "";
+  }
 
-// submit — с проверкой наличия формы
-if (form) {
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    msg.textContent = "";
+  tabLogin?.addEventListener("click", () => showTab("login"));
+  tabRegister?.addEventListener("click", () => showTab("register"));
 
-    if (!form.checkValidity()) {
-      msg.textContent = "Пожалуйста, корректно заполните поля";
-      // Покажем нативные подсказки браузера
-      form.reportValidity();
-      return;
-    }
+  // Если пришли с ?mode=register — сразу открываем регистрацию
+  const mode = new URLSearchParams(window.location.search).get("mode");
+  showTab(mode === "register" ? "register" : "login");
 
-    const email = form.login.value.trim();
-    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-    const password = form.password.value.trim();
+  /* Показать/скрыть пароль */
+  document
+    .querySelector(".toggle-pass")
+    ?.addEventListener("click", function () {
+      const inp = document.getElementById("password");
+      if (!inp) return;
+      const hidden = inp.type === "password";
+      inp.type = hidden ? "text" : "password";
+      this.textContent = hidden ? "Скрыть" : "Показать";
+      this.setAttribute(
+        "aria-label",
+        hidden ? "Скрыть пароль" : "Показать пароль",
+      );
+      inp.focus();
+    });
 
-    if (!emailPattern.test(email)) {
-      msg.textContent = "Введите корректный email";
-      return;
-    }
+  /* Вход */
+  document.getElementById("loginBtn")?.addEventListener("click", async () => {
+    if (!msg) return;
+    const email = document.getElementById("login")?.value.trim() ?? "";
+    const password = document.getElementById("password")?.value.trim() ?? "";
 
     if (!email || !password) {
-      msg.textContent = "Пожалуйста, заполните все поля";
+      msg.textContent = "Заполните все поля";
       return;
     }
 
-    // Имитация аутентификации
+    msg.textContent = "Проверка...";
     try {
-      const remember = form.remember.checked;
-      const authObj = { user: login, ts: Date.now() };
-      if (remember)
-        localStorage.setItem("chefbook.auth", JSON.stringify(authObj));
-      else sessionStorage.setItem("chefbook.auth", JSON.stringify(authObj));
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Ошибка входа");
 
-      msg.textContent = "Успешный вход. Перенаправление...";
+      window.chefbook.setUser(data);
+      msg.textContent = "Вход выполнен! Перенаправление...";
       setTimeout(() => {
         window.location.href = "/profile.html";
-      }, 700);
-    } catch (err) {
-      msg.textContent = "Ошибка при сохранении данных";
-      console.error(err);
+      }, 600);
+    } catch (e) {
+      msg.textContent = e.message;
     }
   });
-}
 
-// Навигация
-const navButtons = document.querySelectorAll("[data-href]");
-if (navButtons && navButtons.length) {
-  navButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const href = btn.dataset.href;
-      if (href) window.location.href = href;
+  /* Регистрация */
+  document
+    .getElementById("registerBtn")
+    ?.addEventListener("click", async () => {
+      if (!msg) return;
+      const email = document.getElementById("regEmail")?.value.trim() ?? "";
+      const password =
+        document.getElementById("regPassword")?.value.trim() ?? "";
+
+      if (!email || !password) {
+        msg.textContent = "Заполните все поля";
+        return;
+      }
+      if (password.length < 8) {
+        msg.textContent = "Пароль — минимум 8 символов";
+        return;
+      }
+
+      msg.textContent = "Регистрация...";
+      try {
+        const res = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error ?? "Ошибка регистрации");
+
+        window.chefbook.setUser(data);
+        msg.textContent = "Аккаунт создан! Перенаправление...";
+        setTimeout(() => {
+          window.location.href = "/profile.html";
+        }, 600);
+      } catch (e) {
+        msg.textContent = e.message;
+      }
     });
-  });
-}
+});

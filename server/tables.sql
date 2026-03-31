@@ -6,9 +6,9 @@ CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    display_name VARCHAR(100),
-    avatar_url VARCHAR(255),
-    bio TEXT,
+    display_name VARCHAR(100) DEFAULT NULL,
+    avatar_url VARCHAR(255) DEFAULT NULL,
+    bio TEXT DEFAULT NULL,
     planner_notif_enabled BOOLEAN DEFAULT FALSE,
     planner_notif_freq ENUM('daily', 'weekly') DEFAULT 'daily',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -127,4 +127,3 @@ CREATE TABLE menu_planner (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
 );
-

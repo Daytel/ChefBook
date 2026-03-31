@@ -21,6 +21,12 @@ app.MapControllerRoute(
     pattern: "Catalog",
     defaults: new { controller = "Catalog", action = "Index" });
 
+// Страница рецепта: /Recipe/5
+app.MapControllerRoute(
+    name: "recipe",
+    pattern: "Recipe/{id:int}",
+    defaults: new { controller = "Recipe", action = "Index" });
+
 // Общий маршрут для остальных контроллеров
 app.MapControllerRoute(
     name: "default",
