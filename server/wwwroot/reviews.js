@@ -21,11 +21,22 @@
   const currentUser = window.chefbook?.getUser?.() ?? null;
   const isLoggedIn = currentUser !== null;
 
+  // Проверяем сразу — это своя страница?
+  const isOwnPage =
+    isLoggedIn && authorId && Number(currentUser.id) === Number(authorId);
+
   document.addEventListener("DOMContentLoaded", () => {
+    // Скрываем кнопку «Подписаться» сразу — до любых запросов к API
+    if (!isLoggedIn || isOwnPage) {
+      const actionsBlock = document.getElementById("authorActions");
+      if (actionsBlock) actionsBlock.hidden = true;
+    }
+
     if (!authorId) {
       document.getElementById("authorName").textContent = "Автор не указан";
       return;
     }
+
     loadAuthor();
     loadReviews();
     setupForm();
@@ -51,7 +62,10 @@
         avatarImg.alt = a.name ?? "";
       }
 
-      setupSubscription(authorId);
+      // Подписка только если авторизован и это чужая страница
+      if (isLoggedIn && !isOwnPage) {
+        setupSubscription();
+      }
     } catch (err) {
       console.error(err);
       document.getElementById("authorName").textContent = "Ошибка загрузки";
@@ -65,20 +79,7 @@
 */
   function setupSubscription() {
     const btn = document.getElementById("followBtn");
-    const actionsBlock = document.getElementById("authorActions");
     if (!btn) return;
-
-    // Не авторизован — скрываем весь блок
-    if (!isLoggedIn) {
-      if (actionsBlock) actionsBlock.style.display = "none";
-      return;
-    }
-
-    // Смотрим свой профиль — тоже скрываем
-    if (currentUser.id === authorId) {
-      if (actionsBlock) actionsBlock.style.display = "none";
-      return;
-    }
 
     function setState(sub) {
       btn.textContent = sub ? "Отписаться" : "Подписаться";
@@ -123,7 +124,7 @@
       }
       reviews.forEach((r) => renderReview(r));
     } catch (err) {
-      list.innerHTML = `<p style='color:#c00'>Не удалось загрузить отзывы</p>`;
+      list.innerHTML = "<p style='color:#c00'>Не удалось загрузить отзывы</p>";
     }
   }
 
