@@ -8,7 +8,7 @@ namespace RecipeApp.Controllers
     public class CatalogController : Controller
     {
         private readonly AppDbContext _context;
-        private const int PageSize = 9;
+        private const int PageSize = 12;
 
         public CatalogController(AppDbContext context) => _context = context;
 
@@ -48,6 +48,7 @@ namespace RecipeApp.Controllers
 
             ViewBag.CurrentPage    = page;
             ViewBag.TotalPages     = (int)Math.Ceiling((double)totalItems / PageSize);
+            ViewBag.TotalItems     = totalItems;
             ViewBag.AllCategories  = await _context.Categories.ToListAsync();
 
             return View(recipes);

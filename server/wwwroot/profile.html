@@ -6,8 +6,8 @@
     <title>ChefBook - Профиль</title>
     <link rel="stylesheet" href="profile.css" />
     <link rel="stylesheet" href="common.css" />
-    <script src="profile.js" defer></script>
     <script src="common.js" defer></script>
+    <script src="profile.js" defer></script>
   </head>
   <body>
     <div class="page">
@@ -140,15 +140,13 @@
                   </div>
 
                   <div class="field">
-                    <label class="field-label">Роль</label>
-                    <input class="input" value="Фуд-блогер" readonly />
-                  </div>
-
-                  <div class="field">
-                    <label class="field-label">О себе</label>
-                    <textarea class="input" rows="3">
-Любит простые и быстрые рецепты для будних дней. Делится лайфхаками по хранению продуктов.</textarea
-                    >
+                    <label for="bio" class="field-label">О себе</label>
+                    <textarea
+                      id="bio"
+                      class="input"
+                      rows="3"
+                      placeholder="Расскажите о себе..."
+                    ></textarea>
                   </div>
 
                   <nav
@@ -204,56 +202,6 @@
                     <!-- Рецепты добавляются через JS -->
                   </div>
 
-                  <!-- Любимые ингредиенты -->
-                  <div class="field">
-                    <label class="field-label" for="favDropdown"
-                      >Любимые продукты</label
-                    >
-                    <div class="dropdown-container" id="favDropdown">
-                      <div class="dropdown-header" tabindex="0">
-                        <span class="dropdown-placeholder"
-                          >Выбрать ингредиенты...</span
-                        >
-                        <span class="dropdown-arrow">▼</span>
-                      </div>
-                      <div class="dropdown-list hidden">
-                        <input
-                          type="text"
-                          class="dropdown-search"
-                          placeholder="Поиск ингредиента..."
-                        />
-                        <div class="dropdown-options" id="favOptions">
-                          <!-- Опции с чекбоксами добавляются через JS -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Нелюбимые ингредиенты -->
-                  <div class="field">
-                    <label class="field-label" for="disDropdown"
-                      >Нелюбимые продукты</label
-                    >
-                    <div class="dropdown-container" id="disDropdown">
-                      <div class="dropdown-header" tabindex="0">
-                        <span class="dropdown-placeholder"
-                          >Выбрать ингредиенты...</span
-                        >
-                        <span class="dropdown-arrow">▼</span>
-                      </div>
-                      <div class="dropdown-list hidden">
-                        <input
-                          type="text"
-                          class="dropdown-search"
-                          placeholder="Поиск ингредиента..."
-                        />
-                        <div class="dropdown-options" id="disOptions">
-                          <!-- Опции с чекбоксами добавляются через JS -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
                   <!-- Уведомления по отслеживаемым авторам -->
                   <div
                     class="panel-title"
@@ -294,8 +242,14 @@
                     <button id="saveBtn" class="btn" type="button">
                       Сохранить профиль
                     </button>
-                    <button id="clearBtn" class="btn" type="button">
-                      Сбросить
+                    <button
+                      id="logoutBtn"
+                      class="btn"
+                      type="button"
+                      style="margin-left: auto; border-color: #e44; color: #e44"
+                      aria-label="Выйти из аккаунта"
+                    >
+                      Выход
                     </button>
                   </div>
                 </form>

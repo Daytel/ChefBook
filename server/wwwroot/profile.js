@@ -1,7 +1,3 @@
-/* profile.js — ChefBook  /profile.html
-   Загружает данные профиля из API, список рецептов, подписки.
-   Сохраняет изменения на сервер.
-*/
 (function () {
   "use strict";
 
@@ -36,9 +32,17 @@
       const nameEl = document.getElementById("name");
       if (nameEl) nameEl.value = p.displayName ?? "";
 
+      const bioEl = document.getElementById("bio");
+      if (bioEl) bioEl.value = p.bio ?? "";
+
       const avatarPreview = document.getElementById("avatarPreview");
       if (avatarPreview && p.avatarUrl) {
-        avatarPreview.style.backgroundImage = `url(${p.avatarUrl})`;
+        const img =
+          avatarPreview.querySelector("img") ?? document.createElement("img");
+        img.src = p.avatarUrl;
+        img.alt = p.displayName ?? "";
+        img.className = "avatar-img";
+        if (!avatarPreview.contains(img)) avatarPreview.appendChild(img);
         avatarPreview.classList.add("has-image");
       }
 
@@ -46,27 +50,8 @@
       const plannerFreq = document.getElementById("plannerFreq");
       if (plannerEnabled) plannerEnabled.checked = p.plannerNotifEnabled;
       if (plannerFreq) plannerFreq.value = p.plannerNotifFreq ?? "daily";
-
-      updatePreview(p);
     } catch (e) {
       console.error("loadProfile:", e);
-    }
-  }
-
-  function updatePreview(p) {
-    const pvName = document.getElementById("pvName");
-    const pvPlanner = document.getElementById("pvPlanner");
-    const nameEl = document.getElementById("name");
-    if (pvName)
-      pvName.textContent = nameEl?.value.trim() || p?.displayName || "—";
-    if (pvPlanner) {
-      const enabled = document.getElementById("plannerEnabled")?.checked;
-      const freq = document.getElementById("plannerFreq");
-      pvPlanner.textContent =
-        "Оповещения: " +
-        (enabled
-          ? (freq?.options[freq.selectedIndex]?.text ?? "включены")
-          : "выкл");
     }
   }
 
@@ -74,7 +59,6 @@
   async function loadUserRecipes() {
     const container = document.getElementById("recipesList");
     if (!container) return;
-
     try {
       const res = await fetch(`/api/profile/${user.id}/recipes`);
       if (!res.ok) throw new Error(res.status);
@@ -83,7 +67,7 @@
       container.innerHTML = "";
       if (!recipes.length) {
         container.innerHTML =
-          "<div style='color:#666'>У вас пока нет рецептов.</div>";
+          "<div style='color:#666;padding:8px 0'>У вас пока нет рецептов.</div>";
         return;
       }
 
@@ -93,26 +77,25 @@
         row.style.cssText =
           "display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)";
 
-        const title = document.createElement("div");
-        title.className = "recipe-title";
+        const title = document.createElement("span");
         title.textContent = r.title;
 
         const actions = document.createElement("div");
-        actions.style.display = "flex";
-        actions.style.gap = "6px";
+        actions.style.cssText = "display:flex;gap:6px;flex-shrink:0";
 
         const editBtn = document.createElement("button");
-        editBtn.className = "btn";
+        editBtn.className = "btn small";
         editBtn.textContent = "Изменить";
         editBtn.addEventListener("click", () => {
           window.location.href = `/add-recipe.html?edit=${r.id}`;
         });
 
         const delBtn = document.createElement("button");
-        delBtn.className = "btn";
+        delBtn.className = "btn small";
         delBtn.textContent = "Удалить";
+        delBtn.style.cssText = "border-color:#e44;color:#e44";
         delBtn.addEventListener("click", () => {
-          if (!confirm(`Удалить рецепт «${r.title}»?`)) return;
+          if (!confirm(`Удалить рецепт «${esc(r.title)}»?`)) return;
           deleteRecipe(r.id, row);
         });
 
@@ -144,7 +127,6 @@
   async function loadSubscriptions() {
     const container = document.getElementById("authorsList");
     if (!container) return;
-
     try {
       const res = await fetch(`/api/profile/${user.id}/subscriptions`);
       if (!res.ok) throw new Error(res.status);
@@ -153,34 +135,49 @@
       container.innerHTML = "";
       if (!subs.length) {
         container.innerHTML =
-          "<div style='color:#666'>Вы ни на кого не подписаны.</div>";
+          "<div style='color:#666;padding:8px 0'>Вы ни на кого не подписаны.</div>";
         return;
       }
 
       subs.forEach((s) => {
         const row = document.createElement("div");
         row.style.cssText =
-          "display:flex;justify-content:space-between;align-items:center;padding:6px 0";
+          "display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)";
 
-        const name = document.createElement("span");
-        name.textContent = s.authorName;
+        const nameLink = document.createElement("a");
+        nameLink.href = `/reviews.html?id=${s.authorId}`;
+        nameLink.textContent = s.authorName;
+        nameLink.style.cssText = "color:inherit;text-decoration:none;";
+        nameLink.addEventListener(
+          "mouseover",
+          () => (nameLink.style.textDecoration = "underline"),
+        );
+        nameLink.addEventListener(
+          "mouseout",
+          () => (nameLink.style.textDecoration = "none"),
+        );
 
         const lbl = document.createElement("label");
         lbl.style.cssText =
-          "display:flex;align-items:center;gap:6px;cursor:pointer";
+          "display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:#666";
         const cb = document.createElement("input");
         cb.type = "checkbox";
         cb.checked = s.isNotified;
         cb.addEventListener("change", async () => {
-          await fetch(
-            `/api/profile/subscriptions/${s.authorId}/notify?userId=${user.id}&enabled=${cb.checked}`,
-            { method: "PATCH" },
-          );
+          try {
+            await fetch(
+              `/api/profile/subscriptions/${s.authorId}/notify?userId=${user.id}&enabled=${cb.checked}`,
+              { method: "PATCH" },
+            );
+          } catch (e) {
+            console.error("notify toggle:", e);
+            cb.checked = !cb.checked;
+          }
         });
         lbl.appendChild(cb);
         lbl.appendChild(document.createTextNode("Уведомления"));
 
-        row.appendChild(name);
+        row.appendChild(nameLink);
         row.appendChild(lbl);
         container.appendChild(row);
       });
@@ -191,30 +188,65 @@
 
   /* Сохранение профиля */
   async function saveProfile() {
+    const saveBtn = document.getElementById("saveBtn");
     try {
-      const nameVal = document.getElementById("name")?.value.trim();
-      const enabled = document.getElementById("plannerEnabled")?.checked;
-      const freq = document.getElementById("plannerFreq")?.value;
+      const nameVal = document.getElementById("name")?.value.trim() ?? "";
+      const bioVal = document.getElementById("bio")?.value.trim() ?? "";
+      const enabled =
+        document.getElementById("plannerEnabled")?.checked ?? false;
+      const freq = document.getElementById("plannerFreq")?.value ?? "daily";
+
+      // Аватар: передаём ТОЛЬКО если пользователь загрузил новый файл (base64 data:)
+      // img.src после загрузки содержит data:image/..., но после обновления страницы — http://...
+      // Контроллер принимает только data: и сохраняет как /images/filename.jpg
+      const avatarPreview = document.getElementById("avatarPreview");
+      const avatarImg = avatarPreview?.querySelector("img");
+      const rawSrc = avatarImg?.getAttribute("src") ?? avatarImg?.src ?? "";
+      const avatarDataUrl = rawSrc.startsWith("data:") ? rawSrc : null;
+
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Сохранение...";
+      }
 
       const res = await fetch(`/api/profile/${user.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           displayName: nameVal,
+          bio: bioVal,
+          avatarUrl: avatarDataUrl,
           plannerNotifEnabled: enabled,
           plannerNotifFreq: freq,
         }),
       });
-      if (!res.ok) throw new Error((await res.json()).error ?? res.status);
+      if (!res.ok)
+        throw new Error(
+          (await res.json().catch(() => ({}))).error ?? res.status,
+        );
 
-      // Обновляем имя в localStorage
-      const updated = { ...user, displayName: nameVal };
+      // Обновляем данные в localStorage (avatarUrl берём из ответа сервера — он уже /images/...)
+      const saved = await res.json();
+      const newAvatarUrl = saved.avatarUrl ?? avatarDataUrl ?? user.avatarUrl;
+      const updated = {
+        ...user,
+        displayName: nameVal,
+        avatarUrl: newAvatarUrl,
+      };
       window.chefbook.setUser(updated);
 
+      // Обновляем кнопки навигации (Профиль/Войти)
+      if (typeof window.updateAuthButtons === "function")
+        window.updateAuthButtons();
+
       alert("Профиль сохранён!");
-      updatePreview({});
     } catch (e) {
-      alert("Ошибка: " + e.message);
+      alert("Ошибка сохранения: " + e.message);
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Сохранить профиль";
+      }
     }
   }
 
@@ -225,10 +257,16 @@
     const reader = new FileReader();
     reader.onload = (ev) => {
       const preview = document.getElementById("avatarPreview");
-      if (preview) {
-        preview.style.backgroundImage = `url(${ev.target.result})`;
-        preview.classList.add("has-image");
+      if (!preview) return;
+      let img = preview.querySelector("img");
+      if (!img) {
+        img = document.createElement("img");
+        img.className = "avatar-img";
+        preview.appendChild(img);
       }
+      img.src = ev.target.result;
+      img.alt = user.displayName ?? "";
+      preview.classList.add("has-image");
     };
     reader.readAsDataURL(f);
   });
@@ -236,26 +274,65 @@
   document.getElementById("removeAvatar")?.addEventListener("click", () => {
     const preview = document.getElementById("avatarPreview");
     if (preview) {
+      preview.querySelector("img")?.remove();
       preview.style.backgroundImage = "";
       preview.classList.remove("has-image");
     }
   });
 
-  /* Кнопки формы */
+  /* Кнопки формы и навигации */
   function bindButtons() {
+    // Сохранить профиль
     document.getElementById("saveBtn")?.addEventListener("click", saveProfile);
-    document.getElementById("clearBtn")?.addEventListener("click", () => {
-      if (!confirm("Сбросить изменения?")) return;
-      loadProfile();
+
+    // Выход из аккаунта
+    document.getElementById("logoutBtn")?.addEventListener("click", () => {
+      if (confirm("Выйти из аккаунта?")) {
+        window.chefbook.logout(); // удаляет из localStorage и редиректит на /index.html
+      }
+    });
+
+    // Внутренняя навигация
+    document.querySelector(".nav-reviews")?.addEventListener("click", () => {
+      // Открываем отзывы об авторе для текущего пользователя
+      window.location.href = `/reviews.html?id=${user.id}`;
+    });
+    document.querySelector(".nav-saved")?.addEventListener("click", () => {
+      window.location.href = "/saved.html";
+    });
+    document.querySelector(".nav-planner")?.addEventListener("click", () => {
+      window.location.href = "/planner.html";
+    });
+    document.querySelector(".nav-add")?.addEventListener("click", () => {
+      window.location.href = "/add-recipe.html";
+    });
+
+    // Обновление превью при вводе
+    document.getElementById("name")?.addEventListener("input", () => {
+      const pvName = document.getElementById("pvName");
+      if (pvName)
+        pvName.textContent =
+          document.getElementById("name").value.trim() ||
+          user.displayName ||
+          "—";
     });
     document
-      .getElementById("name")
-      ?.addEventListener("input", () => updatePreview({}));
-    document
       .getElementById("plannerEnabled")
-      ?.addEventListener("change", () => updatePreview({}));
+      ?.addEventListener("change", updatePlannerPreview);
     document
       .getElementById("plannerFreq")
-      ?.addEventListener("change", () => updatePreview({}));
+      ?.addEventListener("change", updatePlannerPreview);
+  }
+
+  function updatePlannerPreview() {
+    const pvPlanner = document.getElementById("pvPlanner");
+    if (!pvPlanner) return;
+    const enabled = document.getElementById("plannerEnabled")?.checked;
+    const freq = document.getElementById("plannerFreq");
+    pvPlanner.textContent =
+      "Оповещения: " +
+      (enabled
+        ? (freq?.options[freq.selectedIndex]?.text ?? "включены")
+        : "выкл");
   }
 })();

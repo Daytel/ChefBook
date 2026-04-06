@@ -5,30 +5,38 @@
     ViewData["Title"] = "Поиск рецептов";
 
     // Данные, переданные из CatalogController через ViewBag
-    var allCategories = ViewBag.AllCategories as List<Category> ?? new List<Category>();
-    int currentPage = ViewBag.CurrentPage ?? 1;
-    int totalPages = ViewBag.TotalPages ?? 1;
+    var allCategories   = ViewBag.AllCategories as List<Category> ?? new List<Category>();
+    int currentPage     = ViewBag.CurrentPage ?? 1;
+    int totalPages      = ViewBag.TotalPages  ?? 1;
 
     // Делим категории на два столбца для вёрстки
-    var half = (int)Math.Ceiling(allCategories.Count / 2.0);
+    int totalItems      = ViewBag.TotalItems  ?? 0;
+    var half            = (int)Math.Ceiling(allCategories.Count / 2.0);
     var leftCategories  = allCategories.Take(half).ToList();
     var rightCategories = allCategories.Skip(half).ToList();
 }
 
-<!-- Шапка -->
+<!-- Шапка — единый стандарт -->
 <header class="site__header" role="banner" aria-label="Шапка">
     <div class="site-title">
         <img src="~/icons/logo.svg" alt="" aria-hidden="true" />
         <span>ChefBook</span>
     </div>
-    <nav class="site__nav" role="navigation" aria-label="Главная навигация шапки">
-        <button class="home-button btn" data-href="/" type="button" aria-label="Главная страница">
+    <nav class="site__nav site__nav--left" role="navigation" aria-label="Основная навигация">
+        <button class="btn header-btn" type="button" data-href="/index.html" aria-label="Главная">
             <img src="~/icons/home.svg" class="btn-icon" alt="" aria-hidden="true" />
             <span class="btn-label">ГЛАВНАЯ</span>
         </button>
-        <button class="profile btn" data-href="/profile" type="button" aria-label="Профиль / Регистрация">
+        <button class="btn header-btn" type="button" data-href="/Catalog" aria-label="Поиск">
+            <img src="~/icons/search.svg" class="btn-icon" alt="" aria-hidden="true" />
+            <span class="btn-label">ПОИСК</span>
+        </button>
+    </nav>
+    <nav class="site__nav site__nav--right" aria-label="Аккаунт">
+        <button class="btn header-btn nav-auth-btn" type="button"
+                data-href="/auth.html" aria-label="Войти в аккаунт">
             <img src="~/icons/profile.svg" class="btn-icon" alt="" aria-hidden="true" />
-            <span class="btn-label">ПРОФИЛЬ / РЕГИСТРАЦИЯ</span>
+            <span class="btn-label">ВОЙТИ</span>
         </button>
     </nav>
 </header>
@@ -44,7 +52,7 @@
                 <form class="search-area" role="search" aria-label="Форма поиска">
 
                     <section>
-                        <h2 class="panel-title">ФИЛЬТРЫ</h2>
+                        <p class="panel-title">ФИЛЬТРЫ</p>
                         <div class="search-row">
                             <label for="question" class="visually-hidden">Поиск по названию или ингредиенту</label>
                             <input id="question" class="input" name="question"
@@ -68,9 +76,9 @@
                         </div>
                     </section>
 
-                    <!-- Категории из БД — рендерятся сервером -->
+                    <!-- Категории из БД -->
                     <section class="categories-section">
-                        <h2 class="panel-title">КАТЕГОРИИ</h2>
+                        <p class="panel-title">КАТЕГОРИИ</p>
                         <fieldset class="categories" aria-label="Категории рецептов">
                             <div class="cols">
                                 <div class="category-box">
@@ -107,13 +115,14 @@
             <!-- Правая колонка: результаты -->
             <div class="right-column">
                 <section class="results" aria-label="Найденные рецепты">
-                    <h2 class="panel-title">НАЙДЕННЫЕ РЕЦЕПТЫ</h2>
+                    <p class="panel-title">НАЙДЕННЫЕ РЕЦЕПТЫ</p>
 
                     <!--
                         Начальные карточки — серверный рендер (SSR).
                         При изменении фильтров search.js очистит этот список
                         и заполнит его заново через AJAX-запрос к /api/recipes.
                     -->
+
                     <ul id="resultsGrid" class="recipes-list" role="list">
                         @foreach (var recipe in Model)
                         {
@@ -130,17 +139,6 @@
                                         Состав
                                     </button>
                                 </div>
-                                <div class="ingredients" role="dialog"
-                                     aria-label="Ингредиенты" aria-hidden="true"
-                                     style="display:none;">
-                                    <h2>Ингредиенты</h2>
-                                    <ul>
-                                        @foreach (var ri in recipe.RecipeIngredients ?? new())
-                                        {
-                                            <li>@ri.Ingredient?.Name — @ri.QuantityPerPortion @ri.Unit</li>
-                                        }
-                                    </ul>
-                                </div>
                             </li>
                         }
                     </ul>
@@ -154,9 +152,8 @@
                                 <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor" />
                             </svg>
                         </button>
-                        <div id="pageIndicator" class="page-indicator"
-                             aria-live="polite" aria-atomic="true">
-                            Страница @currentPage из @totalPages (@Model.Count)
+                        <div id="pageIndicator" class="page-indicator" aria-live="polite" aria-atomic="true">
+                            Страница @currentPage из @totalPages (@totalItems)
                         </div>
                         <button id="navNext" class="btn nav-arrow" type="button"
                                 aria-label="Следующая страница"
@@ -169,7 +166,7 @@
                 </section>
 
                 <section class="history" aria-label="История поиска">
-                    <h2 class="panel-title">ИСТОРИЯ ПОИСКА</h2>
+                    <p class="panel-title">ИСТОРИЯ ПОИСКА</p>
                     <div id="historyBox" class="box">
                         <div id="historyList">Пусто</div>
                     </div>
@@ -179,22 +176,25 @@
     </div>
 </main>
 
-<!-- Подвал -->
+<!-- Подвал — единый стандарт -->
 <footer class="site__footer" role="contentinfo" aria-label="Нижняя навигация">
-    <button class="nav-item btn home" type="button" data-href="/">
+    <button class="nav-item btn footer-home" type="button" data-href="/index.html">
         <img src="~/icons/home.svg" class="btn-icon" alt="" aria-hidden="true" />
         <span class="btn-label">Главная</span>
     </button>
-    <button class="nav-item btn profile" type="button" data-href="/profile">
-        <img src="~/icons/profile.svg" class="btn-icon" alt="" aria-hidden="true" />
-        <span class="btn-label">Профиль / Регистрация</span>
+    <button class="nav-item btn footer-search" type="button" data-href="/Catalog">
+        <img src="~/icons/search.svg" class="btn-icon" alt="" aria-hidden="true" />
+        <span class="btn-label">Поиск</span>
     </button>
-    <button class="nav-item btn only-about" type="button" data-href="/about" aria-label="О нас">
+    <button class="nav-item btn footer-auth nav-auth-btn" type="button" data-href="/auth.html">
+        <img src="~/icons/profile.svg" class="btn-icon" alt="" aria-hidden="true" />
+        <span class="btn-label">Войти</span>
+    </button>
+    <button class="nav-item btn footer-about" type="button" data-href="/about.html">
         <img src="~/icons/info.svg" class="btn-icon" alt="" aria-hidden="true" />
         <span class="btn-label">О нас</span>
     </button>
 </footer>
 
-<!-- search.js подключается последним — DOM уже готов -->
-<script src="~/common.js"></script>
-<script src="~/search.js"></script>
+<script src="~/common.js" defer></script>
+<script src="~/search.js" defer></script>

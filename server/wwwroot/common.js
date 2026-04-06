@@ -26,7 +26,7 @@ window.chefbook = {
 /* Обновление всех кнопок входа/профиля
    Класс .nav-auth-btn есть и в шапке, и в подвале — обновляем все.
 */
-function updateAuthButtons() {
+window.updateAuthButtons = function updateAuthButtons() {
   const user = window.chefbook.getUser();
   document.querySelectorAll(".nav-auth-btn").forEach((btn) => {
     const label = btn.querySelector(".btn-label");
@@ -46,7 +46,7 @@ function updateAuthButtons() {
       btn.setAttribute("aria-label", "Войти в аккаунт");
     }
   });
-}
+};
 
 /* Навигация кнопок data-href */
 function initNav() {
