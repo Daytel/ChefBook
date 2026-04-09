@@ -1,3 +1,7 @@
+[hidden] {
+  display: none !important;
+}
+
 .site__actions {
   margin-left: auto;
   display: flex;

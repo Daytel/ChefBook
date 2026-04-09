@@ -21,15 +21,12 @@
   const currentUser = window.chefbook?.getUser?.() ?? null;
   const isLoggedIn = currentUser !== null;
 
-  // Проверяем сразу — это своя страница?
-  const isOwnPage =
-    isLoggedIn && authorId && Number(currentUser.id) === Number(authorId);
-
   document.addEventListener("DOMContentLoaded", () => {
-    // Скрываем кнопку «Подписаться» сразу — до любых запросов к API
-    if (!isLoggedIn || isOwnPage) {
+    // Кнопка «Подписаться» скрыта в HTML по умолчанию (style="display:none").
+    // Показываем её ТОЛЬКО если: авторизован И чужая страница.
+    if (isLoggedIn && authorId && Number(currentUser.id) !== Number(authorId)) {
       const actionsBlock = document.getElementById("authorActions");
-      if (actionsBlock) actionsBlock.hidden = true;
+      if (actionsBlock) actionsBlock.style.display = ""; // убираем скрытие
     }
 
     if (!authorId) {
@@ -62,8 +59,9 @@
         avatarImg.alt = a.name ?? "";
       }
 
-      // Подписка только если авторизован и это чужая страница
-      if (isLoggedIn && !isOwnPage) {
+      // Подписка — инициализируем только если кнопка видна
+      const actionsBlock = document.getElementById("authorActions");
+      if (actionsBlock && actionsBlock.style.display !== "none") {
         setupSubscription();
       }
     } catch (err) {
