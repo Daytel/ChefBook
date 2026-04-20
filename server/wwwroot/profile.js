@@ -59,6 +59,7 @@
   async function loadUserRecipes() {
     const container = document.getElementById("recipesList");
     if (!container) return;
+
     try {
       const res = await fetch(`/api/profile/${user.id}/recipes`);
       if (!res.ok) throw new Error(res.status);
@@ -75,38 +76,52 @@
         const row = document.createElement("div");
         row.className = "recipe-row";
         row.style.cssText =
-          "display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)";
+          "display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)";
 
         const title = document.createElement("span");
         title.textContent = r.title;
+        title.style.cssText = "font-weight:600; font-size:14px;";
 
         const actions = document.createElement("div");
-        actions.style.cssText = "display:flex;gap:6px;flex-shrink:0";
+        actions.style.cssText = "display:flex;gap:8px;flex-shrink:0";
 
+        // КНОПКА ИЗМЕНИТЬ
         const editBtn = document.createElement("button");
         editBtn.className = "btn small";
         editBtn.textContent = "Изменить";
-        editBtn.addEventListener("click", () => {
+        editBtn.style.cssText = "min-width:70px;";
+
+        editBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          console.log("✅ Edit button clicked! Recipe ID =", r.id); // ← должен появиться
           window.location.href = `/add-recipe.html?edit=${r.id}`;
         });
 
+        // КНОПКА УДАЛИТЬ
         const delBtn = document.createElement("button");
         delBtn.className = "btn small";
         delBtn.textContent = "Удалить";
-        delBtn.style.cssText = "border-color:#e44;color:#e44";
-        delBtn.addEventListener("click", () => {
-          if (!confirm(`Удалить рецепт «${esc(r.title)}»?`)) return;
-          deleteRecipe(r.id, row);
+        delBtn.style.cssText = "border-color:#e44;color:#e44;min-width:70px;";
+
+        delBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          if (confirm(`Удалить рецепт «${esc(r.title)}»?`)) {
+            deleteRecipe(r.id, row);
+          }
         });
 
         actions.appendChild(editBtn);
         actions.appendChild(delBtn);
+
         row.appendChild(title);
         row.appendChild(actions);
         container.appendChild(row);
       });
     } catch (e) {
       console.error("loadUserRecipes:", e);
+      container.innerHTML = `<div style='color:#c00;padding:8px 0'>Ошибка загрузки рецептов: ${esc(e.message)}</div>`;
     }
   }
 
@@ -282,6 +297,7 @@
 
   /* Кнопки формы и навигации */
   function bindButtons() {
+    console.log("🔧 bindButtons() вызвана");
     // Сохранить профиль
     document.getElementById("saveBtn")?.addEventListener("click", saveProfile);
 

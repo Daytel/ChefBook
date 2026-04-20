@@ -39,6 +39,13 @@ let photos = []; // {id, dataUrl, isMain}
 let ingredientIdCounter = 0;
 let stepIdCounter = 0;
 
+let isEditModeLoading = false;
+
+// Защита от undefined
+if (!saveRecipe) {
+  console.error("Кнопка сохранения #saveRecipe не найдена!");
+}
+
 // Вспомогательные селекторы ошибок
 function setFieldError(name, msg) {
   const el = document.querySelector(`.field-error[data-for="${name}"]`);
@@ -393,6 +400,12 @@ function collectRecipe() {
 
 // Валидация формы — ключевая функция
 function validateForm() {
+  // Пропускаем валидацию пока загружаются данные в режиме редактирования
+  if (isEditModeLoading) {
+    saveRecipe.disabled = false;
+    return true;
+  }
+
   let hasErrors = false;
 
   // Название: обязательно, max 30
@@ -545,9 +558,13 @@ saveRecipe.addEventListener("click", async () => {
   saveRecipe.disabled = true;
   saveRecipe.textContent = "Сохранение...";
 
+  const editId = saveRecipe.dataset.editId ?? null;
+  const apiUrl = editId ? `/api/recipes/${editId}` : "/api/recipes";
+  const apiMethod = editId ? "PUT" : "POST";
+
   try {
-    const res = await fetch("/api/recipes", {
-      method: "POST",
+    const res = await fetch(apiUrl, {
+      method: apiMethod,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         userId: currentUser.id,
@@ -627,62 +644,94 @@ renderPhotos();
 ingredientsList.addEventListener("input", () => validateForm());
 stepsBox.addEventListener("input", () => validateForm());
 
-/* Загрузка рецепта для редактирования (?edit=id) */
-(function checkEditMode() {
+/* Режим редактирования (?edit=id) 
+   Выполняется ПОСЛЕ boot. Заменяет пустые поля данными рецепта.
+*/
+(async function loadEditMode() {
   const editId = new URLSearchParams(window.location.search).get("edit");
   if (!editId) return;
 
   const currentUser = window.chefbook?.getUser?.() ?? null;
-  if (!currentUser) return;
+  if (!currentUser) {
+    alert("Войдите в аккаунт для редактирования рецепта");
+    window.location.href = "/auth.html";
+    return;
+  }
 
-  // Меняем заголовок
-  const titleEl = document.getElementById("add-title");
-  if (titleEl) titleEl.textContent = "Редактировать рецепт";
+  try {
+    console.log(`Загружаем рецепт для редактирования: ID = ${editId}`);
 
-  fetch(`/api/recipes/${editId}/edit?userId=${currentUser.id}`)
-    .then((r) => {
-      if (!r.ok) throw new Error(r.status);
-      return r.json();
-    })
-    .then((data) => {
-      // Заполняем основные поля
-      const t = document.getElementById("title");
-      const d = document.getElementById("shortDesc");
-      const ct = document.getElementById("cookingTime");
-      if (t) t.value = data.title ?? "";
-      if (d) d.value = data.description ?? "";
-      if (ct) ct.value = data.cookingTimeMinutes ?? "";
+    isEditModeLoading = true;
 
-      // Категории
-      renderCategories(data.categories ?? []);
+    const res = await fetch(
+      `/api/recipes/${editId}/edit?userId=${currentUser.id}`,
+    );
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || `HTTP ${res.status}`);
+    }
 
-      // Ингредиенты
-      ingredientsList.innerHTML = "";
-      (data.ingredients ?? []).forEach((i) =>
-        addIngredientRow(i.name, i.qty, i.unit),
-      );
-      if (!data.ingredients?.length) addIngredientRow();
+    const data = await res.json();
 
-      // Шаги
-      stepsBox.innerHTML = "";
-      (data.steps ?? []).forEach((s) => addStep(s.text, s.img));
-      if (!data.steps?.length) addStep();
+    // Основные поля
+    const titleEl = document.getElementById("title");
+    const descEl = document.getElementById("shortDesc");
+    const timeEl = document.getElementById("cookingTime");
 
-      // Фото — восстанавливаем из URL (показываем preview с путём)
-      photos = [];
-      (data.photos ?? []).forEach((p) => {
-        photos.push({
-          id: Math.random(),
-          dataUrl: p.dataUrl,
-          isMain: p.isMain,
-        });
+    if (titleEl) titleEl.value = data.title ?? "";
+    if (descEl) descEl.value = data.description ?? "";
+    if (timeEl) timeEl.value = data.cookingTimeMinutes ?? "";
+
+    // Заголовок страницы
+    const pageTitle = document.querySelector("h1");
+    if (pageTitle) pageTitle.textContent = "Редактировать рецепт";
+
+    // Категории
+    renderCategories(data.categories ?? []);
+
+    // Ингредиенты — очищаем старые строки от renderInitial()
+    ingredientsList.innerHTML = "";
+    if (data.ingredients && data.ingredients.length > 0) {
+      data.ingredients.forEach((i) => {
+        addIngredientRow(i.name, i.qty, i.unit);
       });
-      renderPhotos();
+    } else {
+      addIngredientRow();
+    }
 
+    // Шаги
+    stepsBox.innerHTML = "";
+    if (data.steps && data.steps.length > 0) {
+      data.steps.forEach((s) => {
+        addStep(s.text, s.img);
+      });
+    } else {
+      addStep();
+    }
+
+    // Фото
+    photos = (data.photos || []).map((p, idx) => ({
+      id: Date.now() + idx,
+      dataUrl: p.dataUrl,
+      isMain: p.isMain,
+    }));
+    renderPhotos();
+
+    // Помечаем кнопку как редактирование
+    if (saveRecipe) {
+      saveRecipe.dataset.editId = editId;
+      saveRecipe.textContent = "Сохранить изменения";
+    }
+
+    // Важно: даём браузеру время обновить DOM, потом запускаем валидацию
+    setTimeout(() => {
+      isEditModeLoading = false;
       validateForm();
-
-      // Меняем кнопку сохранения — отправляем PUT вместо POST
-      saveRecipeBtn.dataset.editId = editId;
-    })
-    .catch((e) => alert("Ошибка загрузки рецепта: " + e.message));
+      console.log("✅ Рецепт успешно загружен в режим редактирования");
+    }, 150);
+  } catch (err) {
+    isEditModeLoading = false;
+    console.error("Ошибка загрузки рецепта для редактирования:", err);
+    alert("Не удалось загрузить рецепт для редактирования:\n" + err.message);
+  }
 })();

@@ -28,7 +28,7 @@
   let ingredientsData = [];
 
   /* DOM Ready */
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", async () => {
     if (!recipeId) {
       setText(".recipe-title", "Рецепт не найден");
       return;
@@ -36,8 +36,9 @@
 
     setupPortionCounter();
 
-    if (window.__RECIPE_ID__) {
-      // Razor — данные уже в HTML
+    const isRazor = !!window.__RECIPE_ID__;
+
+    if (isRazor) {
       parseIngredientsFromDOM();
       setupFavorite();
       setupSubscription(window.__AUTHOR_ID__);
@@ -45,8 +46,7 @@
       setupCarouselFromDOM();
       setupAuthorReviewsBtn();
     } else {
-      // Статическая страница
-      loadRecipe();
+      await loadRecipe();
       setupComments();
     }
   });
@@ -85,16 +85,18 @@
   }
 
   function renderIngredients() {
-    if (!ingredientsData.length) return;
-    document
-      .querySelectorAll("#ingredientsList li[data-qty]")
-      .forEach((li, i) => {
-        const qtyEl = li.querySelector(".ing-qty");
-        if (qtyEl)
-          qtyEl.textContent = parseFloat(
-            (ingredientsData[i].quantity * portions).toFixed(2),
-          );
-      });
+    const list = document.getElementById("ingredientsList");
+    if (!list || !ingredientsData.length) return;
+
+    list.querySelectorAll("li[data-qty]").forEach((li, i) => {
+      const qtyEl = li.querySelector(".ing-qty");
+      if (qtyEl) {
+        const newQty = (ingredientsData[i].quantity * portions)
+          .toFixed(2)
+          .replace(/\.00$/, "");
+        qtyEl.textContent = newQty;
+      }
+    });
   }
 
   /* Загрузка рецепта (статическая страница) */
@@ -151,6 +153,9 @@
          </li>`,
         )
         .join("");
+      // После рендеринга ингредиентов — парсим их в ingredientsData для счётчика порций
+      parseIngredientsFromDOM();
+      renderIngredients();
     }
 
     const stepsContainer = document.querySelector(".steps");

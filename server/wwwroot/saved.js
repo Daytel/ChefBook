@@ -35,9 +35,8 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const items = await res.json();
 
-      // Данные автора — берём из первого рецепта (у всех один автор-пользователь)
-      // В saved.html блок автора показывает самого пользователя
-      fillAuthorBlock(user);
+      // Загружаем актуальные данные автора через API (как на странице отзывов)
+      await loadAuthorInfo();
 
       grid.innerHTML = "";
       if (!items.length) {
@@ -54,23 +53,61 @@
     }
   }
 
+  /* Загрузка информации об авторе (текущем пользователе) */
+  async function loadAuthorInfo() {
+    try {
+      const res = await fetch(`/api/authors/${user.id}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const a = await res.json();
+
+      document.getElementById("authorName").textContent =
+        a.name ?? user.displayName ?? "Автор";
+      document.getElementById("authorBio").textContent = a.bio ?? "";
+
+      document.getElementById("authorRecipes").textContent =
+        `Рецептов: ${a.recipesCount ?? 0}`;
+      document.getElementById("authorFollowers").textContent =
+        `Подписчиков: ${a.followersCount ?? 0}`;
+
+      const avatarEl = document.getElementById("authorAvatar");
+      if (avatarEl) {
+        let img = avatarEl.querySelector("img");
+        if (!img) {
+          img = document.createElement("img");
+          img.className = "avatar-img";
+          avatarEl.appendChild(img);
+        }
+        img.src = a.avatarUrl ?? user.avatarUrl ?? "/images/avatar.jpg";
+        img.alt = a.name ?? user.displayName ?? "";
+      }
+    } catch (err) {
+      console.error("Ошибка загрузки данных автора:", err);
+      // fallback на данные из localStorage
+      fillAuthorBlock(user);
+    }
+  }
+
+  // Оставляем как запасной вариант
   function fillAuthorBlock(u) {
     const setTxt = (id, v) => {
       const el = document.getElementById(id);
       if (el) el.textContent = v;
     };
     setTxt("authorName", u.displayName || u.email || "Профиль");
-    const bioEl = document.getElementById("authorBio");
-    if (bioEl) bioEl.textContent = "";
+    setTxt("authorBio", "");
+    setTxt("authorRecipes", "Рецептов: 0");
+    setTxt("authorFollowers", "Подписчиков: 0");
+
     const avatarEl = document.getElementById("authorAvatar");
     if (avatarEl) {
-      const img =
-        avatarEl.querySelector("img") ?? document.createElement("img");
+      let img = avatarEl.querySelector("img");
+      if (!img) {
+        img = document.createElement("img");
+        img.className = "avatar-img";
+        avatarEl.appendChild(img);
+      }
       img.src = u.avatarUrl ?? "/images/avatar.jpg";
       img.alt = u.displayName ?? "";
-      img.className = "avatar-img";
-      avatarEl.innerHTML = "";
-      avatarEl.appendChild(img);
     }
   }
 

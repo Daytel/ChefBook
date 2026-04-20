@@ -24,17 +24,56 @@
   let selectedDay = null;
 
   /* Инициализация */
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", async () => {
     if (!user) {
       document.querySelector(".site__main").innerHTML =
         "<p style='padding:20px;color:#888'>Войдите в аккаунт для использования планировщика.</p>";
       return;
     }
-    fillUserBlock();
+
+    await loadAuthorInfo();
+    fillUserBlock(); // оставляем как fallback
     renderCalendar();
     loadSavedRecipes();
     bindControls();
   });
+
+  /* Загрузка информации об авторе (текущем пользователе) */
+  async function loadAuthorInfo() {
+    try {
+      const res = await fetch(`/api/authors/${user.id}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const a = await res.json();
+
+      document.getElementById("authorName").textContent =
+        a.name ?? user.displayName ?? "Автор";
+      document.getElementById("authorBio").textContent = a.bio ?? "";
+
+      document.getElementById("authorRecipes").textContent =
+        `Рецептов: ${a.recipesCount ?? 0}`;
+      document.getElementById("authorFollowers").textContent =
+        `Подписчиков: ${a.followersCount ?? 0}`;
+
+      const avatarEl = document.getElementById("authorAvatar");
+      if (avatarEl) {
+        let img = avatarEl.querySelector("img");
+        if (!img) {
+          img = document.createElement("img");
+          img.className = "avatar-img";
+          avatarEl.appendChild(img);
+        }
+        img.src = a.avatarUrl ?? user.avatarUrl ?? "/images/avatar.jpg";
+        img.alt = a.name ?? user.displayName ?? "";
+      }
+    } catch (err) {
+      console.error("Ошибка загрузки данных автора:", err);
+      // fallback
+      document.getElementById("authorName").textContent =
+        user.displayName || user.email || "Профиль";
+      document.getElementById("authorRecipes").textContent = "Рецептов: 0";
+      document.getElementById("authorFollowers").textContent = "Подписчиков: 0";
+    }
+  }
 
   function fillUserBlock() {
     const setTxt = (id, v) => {
@@ -110,7 +149,20 @@
       calendar.appendChild(col);
     }
 
-    loadWeek();
+    loadWeek().then(() => {
+      // Если у нас был выбран день до перерисовки (например, при смене недели)
+      // пытаемся найти новую колонку с этой датой и подсветить её
+      if (selectedDay) {
+        const activeCol = document.querySelector(
+          `.calendar-day[data-date="${selectedDay}"]`,
+        );
+        if (activeCol) activeCol.classList.add("selected");
+      }
+    });
+    // Инициализация кнопки сохранения списка покупок
+    setTimeout(() => {
+      setupSaveShoppingList();
+    }, 200);
   }
 
   function selectDay(key, colEl) {
@@ -191,9 +243,17 @@
         body: JSON.stringify({ portions: next }),
       });
       if (!res.ok) throw new Error(res.status);
+
+      // Обновляем данные в локальном состоянии
       entry.portions = next;
+
+      // Обновляем UI счетчика
       itemEl.querySelector(".portions-count").textContent = next;
-      if (selectedDay === key) renderDayIngredients(key);
+
+      // Вызываем перерисовку ингредиентов, если этот день выбран
+      if (selectedDay === key) {
+        renderDayIngredients(key);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -201,10 +261,21 @@
 
   async function deleteEntry(entryId, itemEl, key) {
     try {
-      await fetch(`/api/planner/${entryId}`, { method: "DELETE" });
-      weekPlan[key] = (weekPlan[key] ?? []).filter((e) => e.id !== entryId);
+      const res = await fetch(`/api/planner/${entryId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error(res.status);
+
+      // Удаляем из локального стейта
+      if (weekPlan[key]) {
+        weekPlan[key] = weekPlan[key].filter((e) => e.id !== entryId);
+      }
+
+      // Удаляем элемент из DOM
       itemEl.remove();
-      if (selectedDay === key) renderDayIngredients(key);
+
+      // Если день пустой, можно вызвать перерисовку календаря или просто ингредиентов
+      if (selectedDay === key) {
+        renderDayIngredients(key);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -248,6 +319,7 @@
   /* Список ингредиентов дня */
   function renderDayIngredients(key) {
     const container = document.getElementById("ingredientsList");
+    const btn = document.getElementById("saveShoppingListBtn");
     if (!container) return;
 
     const entries = weekPlan[key] ?? [];
@@ -279,6 +351,9 @@
           `<li><strong>${esc(i.name)}</strong> — ${fmt(i.qty, 1)} ${esc(i.unit)}</li>`,
       )
       .join("")}</ul>`;
+
+    // Показываем кнопку, если есть ингредиенты
+    if (btn) btn.style.display = "inline-block";
   }
 
   /* Список сохранённых рецептов (левая колонка) */
@@ -335,24 +410,25 @@
       weekStart.setDate(weekStart.getDate() - 7);
       renderCalendar();
     });
+
     document.getElementById("nextWeek")?.addEventListener("click", () => {
       weekStart.setDate(weekStart.getDate() + 7);
       renderCalendar();
     });
+
     document
       .getElementById("clearDayBtn")
       ?.addEventListener("click", async () => {
         if (!selectedDay) return alert("Выберите день");
         if (!confirm("Очистить день?")) return;
+
         const entries = weekPlan[selectedDay] ?? [];
-        for (const e of entries)
+        for (const e of entries) {
           await fetch(`/api/planner/${e.id}`, { method: "DELETE" });
+        }
         weekPlan[selectedDay] = [];
         renderAllDays();
       });
-    document.getElementById("clearAllSaved")?.addEventListener("click", () => {
-      // Просто перезагружает список — кнопка оставлена для совместимости с HTML
-    });
 
     // Настройки уведомлений планировщика
     document
@@ -374,5 +450,65 @@
         plannerNotifFreq: freq,
       }),
     }).catch(() => {});
+  }
+
+  function setupSaveShoppingList() {
+    const btn = document.getElementById("saveShoppingListBtn");
+    if (!btn) {
+      console.warn("Кнопка #saveShoppingListBtn не найдена");
+      return;
+    }
+
+    console.log("setupSaveShoppingList: кнопка найдена и готова");
+
+    btn.addEventListener("click", () => {
+      if (!selectedDay) {
+        alert("Выберите день в календаре");
+        return;
+      }
+
+      const entries = weekPlan[selectedDay] ?? [];
+      if (!entries.length) {
+        alert("В выбранном дне нет рецептов");
+        return;
+      }
+
+      let htmlContent = `
+        <h2 style="text-align:center; font-family:Arial,sans-serif;">Список покупок на ${selectedDay}</h2>
+        <hr style="margin:15px 0">
+        <ul style="font-family:Arial,sans-serif; line-height:1.8; font-size:15px; padding-left:20px;">
+      `;
+
+      const map = {};
+      entries.forEach((entry) => {
+        const portions = entry.portions ?? 1;
+        (entry.recipe?.ingredients ?? []).forEach((ing) => {
+          const key = `${ing.name}|${ing.unit || ""}`;
+          if (!map[key])
+            map[key] = { name: ing.name, unit: ing.unit || "", qty: 0 };
+          map[key].qty += ing.quantity * portions;
+        });
+      });
+
+      Object.values(map).forEach((item) => {
+        const qty = parseFloat(item.qty.toFixed(2));
+        htmlContent += `<li><strong>${esc(item.name)}</strong> — ${qty} ${esc(item.unit)}</li>`;
+      });
+
+      htmlContent += `</ul>
+        <p style="margin-top:25px; color:#666; font-size:13px; text-align:center;">
+          ChefBook — ${new Date().toLocaleDateString("ru-RU")}
+        </p>`;
+
+      const opt = {
+        margin: [15, 15, 15, 15],
+        filename: `Список_покупок_${selectedDay}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      };
+
+      html2pdf().set(opt).from(htmlContent).save();
+    });
   }
 })();

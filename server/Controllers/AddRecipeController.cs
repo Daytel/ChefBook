@@ -115,7 +115,7 @@ namespace RecipeApp.Controllers
                     .Select(rc => rc.Category?.Name).Where(n => n != null).ToList(),
                 ingredients = recipe.RecipeIngredients
                     .Where(ri => ri.Ingredient != null)
-                    .Select(ri => new { name = ri.Ingredient!.Name, qty = ri.QuantityPerPortion.ToString(), unit = ri.Unit })
+                    .Select(ri => new { name = ri.Ingredient!.Name, qty = ri.QuantityPerPortion.ToString(System.Globalization.CultureInfo.InvariantCulture), unit = ri.Unit })
                     .ToList(),
                 steps = recipe.Steps
                     .OrderBy(s => s.StepNumber)

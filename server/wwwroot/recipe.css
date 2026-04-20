@@ -96,6 +96,42 @@
   transform: scale(0.92);
 }
 
+.portion-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.portion-btn {
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+  font-weight: 400;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: #333;
+  transition: all 0.1s ease;
+}
+
+.portion-btn:hover {
+  background: #f0f0f0;
+}
+
+.portion-btn:active {
+  transform: scale(0.95);
+}
+
+#portionMinus {
+  font-size: 20px !important;
+}
+
 .visually-hidden {
   position: absolute !important;
   height: 1px;
