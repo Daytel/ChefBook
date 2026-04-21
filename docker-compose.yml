@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  # MySQL 8
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Daytel$4125
+      MYSQL_DATABASE: recipe_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pDaytel$4125"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  # ASP.NET Core приложение
+  app:
+    build: . # использует Dockerfile в корне проекта
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Переопределяем строку подключения: "db" — это имя сервиса выше
+      - ConnectionStrings__DefaultConnection=server=db;port=3306;database=recipe_db;user=root;password=Daytel$4125
+      # ASP.NET Core: слушать на всех интерфейсах
+      - ASPNETCORE_URLS=http://+:8080
+
+volumes:
+  mysql_data:
